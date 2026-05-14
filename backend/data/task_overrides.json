@@ -1,0 +1,3771 @@
+{
+  "overrides": [
+    {
+      "id": "migrate-1768736888",
+      "schedule_name": "春季作息",
+      "action": "migrate",
+      "mode": "once",
+      "time_start": "2026-01-26 03:00:00",
+      "time_end": "2026-01-26 07:00:00",
+      "new_time_start": "2026-01-31 03:00:00",
+      "new_time_end": "2026-01-31 07:00:00",
+      "task_ids": [
+        "70428",
+        "70354"
+      ],
+      "created_at": "2026-01-18 19:48:08",
+      "source_task_ids": [],
+      "target_task_ids": [],
+      "shadow_task_ids": [],
+      "once_task_ids": [],
+      "once_task_specs": [],
+      "commands": [],
+      "enable_once_commands": [],
+      "cleanup_attempts": [],
+      "cleaned_task_ids": [],
+      "shadow_failures": [],
+      "once_task_failures": [],
+      "rollback_attempts": [],
+      "remote_diagnostics": [],
+      "cleanup_state": "pending",
+      "cleaned_at": ""
+    },
+    {
+      "id": "cancel-1768742877",
+      "schedule_name": "春季作息",
+      "action": "cancel",
+      "mode": "once",
+      "time_start": "2026-01-26 01:00:00",
+      "time_end": "2026-01-26 03:00:00",
+      "task_ids": [
+        "70352",
+        "70428"
+      ],
+      "created_at": "2026-01-18 21:27:57",
+      "source_task_ids": [],
+      "target_task_ids": [],
+      "shadow_task_ids": [],
+      "once_task_ids": [],
+      "once_task_specs": [],
+      "commands": [],
+      "enable_once_commands": [],
+      "cleanup_attempts": [],
+      "cleaned_task_ids": [],
+      "shadow_failures": [],
+      "once_task_failures": [],
+      "rollback_attempts": [],
+      "remote_diagnostics": [],
+      "cleanup_state": "pending",
+      "cleaned_at": ""
+    },
+    {
+      "id": "cancel-1768742967",
+      "schedule_name": "春季作息",
+      "action": "cancel",
+      "mode": "once",
+      "time_start": "2026-01-23 01:00:00",
+      "time_end": "2026-01-23 03:00:00",
+      "task_ids": [
+        "70352"
+      ],
+      "created_at": "2026-01-18 21:29:27",
+      "source_task_ids": [],
+      "target_task_ids": [],
+      "shadow_task_ids": [],
+      "once_task_ids": [],
+      "once_task_specs": [],
+      "commands": [],
+      "enable_once_commands": [],
+      "cleanup_attempts": [],
+      "cleaned_task_ids": [],
+      "shadow_failures": [],
+      "once_task_failures": [],
+      "rollback_attempts": [],
+      "remote_diagnostics": [],
+      "cleanup_state": "pending",
+      "cleaned_at": ""
+    },
+    {
+      "id": "migrate-1768743329",
+      "schedule_name": "春季作息",
+      "action": "migrate",
+      "mode": "once",
+      "time_start": "2026-01-26 03:00:00",
+      "time_end": "2026-01-26 07:00:00",
+      "new_time_start": "2026-01-31 03:00:00",
+      "new_time_end": "2026-01-31 07:00:00",
+      "task_ids": [
+        "70354",
+        "70428"
+      ],
+      "created_at": "2026-01-18 21:35:29",
+      "source_task_ids": [],
+      "target_task_ids": [],
+      "shadow_task_ids": [],
+      "once_task_ids": [],
+      "once_task_specs": [],
+      "commands": [],
+      "enable_once_commands": [],
+      "cleanup_attempts": [],
+      "cleaned_task_ids": [],
+      "shadow_failures": [],
+      "once_task_failures": [],
+      "rollback_attempts": [],
+      "remote_diagnostics": [],
+      "cleanup_state": "pending",
+      "cleaned_at": ""
+    },
+    {
+      "id": "cancel-1768744884",
+      "schedule_name": "春季作息",
+      "action": "cancel",
+      "mode": "once",
+      "time_start": "2026-01-26 01:00:00",
+      "time_end": "2026-01-26 03:00:00",
+      "task_ids": [
+        "70352",
+        "70428"
+      ],
+      "created_at": "2026-01-18 22:01:24",
+      "source_task_ids": [],
+      "target_task_ids": [],
+      "shadow_task_ids": [],
+      "once_task_ids": [],
+      "once_task_specs": [],
+      "commands": [],
+      "enable_once_commands": [],
+      "cleanup_attempts": [],
+      "cleaned_task_ids": [],
+      "shadow_failures": [],
+      "once_task_failures": [],
+      "rollback_attempts": [],
+      "remote_diagnostics": [],
+      "cleanup_state": "pending",
+      "cleaned_at": ""
+    },
+    {
+      "id": "cancel-1768758090",
+      "schedule_name": "春季作息",
+      "action": "cancel",
+      "mode": "once",
+      "time_start": "2026-01-19 01:00:00",
+      "time_end": "2026-01-19 03:00:00",
+      "task_ids": [
+        "70352",
+        "70428"
+      ],
+      "created_at": "2026-01-19 01:41:30",
+      "source_task_ids": [],
+      "target_task_ids": [],
+      "shadow_task_ids": [],
+      "once_task_ids": [],
+      "once_task_specs": [],
+      "commands": [],
+      "enable_once_commands": [],
+      "cleanup_attempts": [],
+      "cleaned_task_ids": [],
+      "shadow_failures": [],
+      "once_task_failures": [],
+      "rollback_attempts": [],
+      "remote_diagnostics": [],
+      "cleanup_state": "pending",
+      "cleaned_at": ""
+    },
+    {
+      "id": "cancel-1768758117",
+      "schedule_name": "春季作息",
+      "action": "cancel",
+      "mode": "once",
+      "time_start": "2026-01-26 01:00:00",
+      "time_end": "2026-01-26 03:00:00",
+      "task_ids": [
+        "70352",
+        "70428"
+      ],
+      "created_at": "2026-01-19 01:41:57",
+      "source_task_ids": [],
+      "target_task_ids": [],
+      "shadow_task_ids": [],
+      "once_task_ids": [],
+      "once_task_specs": [],
+      "commands": [],
+      "enable_once_commands": [],
+      "cleanup_attempts": [],
+      "cleaned_task_ids": [],
+      "shadow_failures": [],
+      "once_task_failures": [],
+      "rollback_attempts": [],
+      "remote_diagnostics": [],
+      "cleanup_state": "pending",
+      "cleaned_at": ""
+    },
+    {
+      "id": "cancel-1768801800",
+      "schedule_name": "春季作息",
+      "action": "cancel",
+      "mode": "once",
+      "time_start": "2026-01-19 01:00:00",
+      "time_end": "2026-01-19 06:00:00",
+      "task_ids": [
+        "70352",
+        "70428"
+      ],
+      "created_at": "2026-01-19 13:50:00",
+      "source_task_ids": [],
+      "target_task_ids": [],
+      "shadow_task_ids": [],
+      "once_task_ids": [],
+      "once_task_specs": [],
+      "commands": [],
+      "enable_once_commands": [],
+      "cleanup_attempts": [],
+      "cleaned_task_ids": [],
+      "shadow_failures": [],
+      "once_task_failures": [],
+      "rollback_attempts": [],
+      "remote_diagnostics": [],
+      "cleanup_state": "pending",
+      "cleaned_at": ""
+    },
+    {
+      "id": "migrate-1769267164",
+      "schedule_name": "高中冬季作息方案模板",
+      "action": "migrate",
+      "mode": "once",
+      "time_start": "2026-01-28 00:00:00",
+      "time_end": "2026-01-28 23:59:59",
+      "new_time_start": "2026-01-24 00:00:00",
+      "new_time_end": "2026-01-24 23:59:59",
+      "task_ids": [
+        "71196",
+        "71197",
+        "71198",
+        "71199",
+        "71200",
+        "71201",
+        "71202",
+        "71203",
+        "71204",
+        "71209",
+        "71205",
+        "71206",
+        "71207",
+        "71208"
+      ],
+      "created_at": "2026-01-24 23:06:04",
+      "source_task_ids": [],
+      "target_task_ids": [],
+      "shadow_task_ids": [],
+      "once_task_ids": [],
+      "once_task_specs": [],
+      "commands": [],
+      "enable_once_commands": [],
+      "cleanup_attempts": [],
+      "cleaned_task_ids": [],
+      "shadow_failures": [],
+      "once_task_failures": [],
+      "rollback_attempts": [],
+      "remote_diagnostics": [],
+      "cleanup_state": "pending",
+      "cleaned_at": ""
+    },
+    {
+      "id": "cancel-1769267593",
+      "schedule_name": "高中冬季作息方案模板",
+      "action": "cancel",
+      "mode": "once",
+      "time_start": "2026-01-24 14:00:00",
+      "time_end": "2026-01-24 16:00:00",
+      "task_ids": [
+        "71205",
+        "71206",
+        "71207"
+      ],
+      "created_at": "2026-01-24 23:13:13",
+      "source_task_ids": [],
+      "target_task_ids": [],
+      "shadow_task_ids": [],
+      "once_task_ids": [],
+      "once_task_specs": [],
+      "commands": [],
+      "enable_once_commands": [],
+      "cleanup_attempts": [],
+      "cleaned_task_ids": [],
+      "shadow_failures": [],
+      "once_task_failures": [],
+      "rollback_attempts": [],
+      "remote_diagnostics": [],
+      "cleanup_state": "pending",
+      "cleaned_at": ""
+    },
+    {
+      "id": "cancel-1769268995",
+      "schedule_name": "高中冬季作息方案模板",
+      "action": "cancel",
+      "mode": "once",
+      "time_start": "2026-02-02 06:00:00",
+      "time_end": "2026-02-02 08:00:00",
+      "task_ids": [
+        "71196"
+      ],
+      "created_at": "2026-01-24 23:36:35",
+      "source_task_ids": [],
+      "target_task_ids": [],
+      "shadow_task_ids": [],
+      "once_task_ids": [],
+      "once_task_specs": [],
+      "commands": [],
+      "enable_once_commands": [],
+      "cleanup_attempts": [],
+      "cleaned_task_ids": [],
+      "shadow_failures": [],
+      "once_task_failures": [],
+      "rollback_attempts": [],
+      "remote_diagnostics": [],
+      "cleanup_state": "pending",
+      "cleaned_at": ""
+    },
+    {
+      "id": "cancel-1769269614",
+      "schedule_name": "高中冬季作息方案模板",
+      "action": "cancel",
+      "mode": "once",
+      "time_start": "2026-02-02 08:00:00",
+      "time_end": "2026-02-02 10:00:00",
+      "task_ids": [
+        "71197",
+        "71198",
+        "71199",
+        "71200"
+      ],
+      "created_at": "2026-01-24 23:46:54",
+      "source_task_ids": [],
+      "target_task_ids": [],
+      "shadow_task_ids": [],
+      "once_task_ids": [],
+      "once_task_specs": [],
+      "commands": [],
+      "enable_once_commands": [],
+      "cleanup_attempts": [],
+      "cleaned_task_ids": [],
+      "shadow_failures": [],
+      "once_task_failures": [],
+      "rollback_attempts": [],
+      "remote_diagnostics": [],
+      "cleanup_state": "pending",
+      "cleaned_at": ""
+    },
+    {
+      "id": "cancel-1769270019",
+      "schedule_name": "高中冬季作息方案模板",
+      "action": "cancel",
+      "mode": "once",
+      "time_start": "2026-02-03 16:00:00",
+      "time_end": "2026-02-04 06:00:00",
+      "task_ids": [
+        "71208"
+      ],
+      "created_at": "2026-01-24 23:53:39",
+      "source_task_ids": [],
+      "target_task_ids": [],
+      "shadow_task_ids": [],
+      "once_task_ids": [],
+      "once_task_specs": [],
+      "commands": [],
+      "enable_once_commands": [],
+      "cleanup_attempts": [],
+      "cleaned_task_ids": [],
+      "shadow_failures": [],
+      "once_task_failures": [],
+      "rollback_attempts": [],
+      "remote_diagnostics": [],
+      "cleanup_state": "pending",
+      "cleaned_at": ""
+    },
+    {
+      "id": "cancel-1769271311",
+      "schedule_name": "高中冬季作息方案模板",
+      "action": "cancel",
+      "mode": "once",
+      "time_start": "2026-02-03 06:00:00",
+      "time_end": "2026-02-03 10:00:00",
+      "task_ids": [
+        "71196",
+        "71197",
+        "71198",
+        "71199",
+        "71200"
+      ],
+      "created_at": "2026-01-25 00:15:11",
+      "source_task_ids": [],
+      "target_task_ids": [],
+      "shadow_task_ids": [],
+      "once_task_ids": [],
+      "once_task_specs": [],
+      "commands": [],
+      "enable_once_commands": [],
+      "cleanup_attempts": [],
+      "cleaned_task_ids": [],
+      "shadow_failures": [],
+      "once_task_failures": [],
+      "rollback_attempts": [],
+      "remote_diagnostics": [],
+      "cleanup_state": "pending",
+      "cleaned_at": ""
+    },
+    {
+      "id": "migrate-1769306194",
+      "schedule_name": "高中冬季作息方案模板",
+      "action": "migrate",
+      "mode": "once",
+      "time_start": "2026-02-02 00:00:00",
+      "time_end": "2026-02-02 23:59:59",
+      "new_time_start": "2026-02-07 00:00:00",
+      "new_time_end": "2026-02-07 23:59:59",
+      "task_ids": [
+        "71196",
+        "71197",
+        "71198",
+        "71199",
+        "71200",
+        "71201",
+        "71202",
+        "71203",
+        "71204",
+        "71209",
+        "71205",
+        "71206",
+        "71207",
+        "71208"
+      ],
+      "created_at": "2026-01-25 09:56:34",
+      "source_task_ids": [],
+      "target_task_ids": [],
+      "shadow_task_ids": [],
+      "once_task_ids": [],
+      "once_task_specs": [],
+      "commands": [],
+      "enable_once_commands": [],
+      "cleanup_attempts": [],
+      "cleaned_task_ids": [],
+      "shadow_failures": [],
+      "once_task_failures": [],
+      "rollback_attempts": [],
+      "remote_diagnostics": [],
+      "cleanup_state": "pending",
+      "cleaned_at": ""
+    },
+    {
+      "id": "cancel-1769306495",
+      "schedule_name": "高中冬季作息方案模板",
+      "action": "cancel",
+      "mode": "once",
+      "time_start": "2026-01-30 00:00:00",
+      "time_end": "2026-01-30 23:59:59",
+      "task_ids": [
+        "71196",
+        "71197",
+        "71198",
+        "71199",
+        "71200",
+        "71201",
+        "71202",
+        "71203",
+        "71204",
+        "71209",
+        "71205",
+        "71206",
+        "71207",
+        "71208"
+      ],
+      "created_at": "2026-01-25 10:01:35",
+      "source_task_ids": [],
+      "target_task_ids": [],
+      "shadow_task_ids": [],
+      "once_task_ids": [],
+      "once_task_specs": [],
+      "commands": [],
+      "enable_once_commands": [],
+      "cleanup_attempts": [],
+      "cleaned_task_ids": [],
+      "shadow_failures": [],
+      "once_task_failures": [],
+      "rollback_attempts": [],
+      "remote_diagnostics": [],
+      "cleanup_state": "pending",
+      "cleaned_at": ""
+    },
+    {
+      "id": "migrate-1769306529",
+      "schedule_name": "高中冬季作息方案模板",
+      "action": "migrate",
+      "mode": "once",
+      "time_start": "2026-01-29 00:00:00",
+      "time_end": "2026-01-29 23:59:59",
+      "new_time_start": "2026-02-01 00:00:00",
+      "new_time_end": "2026-02-01 23:59:59",
+      "task_ids": [
+        "71196",
+        "71197",
+        "71198",
+        "71199",
+        "71200",
+        "71201",
+        "71202",
+        "71203",
+        "71204",
+        "71209",
+        "71205",
+        "71206",
+        "71207",
+        "71208"
+      ],
+      "created_at": "2026-01-25 10:02:09",
+      "source_task_ids": [],
+      "target_task_ids": [],
+      "shadow_task_ids": [],
+      "once_task_ids": [],
+      "once_task_specs": [],
+      "commands": [],
+      "enable_once_commands": [],
+      "cleanup_attempts": [],
+      "cleaned_task_ids": [],
+      "shadow_failures": [],
+      "once_task_failures": [],
+      "rollback_attempts": [],
+      "remote_diagnostics": [],
+      "cleanup_state": "pending",
+      "cleaned_at": ""
+    },
+    {
+      "id": "cancel-1769307120",
+      "schedule_name": "高中冬季作息方案模板",
+      "action": "cancel",
+      "mode": "once",
+      "time_start": "2026-01-26 00:00:00",
+      "time_end": "2026-01-26 23:59:59",
+      "task_ids": [
+        "71196",
+        "71197",
+        "71198",
+        "71199",
+        "71200",
+        "71201",
+        "71202",
+        "71203",
+        "71204",
+        "71209",
+        "71205",
+        "71206",
+        "71207",
+        "71208"
+      ],
+      "created_at": "2026-01-25 10:12:00",
+      "source_task_ids": [],
+      "target_task_ids": [],
+      "shadow_task_ids": [],
+      "once_task_ids": [],
+      "once_task_specs": [],
+      "commands": [],
+      "enable_once_commands": [],
+      "cleanup_attempts": [],
+      "cleaned_task_ids": [],
+      "shadow_failures": [],
+      "once_task_failures": [],
+      "rollback_attempts": [],
+      "remote_diagnostics": [],
+      "cleanup_state": "pending",
+      "cleaned_at": ""
+    },
+    {
+      "id": "cancel-1769307145",
+      "schedule_name": "高中冬季作息方案模板",
+      "action": "cancel",
+      "mode": "once",
+      "time_start": "2026-02-03 06:00:00",
+      "time_end": "2026-02-03 10:00:00",
+      "task_ids": [
+        "71196",
+        "71197",
+        "71198",
+        "71199",
+        "71200"
+      ],
+      "created_at": "2026-01-25 10:12:25",
+      "source_task_ids": [],
+      "target_task_ids": [],
+      "shadow_task_ids": [],
+      "once_task_ids": [],
+      "once_task_specs": [],
+      "commands": [],
+      "enable_once_commands": [],
+      "cleanup_attempts": [],
+      "cleaned_task_ids": [],
+      "shadow_failures": [],
+      "once_task_failures": [],
+      "rollback_attempts": [],
+      "remote_diagnostics": [],
+      "cleanup_state": "pending",
+      "cleaned_at": ""
+    },
+    {
+      "id": "cancel-1769312962",
+      "schedule_name": "高中冬季作息方案模板",
+      "action": "cancel",
+      "mode": "once",
+      "time_start": "2026-02-04 00:00:00",
+      "time_end": "2026-02-04 23:59:59",
+      "task_ids": [
+        "71196",
+        "71197",
+        "71198",
+        "71199",
+        "71200",
+        "71201",
+        "71202",
+        "71203",
+        "71204",
+        "71209",
+        "71205",
+        "71206",
+        "71207",
+        "71208"
+      ],
+      "created_at": "2026-01-25 11:49:22",
+      "source_task_ids": [],
+      "target_task_ids": [],
+      "shadow_task_ids": [],
+      "once_task_ids": [],
+      "once_task_specs": [],
+      "commands": [],
+      "enable_once_commands": [],
+      "cleanup_attempts": [],
+      "cleaned_task_ids": [],
+      "shadow_failures": [],
+      "once_task_failures": [],
+      "rollback_attempts": [],
+      "remote_diagnostics": [],
+      "cleanup_state": "pending",
+      "cleaned_at": ""
+    },
+    {
+      "id": "cancel-1769318921",
+      "schedule_name": "冬季作息方案",
+      "action": "cancel",
+      "mode": "once",
+      "time_start": "2026-01-26 00:00:00",
+      "time_end": "2026-01-26 23:59:59",
+      "task_ids": [
+        "71162",
+        "71163",
+        "71164",
+        "71165",
+        "71166",
+        "71167",
+        "71168",
+        "71169",
+        "71170",
+        "71175",
+        "71171",
+        "71172",
+        "71173",
+        "71174"
+      ],
+      "created_at": "2026-01-25 13:28:41",
+      "source_task_ids": [],
+      "target_task_ids": [],
+      "shadow_task_ids": [],
+      "once_task_ids": [],
+      "once_task_specs": [],
+      "commands": [],
+      "enable_once_commands": [],
+      "cleanup_attempts": [],
+      "cleaned_task_ids": [],
+      "shadow_failures": [],
+      "once_task_failures": [],
+      "rollback_attempts": [],
+      "remote_diagnostics": [],
+      "cleanup_state": "pending",
+      "cleaned_at": ""
+    },
+    {
+      "id": "cancel-1772281651",
+      "action": "cancel",
+      "mode": "once",
+      "schedule_name": "新加坡",
+      "task_ids": [
+        "72130",
+        "72132"
+      ],
+      "time_start": "2026-02-28 00:00:00",
+      "time_end": "2026-02-28 08:00:00",
+      "commands": [
+        {
+          "type": "enabletask",
+          "phase": "disable",
+          "payload": {
+            "id": 0,
+            "taskid": "72130,72132",
+            "enstate": "0,0",
+            "startdate": "2026-02-27",
+            "starttime": "23:59:55",
+            "yuantaskid": "72130,72132"
+          }
+        },
+        {
+          "type": "enabletask",
+          "phase": "restore",
+          "payload": {
+            "id": 0,
+            "taskid": "72130,72132",
+            "enstate": "1,1",
+            "startdate": "2026-02-28",
+            "starttime": "08:00:00",
+            "yuantaskid": "72130,72132"
+          }
+        }
+      ],
+      "created_at": "2026-02-28 20:27:31",
+      "source_task_ids": [],
+      "target_task_ids": [],
+      "shadow_task_ids": [],
+      "once_task_ids": [],
+      "once_task_specs": [],
+      "enable_once_commands": [],
+      "cleanup_attempts": [],
+      "cleaned_task_ids": [],
+      "shadow_failures": [],
+      "once_task_failures": [],
+      "rollback_attempts": [],
+      "remote_diagnostics": [],
+      "cleanup_state": "pending",
+      "cleaned_at": ""
+    },
+    {
+      "id": "cancel-1772282102",
+      "action": "cancel",
+      "mode": "once",
+      "schedule_name": "夏季作息",
+      "task_ids": [
+        "72037",
+        "72039"
+      ],
+      "time_start": "2026-03-03 00:00:00",
+      "time_end": "2026-03-03 08:00:00",
+      "commands": [
+        {
+          "type": "enabletask",
+          "phase": "disable",
+          "payload": {
+            "id": 0,
+            "taskid": "72037,72039",
+            "enstate": "0,0",
+            "startdate": "2026-03-02",
+            "starttime": "23:59:55",
+            "yuantaskid": "72037,72039"
+          }
+        },
+        {
+          "type": "enabletask",
+          "phase": "restore",
+          "payload": {
+            "id": 0,
+            "taskid": "72037,72039",
+            "enstate": "1,1",
+            "startdate": "2026-03-03",
+            "starttime": "08:00:00",
+            "yuantaskid": "72037,72039"
+          }
+        }
+      ],
+      "created_at": "2026-02-28 20:35:02",
+      "source_task_ids": [],
+      "target_task_ids": [],
+      "shadow_task_ids": [],
+      "once_task_ids": [],
+      "once_task_specs": [],
+      "enable_once_commands": [],
+      "cleanup_attempts": [],
+      "cleaned_task_ids": [],
+      "shadow_failures": [],
+      "once_task_failures": [],
+      "rollback_attempts": [],
+      "remote_diagnostics": [],
+      "cleanup_state": "pending",
+      "cleaned_at": ""
+    },
+    {
+      "id": "cancel-1772282233",
+      "action": "cancel",
+      "mode": "once",
+      "schedule_name": "夏季作息",
+      "task_ids": [
+        "72037",
+        "72039",
+        "72041",
+        "72043"
+      ],
+      "time_start": "2026-03-03 00:00:00",
+      "time_end": "2026-03-03 09:00:00",
+      "commands": [
+        {
+          "type": "enabletask",
+          "phase": "disable",
+          "payload": {
+            "id": 0,
+            "taskid": "72037,72039,72041,72043",
+            "enstate": "0,0,0,0",
+            "startdate": "2026-03-02",
+            "starttime": "23:59:55",
+            "yuantaskid": "72037,72039,72041,72043"
+          }
+        },
+        {
+          "type": "enabletask",
+          "phase": "restore",
+          "payload": {
+            "id": 0,
+            "taskid": "72037,72039,72041,72043",
+            "enstate": "1,1,1,1",
+            "startdate": "2026-03-03",
+            "starttime": "09:00:00",
+            "yuantaskid": "72037,72039,72041,72043"
+          }
+        }
+      ],
+      "created_at": "2026-02-28 20:37:13",
+      "source_task_ids": [],
+      "target_task_ids": [],
+      "shadow_task_ids": [],
+      "once_task_ids": [],
+      "once_task_specs": [],
+      "enable_once_commands": [],
+      "cleanup_attempts": [],
+      "cleaned_task_ids": [],
+      "shadow_failures": [],
+      "once_task_failures": [],
+      "rollback_attempts": [],
+      "remote_diagnostics": [],
+      "cleanup_state": "pending",
+      "cleaned_at": ""
+    },
+    {
+      "id": "cancel-1772282365",
+      "action": "cancel",
+      "mode": "once",
+      "schedule_name": "新加坡",
+      "task_ids": [
+        "72130",
+        "72132",
+        "72134",
+        "72136"
+      ],
+      "time_start": "2026-03-03 00:00:00",
+      "time_end": "2026-03-03 09:00:00",
+      "commands": [
+        {
+          "type": "enabletask",
+          "phase": "disable",
+          "payload": {
+            "id": 0,
+            "taskid": "72130,72132,72134,72136",
+            "enstate": "0,0,0,0",
+            "startdate": "2026-03-02",
+            "starttime": "23:59:55",
+            "yuantaskid": "72130,72132,72134,72136"
+          }
+        },
+        {
+          "type": "enabletask",
+          "phase": "restore",
+          "payload": {
+            "id": 0,
+            "taskid": "72130,72132,72134,72136",
+            "enstate": "1,1,1,1",
+            "startdate": "2026-03-03",
+            "starttime": "09:00:00",
+            "yuantaskid": "72130,72132,72134,72136"
+          }
+        }
+      ],
+      "created_at": "2026-02-28 20:39:25",
+      "source_task_ids": [],
+      "target_task_ids": [],
+      "shadow_task_ids": [],
+      "once_task_ids": [],
+      "once_task_specs": [],
+      "enable_once_commands": [],
+      "cleanup_attempts": [],
+      "cleaned_task_ids": [],
+      "shadow_failures": [],
+      "once_task_failures": [],
+      "rollback_attempts": [],
+      "remote_diagnostics": [],
+      "cleanup_state": "pending",
+      "cleaned_at": ""
+    },
+    {
+      "id": "cancel-1772347620",
+      "action": "cancel",
+      "mode": "once",
+      "schedule_name": "新加坡",
+      "task_ids": [
+        "72130",
+        "72132"
+      ],
+      "time_start": "2026-03-04 00:00:00",
+      "time_end": "2026-03-04 08:00:00",
+      "commands": [
+        {
+          "type": "enabletask",
+          "phase": "disable",
+          "payload": {
+            "id": 0,
+            "taskid": "72130,72132",
+            "enstate": "0,0",
+            "startdate": "2026-03-03",
+            "starttime": "23:59:55",
+            "yuantaskid": "72130,72132"
+          }
+        },
+        {
+          "type": "enabletask",
+          "phase": "restore",
+          "payload": {
+            "id": 0,
+            "taskid": "72130,72132",
+            "enstate": "1,1",
+            "startdate": "2026-03-04",
+            "starttime": "08:00:00",
+            "yuantaskid": "72130,72132"
+          }
+        }
+      ],
+      "created_at": "2026-03-01 14:47:00",
+      "source_task_ids": [],
+      "target_task_ids": [],
+      "shadow_task_ids": [],
+      "once_task_ids": [],
+      "once_task_specs": [],
+      "enable_once_commands": [],
+      "cleanup_attempts": [],
+      "cleaned_task_ids": [],
+      "shadow_failures": [],
+      "once_task_failures": [],
+      "rollback_attempts": [],
+      "remote_diagnostics": [],
+      "cleanup_state": "pending",
+      "cleaned_at": ""
+    },
+    {
+      "id": "migrate-1772348926",
+      "action": "migrate",
+      "mode": "once",
+      "schedule_name": "新加坡",
+      "task_ids": [
+        "72132"
+      ],
+      "time_start": "2026-03-05 07:50:00",
+      "time_end": "2026-03-05 08:10:00",
+      "new_time_start": "2026-03-09 07:50:00",
+      "new_time_end": "2026-03-09 08:10:00",
+      "shadow_task_ids": [
+        "dryrun-shadow-1"
+      ],
+      "conflict_task_ids": [],
+      "commands": [
+        {
+          "type": "taskinfo",
+          "phase": "create_shadow",
+          "taskid": "dryrun-shadow-1",
+          "payload": {
+            "startdate": "2026-03-09",
+            "starttime": "07:50:00",
+            "taskname": "早读开始铃"
+          }
+        },
+        {
+          "type": "enabletask",
+          "phase": "disable_source",
+          "payload": {
+            "id": 0,
+            "taskid": "72132",
+            "enstate": "0",
+            "startdate": "2026-03-05",
+            "starttime": "07:49:55",
+            "yuantaskid": "72132"
+          }
+        },
+        {
+          "type": "enabletask",
+          "phase": "restore_source",
+          "payload": {
+            "id": 0,
+            "taskid": "72132",
+            "enstate": "1",
+            "startdate": "2026-03-05",
+            "starttime": "08:10:00",
+            "yuantaskid": "72132"
+          }
+        }
+      ],
+      "created_at": "2026-03-01 15:08:46",
+      "source_task_ids": [],
+      "target_task_ids": [],
+      "once_task_ids": [],
+      "once_task_specs": [],
+      "enable_once_commands": [],
+      "cleanup_attempts": [],
+      "cleaned_task_ids": [],
+      "shadow_failures": [],
+      "once_task_failures": [],
+      "rollback_attempts": [],
+      "remote_diagnostics": [],
+      "cleanup_state": "pending",
+      "cleaned_at": ""
+    },
+    {
+      "id": "swap-1772349060",
+      "action": "swap",
+      "mode": "once",
+      "schedule_name": "新加坡",
+      "source_task_ids": [
+        "72132"
+      ],
+      "target_task_ids": [
+        "72152"
+      ],
+      "source_time_start": "2026-03-05 07:50:00",
+      "source_time_end": "2026-03-05 08:10:00",
+      "target_time_start": "2026-03-05 14:25:00",
+      "target_time_end": "2026-03-05 14:45:00",
+      "shadow_task_ids": [
+        "dryrun-shadow-1",
+        "dryrun-shadow-2"
+      ],
+      "commands": [
+        {
+          "type": "taskinfo",
+          "phase": "create_shadow_from_source",
+          "taskid": "dryrun-shadow-1"
+        },
+        {
+          "type": "taskinfo",
+          "phase": "create_shadow_from_target",
+          "taskid": "dryrun-shadow-2"
+        },
+        {
+          "type": "enabletask",
+          "phase": "disable_source",
+          "payload": {
+            "id": 0,
+            "taskid": "72132",
+            "enstate": "0",
+            "startdate": "2026-03-05",
+            "starttime": "07:49:55",
+            "yuantaskid": "72132"
+          }
+        },
+        {
+          "type": "enabletask",
+          "phase": "restore_source",
+          "payload": {
+            "id": 0,
+            "taskid": "72132",
+            "enstate": "1",
+            "startdate": "2026-03-05",
+            "starttime": "08:10:00",
+            "yuantaskid": "72132"
+          }
+        },
+        {
+          "type": "enabletask",
+          "phase": "disable_target",
+          "payload": {
+            "id": 0,
+            "taskid": "72152",
+            "enstate": "0",
+            "startdate": "2026-03-05",
+            "starttime": "14:24:55",
+            "yuantaskid": "72152"
+          }
+        },
+        {
+          "type": "enabletask",
+          "phase": "restore_target",
+          "payload": {
+            "id": 0,
+            "taskid": "72152",
+            "enstate": "1",
+            "startdate": "2026-03-05",
+            "starttime": "14:45:00",
+            "yuantaskid": "72152"
+          }
+        }
+      ],
+      "created_at": "2026-03-01 15:11:00",
+      "task_ids": [],
+      "once_task_ids": [],
+      "once_task_specs": [],
+      "enable_once_commands": [],
+      "cleanup_attempts": [],
+      "cleaned_task_ids": [],
+      "shadow_failures": [],
+      "once_task_failures": [],
+      "rollback_attempts": [],
+      "remote_diagnostics": [],
+      "cleanup_state": "pending",
+      "cleaned_at": ""
+    },
+    {
+      "id": "swap-1772349209",
+      "action": "swap",
+      "mode": "once",
+      "schedule_name": "新加坡",
+      "source_task_ids": [
+        "72132",
+        "72134",
+        "72136",
+        "72138",
+        "72140"
+      ],
+      "target_task_ids": [
+        "72142",
+        "72144",
+        "72146",
+        "72148",
+        "72150"
+      ],
+      "source_time_start": "2026-03-06 07:50:00",
+      "source_time_end": "2026-03-06 09:58:00",
+      "target_time_start": "2026-03-06 10:10:00",
+      "target_time_end": "2026-03-06 13:51:00",
+      "shadow_task_ids": [
+        "dryrun-shadow-1",
+        "dryrun-shadow-2",
+        "dryrun-shadow-3",
+        "dryrun-shadow-4",
+        "dryrun-shadow-5",
+        "dryrun-shadow-6",
+        "dryrun-shadow-7",
+        "dryrun-shadow-8",
+        "dryrun-shadow-9",
+        "dryrun-shadow-10"
+      ],
+      "commands": [
+        {
+          "type": "taskinfo",
+          "phase": "create_shadow_from_source",
+          "taskid": "dryrun-shadow-1"
+        },
+        {
+          "type": "taskinfo",
+          "phase": "create_shadow_from_source",
+          "taskid": "dryrun-shadow-2"
+        },
+        {
+          "type": "taskinfo",
+          "phase": "create_shadow_from_source",
+          "taskid": "dryrun-shadow-3"
+        },
+        {
+          "type": "taskinfo",
+          "phase": "create_shadow_from_source",
+          "taskid": "dryrun-shadow-4"
+        },
+        {
+          "type": "taskinfo",
+          "phase": "create_shadow_from_source",
+          "taskid": "dryrun-shadow-5"
+        },
+        {
+          "type": "taskinfo",
+          "phase": "create_shadow_from_target",
+          "taskid": "dryrun-shadow-6"
+        },
+        {
+          "type": "taskinfo",
+          "phase": "create_shadow_from_target",
+          "taskid": "dryrun-shadow-7"
+        },
+        {
+          "type": "taskinfo",
+          "phase": "create_shadow_from_target",
+          "taskid": "dryrun-shadow-8"
+        },
+        {
+          "type": "taskinfo",
+          "phase": "create_shadow_from_target",
+          "taskid": "dryrun-shadow-9"
+        },
+        {
+          "type": "taskinfo",
+          "phase": "create_shadow_from_target",
+          "taskid": "dryrun-shadow-10"
+        },
+        {
+          "type": "enabletask",
+          "phase": "disable_source",
+          "payload": {
+            "id": 0,
+            "taskid": "72132,72134,72136,72138,72140",
+            "enstate": "0,0,0,0,0",
+            "startdate": "2026-03-06",
+            "starttime": "07:49:55",
+            "yuantaskid": "72132,72134,72136,72138,72140"
+          }
+        },
+        {
+          "type": "enabletask",
+          "phase": "restore_source",
+          "payload": {
+            "id": 0,
+            "taskid": "72132,72134,72136,72138,72140",
+            "enstate": "1,1,1,1,1",
+            "startdate": "2026-03-06",
+            "starttime": "09:58:00",
+            "yuantaskid": "72132,72134,72136,72138,72140"
+          }
+        },
+        {
+          "type": "enabletask",
+          "phase": "disable_target",
+          "payload": {
+            "id": 0,
+            "taskid": "72142,72144,72146,72148,72150",
+            "enstate": "0,0,0,0,0",
+            "startdate": "2026-03-06",
+            "starttime": "10:09:55",
+            "yuantaskid": "72142,72144,72146,72148,72150"
+          }
+        },
+        {
+          "type": "enabletask",
+          "phase": "restore_target",
+          "payload": {
+            "id": 0,
+            "taskid": "72142,72144,72146,72148,72150",
+            "enstate": "1,1,1,1,1",
+            "startdate": "2026-03-06",
+            "starttime": "13:51:00",
+            "yuantaskid": "72142,72144,72146,72148,72150"
+          }
+        }
+      ],
+      "created_at": "2026-03-01 15:13:29",
+      "task_ids": [],
+      "once_task_ids": [],
+      "once_task_specs": [],
+      "enable_once_commands": [],
+      "cleanup_attempts": [],
+      "cleaned_task_ids": [],
+      "shadow_failures": [],
+      "once_task_failures": [],
+      "rollback_attempts": [],
+      "remote_diagnostics": [],
+      "cleanup_state": "pending",
+      "cleaned_at": ""
+    },
+    {
+      "id": "swap-1772350891",
+      "action": "swap",
+      "mode": "once",
+      "schedule_name": "新加坡",
+      "source_task_ids": [
+        "72132",
+        "72134",
+        "72136",
+        "72138",
+        "72140"
+      ],
+      "target_task_ids": [
+        "72142",
+        "72144",
+        "72146",
+        "72148",
+        "72150"
+      ],
+      "source_time_start": "2026-03-07 06:00:00",
+      "source_time_end": "2026-03-07 10:00:00",
+      "target_time_start": "2026-03-07 10:00:00",
+      "target_time_end": "2026-03-07 14:00:00",
+      "shadow_task_ids": [
+        "dryrun-shadow-1",
+        "dryrun-shadow-2",
+        "dryrun-shadow-3",
+        "dryrun-shadow-4",
+        "dryrun-shadow-5",
+        "dryrun-shadow-6",
+        "dryrun-shadow-7",
+        "dryrun-shadow-8",
+        "dryrun-shadow-9",
+        "dryrun-shadow-10"
+      ],
+      "commands": [
+        {
+          "type": "taskinfo",
+          "phase": "create_shadow_from_source",
+          "taskid": "dryrun-shadow-1"
+        },
+        {
+          "type": "taskinfo",
+          "phase": "create_shadow_from_source",
+          "taskid": "dryrun-shadow-2"
+        },
+        {
+          "type": "taskinfo",
+          "phase": "create_shadow_from_source",
+          "taskid": "dryrun-shadow-3"
+        },
+        {
+          "type": "taskinfo",
+          "phase": "create_shadow_from_source",
+          "taskid": "dryrun-shadow-4"
+        },
+        {
+          "type": "taskinfo",
+          "phase": "create_shadow_from_source",
+          "taskid": "dryrun-shadow-5"
+        },
+        {
+          "type": "taskinfo",
+          "phase": "create_shadow_from_target",
+          "taskid": "dryrun-shadow-6"
+        },
+        {
+          "type": "taskinfo",
+          "phase": "create_shadow_from_target",
+          "taskid": "dryrun-shadow-7"
+        },
+        {
+          "type": "taskinfo",
+          "phase": "create_shadow_from_target",
+          "taskid": "dryrun-shadow-8"
+        },
+        {
+          "type": "taskinfo",
+          "phase": "create_shadow_from_target",
+          "taskid": "dryrun-shadow-9"
+        },
+        {
+          "type": "taskinfo",
+          "phase": "create_shadow_from_target",
+          "taskid": "dryrun-shadow-10"
+        },
+        {
+          "type": "enabletask",
+          "phase": "disable_source",
+          "payload": {
+            "id": 0,
+            "taskid": "72132,72134,72136,72138,72140",
+            "enstate": "0,0,0,0,0",
+            "startdate": "2026-03-07",
+            "starttime": "05:59:55",
+            "yuantaskid": "72132,72134,72136,72138,72140"
+          }
+        },
+        {
+          "type": "enabletask",
+          "phase": "restore_source",
+          "payload": {
+            "id": 0,
+            "taskid": "72132,72134,72136,72138,72140",
+            "enstate": "1,1,1,1,1",
+            "startdate": "2026-03-07",
+            "starttime": "10:00:00",
+            "yuantaskid": "72132,72134,72136,72138,72140"
+          }
+        },
+        {
+          "type": "enabletask",
+          "phase": "disable_target",
+          "payload": {
+            "id": 0,
+            "taskid": "72142,72144,72146,72148,72150",
+            "enstate": "0,0,0,0,0",
+            "startdate": "2026-03-07",
+            "starttime": "09:59:55",
+            "yuantaskid": "72142,72144,72146,72148,72150"
+          }
+        },
+        {
+          "type": "enabletask",
+          "phase": "restore_target",
+          "payload": {
+            "id": 0,
+            "taskid": "72142,72144,72146,72148,72150",
+            "enstate": "1,1,1,1,1",
+            "startdate": "2026-03-07",
+            "starttime": "14:00:00",
+            "yuantaskid": "72142,72144,72146,72148,72150"
+          }
+        }
+      ],
+      "created_at": "2026-03-01 15:41:31",
+      "task_ids": [],
+      "once_task_ids": [],
+      "once_task_specs": [],
+      "enable_once_commands": [],
+      "cleanup_attempts": [],
+      "cleaned_task_ids": [],
+      "shadow_failures": [],
+      "once_task_failures": [],
+      "rollback_attempts": [],
+      "remote_diagnostics": [],
+      "cleanup_state": "pending",
+      "cleaned_at": ""
+    },
+    {
+      "id": "swap-1772377739",
+      "action": "swap",
+      "mode": "once",
+      "schedule_name": "新加坡",
+      "source_task_ids": [
+        "72132"
+      ],
+      "target_task_ids": [
+        "72152"
+      ],
+      "source_time_start": "2026-03-10 07:00:00",
+      "source_time_end": "2026-03-10 08:00:00",
+      "target_time_start": "2026-03-10 14:00:00",
+      "target_time_end": "2026-03-10 15:00:00",
+      "shadow_task_ids": [
+        "dryrun-shadow-1",
+        "dryrun-shadow-2"
+      ],
+      "commands": [
+        {
+          "type": "taskinfo",
+          "phase": "create_shadow_from_source",
+          "taskid": "dryrun-shadow-1"
+        },
+        {
+          "type": "taskinfo",
+          "phase": "create_shadow_from_target",
+          "taskid": "dryrun-shadow-2"
+        },
+        {
+          "type": "enabletask",
+          "phase": "disable_source",
+          "payload": {
+            "id": 0,
+            "taskid": "72132",
+            "enstate": "0",
+            "startdate": "2026-03-10",
+            "starttime": "06:59:55",
+            "yuantaskid": "72132"
+          }
+        },
+        {
+          "type": "enabletask",
+          "phase": "restore_source",
+          "payload": {
+            "id": 0,
+            "taskid": "72132",
+            "enstate": "1",
+            "startdate": "2026-03-10",
+            "starttime": "08:00:00",
+            "yuantaskid": "72132"
+          }
+        },
+        {
+          "type": "enabletask",
+          "phase": "disable_target",
+          "payload": {
+            "id": 0,
+            "taskid": "72152",
+            "enstate": "0",
+            "startdate": "2026-03-10",
+            "starttime": "13:59:55",
+            "yuantaskid": "72152"
+          }
+        },
+        {
+          "type": "enabletask",
+          "phase": "restore_target",
+          "payload": {
+            "id": 0,
+            "taskid": "72152",
+            "enstate": "1",
+            "startdate": "2026-03-10",
+            "starttime": "15:00:00",
+            "yuantaskid": "72152"
+          }
+        }
+      ],
+      "created_at": "2026-03-01 23:08:59",
+      "task_ids": [],
+      "once_task_ids": [],
+      "once_task_specs": [],
+      "enable_once_commands": [],
+      "cleanup_attempts": [],
+      "cleaned_task_ids": [],
+      "shadow_failures": [],
+      "once_task_failures": [],
+      "rollback_attempts": [],
+      "remote_diagnostics": [],
+      "cleanup_state": "pending",
+      "cleaned_at": ""
+    },
+    {
+      "id": "migrate-1772379884",
+      "action": "migrate",
+      "mode": "once",
+      "schedule_name": "新加坡",
+      "task_ids": [
+        "72132"
+      ],
+      "time_start": "2026-03-14 07:50:00",
+      "time_end": "2026-03-14 08:10:00",
+      "new_time_start": "2026-03-15 07:50:00",
+      "new_time_end": "2026-03-15 08:10:00",
+      "shadow_task_ids": [
+        "dryrun-shadow-1"
+      ],
+      "conflict_task_ids": [],
+      "commands": [
+        {
+          "type": "taskinfo",
+          "phase": "create_shadow",
+          "taskid": "dryrun-shadow-1",
+          "payload": {
+            "startdate": "2026-03-15",
+            "starttime": "07:50:00",
+            "taskname": "早读开始铃"
+          }
+        },
+        {
+          "type": "enabletask",
+          "phase": "disable_source",
+          "payload": {
+            "id": 0,
+            "taskid": "72132",
+            "enstate": "0",
+            "startdate": "2026-03-14",
+            "starttime": "07:49:55",
+            "yuantaskid": "72132"
+          }
+        },
+        {
+          "type": "enabletask",
+          "phase": "restore_source",
+          "payload": {
+            "id": 0,
+            "taskid": "72132",
+            "enstate": "1",
+            "startdate": "2026-03-14",
+            "starttime": "08:10:00",
+            "yuantaskid": "72132"
+          }
+        }
+      ],
+      "created_at": "2026-03-01 23:44:44",
+      "source_task_ids": [],
+      "target_task_ids": [],
+      "once_task_ids": [],
+      "once_task_specs": [],
+      "enable_once_commands": [],
+      "cleanup_attempts": [],
+      "cleaned_task_ids": [],
+      "shadow_failures": [],
+      "once_task_failures": [],
+      "rollback_attempts": [],
+      "remote_diagnostics": [],
+      "cleanup_state": "pending",
+      "cleaned_at": ""
+    },
+    {
+      "id": "migrate-1772534537",
+      "action": "migrate",
+      "mode": "once",
+      "schedule_name": "新加坡",
+      "task_ids": [
+        "72134",
+        "72136"
+      ],
+      "time_start": "2026-03-14 08:20:00",
+      "time_end": "2026-03-14 09:21:00",
+      "new_time_start": "2026-03-15 08:20:00",
+      "new_time_end": "2026-03-15 09:21:00",
+      "shadow_task_ids": [
+        "dryrun-shadow-1",
+        "dryrun-shadow-2"
+      ],
+      "conflict_task_ids": [],
+      "commands": [
+        {
+          "type": "taskinfo",
+          "phase": "create_shadow",
+          "taskid": "dryrun-shadow-1",
+          "payload": {
+            "startdate": "2026-03-15",
+            "starttime": "08:20:00",
+            "taskname": "第一节课上课铃"
+          }
+        },
+        {
+          "type": "taskinfo",
+          "phase": "create_shadow",
+          "taskid": "dryrun-shadow-2",
+          "payload": {
+            "startdate": "2026-03-15",
+            "starttime": "09:00:00",
+            "taskname": "第一节课下课铃"
+          }
+        },
+        {
+          "type": "enabletask",
+          "phase": "disable_source",
+          "payload": {
+            "id": 0,
+            "taskid": "72134,72136",
+            "enstate": "0,0",
+            "startdate": "2026-03-14",
+            "starttime": "08:19:55",
+            "yuantaskid": "72134,72136"
+          }
+        },
+        {
+          "type": "enabletask",
+          "phase": "restore_source",
+          "payload": {
+            "id": 0,
+            "taskid": "72134,72136",
+            "enstate": "1,1",
+            "startdate": "2026-03-14",
+            "starttime": "09:21:00",
+            "yuantaskid": "72134,72136"
+          }
+        }
+      ],
+      "created_at": "2026-03-03 18:42:17",
+      "remote_synced": false,
+      "source_task_ids": [],
+      "target_task_ids": [],
+      "once_task_ids": [],
+      "once_task_specs": [],
+      "enable_once_commands": [],
+      "cleanup_attempts": [],
+      "cleaned_task_ids": [],
+      "shadow_failures": [],
+      "once_task_failures": [],
+      "rollback_attempts": [],
+      "remote_diagnostics": [],
+      "cleanup_state": "pending",
+      "cleaned_at": ""
+    },
+    {
+      "id": "migrate-1772556732",
+      "action": "migrate",
+      "mode": "once",
+      "schedule_name": "新加坡",
+      "task_ids": [
+        "72132"
+      ],
+      "time_start": "2026-03-21 07:50:00",
+      "time_end": "2026-03-21 08:10:00",
+      "new_time_start": "2026-03-22 07:50:00",
+      "new_time_end": "2026-03-22 08:10:00",
+      "shadow_task_ids": [
+        "dryrun-shadow-1"
+      ],
+      "shadow_failures": [
+        {
+          "phase": "create_shadow",
+          "index": 1,
+          "source_task_id": "72132",
+          "taskname": "早读开始铃",
+          "startdate": "2026-03-22",
+          "starttime": "07:50:00",
+          "reason": "Remote taskinfo creation succeeded but no taskid returned."
+        }
+      ],
+      "conflict_task_ids": [],
+      "commands": [
+        {
+          "type": "taskinfo",
+          "phase": "create_shadow",
+          "taskid": "dryrun-shadow-1",
+          "payload": {
+            "startdate": "2026-03-22",
+            "starttime": "07:50:00",
+            "taskname": "早读开始铃"
+          }
+        },
+        {
+          "type": "enabletask",
+          "phase": "disable_source",
+          "payload": {
+            "id": 0,
+            "taskid": "72132",
+            "enstate": "0",
+            "startdate": "2026-03-21",
+            "starttime": "07:49:55",
+            "yuantaskid": "72132"
+          }
+        },
+        {
+          "type": "enabletask",
+          "phase": "restore_source",
+          "payload": {
+            "id": 0,
+            "taskid": "72132",
+            "enstate": "1",
+            "startdate": "2026-03-21",
+            "starttime": "08:10:00",
+            "yuantaskid": "72132"
+          }
+        }
+      ],
+      "created_at": "2026-03-04 00:52:12",
+      "remote_synced": false,
+      "source_task_ids": [],
+      "target_task_ids": [],
+      "once_task_ids": [],
+      "once_task_specs": [],
+      "enable_once_commands": [],
+      "cleanup_attempts": [],
+      "cleaned_task_ids": [],
+      "once_task_failures": [],
+      "rollback_attempts": [],
+      "remote_diagnostics": [],
+      "cleanup_state": "pending",
+      "cleaned_at": ""
+    },
+    {
+      "id": "migrate-1772594191",
+      "action": "migrate",
+      "mode": "once",
+      "schedule_name": "新加坡",
+      "task_ids": [
+        "72134",
+        "72136"
+      ],
+      "time_start": "2026-03-21 08:20:00",
+      "time_end": "2026-03-21 09:21:00",
+      "new_time_start": "2026-03-22 08:20:00",
+      "new_time_end": "2026-03-22 09:21:00",
+      "shadow_task_ids": [
+        "dryrun-shadow-1",
+        "dryrun-shadow-2"
+      ],
+      "shadow_failures": [
+        {
+          "phase": "create_shadow",
+          "index": 1,
+          "source_task_id": "72134",
+          "taskname": "第一节课上课铃",
+          "startdate": "2026-03-22",
+          "starttime": "08:20:00",
+          "failure_code": "taskinfo_lookup_not_found",
+          "reason": "Remote task creation returned no taskid and lookup could not find the new task.",
+          "request_payload_preview": {
+            "taskname": "第一节课上课铃",
+            "tasktype": 2,
+            "starttime": "08:20:00",
+            "startdate": "2026-03-22",
+            "enddate": "2026-03-22",
+            "timelength": "20",
+            "timelengthtype": "1",
+            "mediaid": 911,
+            "medianame": "上课铃",
+            "liveterminalid": 25,
+            "liveterminalname": "操场功放",
+            "volume": 80,
+            "priority": 100,
+            "execmode": 0,
+            "datasendmodel": 0,
+            "prepower": 0,
+            "level": 0,
+            "israndomplay": 0,
+            "isinstancy": 2,
+            "cmd": 0,
+            "cmdargs": 0,
+            "bandrate": 0,
+            "samplerate": 0,
+            "caiboprepower": 0,
+            "interval_s": 0,
+            "interval_e": 0,
+            "intplaylength": 0,
+            "intplaylengthtype": 1,
+            "sechename": "新加坡",
+            "id": 0,
+            "taskid": 0
+          },
+          "remote_response_preview": {
+            "data": [
+              {
+                "state": 15,
+                "taskid": 0
+              }
+            ]
+          },
+          "resolved_mediaid": "911",
+          "resolved_terminalid": "25",
+          "lookup_attempts": [
+            {
+              "step": "resolve_media_remote_taskmusic",
+              "status": "matched",
+              "source_task_id": "72134",
+              "match_count": 1
+            },
+            {
+              "step": "resolve_terminal_remote_taskterminal",
+              "status": "matched",
+              "source_task_id": "72134",
+              "match_count": 1
+            },
+            {
+              "attempt": 1,
+              "status": "ok",
+              "tasktype": 2,
+              "match_count": 0,
+              "matches": []
+            },
+            {
+              "attempt": 2,
+              "status": "ok",
+              "tasktype": 2,
+              "match_count": 0,
+              "matches": []
+            },
+            {
+              "attempt": 3,
+              "status": "ok",
+              "tasktype": 2,
+              "match_count": 0,
+              "matches": []
+            }
+          ]
+        },
+        {
+          "phase": "create_shadow",
+          "index": 2,
+          "source_task_id": "72136",
+          "taskname": "第一节课下课铃",
+          "startdate": "2026-03-22",
+          "starttime": "09:00:00",
+          "failure_code": "taskinfo_lookup_not_found",
+          "reason": "Remote task creation returned no taskid and lookup could not find the new task.",
+          "request_payload_preview": {
+            "taskname": "第一节课下课铃",
+            "tasktype": 2,
+            "starttime": "09:00:00",
+            "startdate": "2026-03-22",
+            "enddate": "2026-03-22",
+            "timelength": "21",
+            "timelengthtype": "1",
+            "mediaid": 912,
+            "medianame": "下课铃",
+            "liveterminalid": 25,
+            "liveterminalname": "操场功放",
+            "volume": 80,
+            "priority": 100,
+            "execmode": 0,
+            "datasendmodel": 0,
+            "prepower": 0,
+            "level": 0,
+            "israndomplay": 0,
+            "isinstancy": 2,
+            "cmd": 0,
+            "cmdargs": 0,
+            "bandrate": 0,
+            "samplerate": 0,
+            "caiboprepower": 0,
+            "interval_s": 0,
+            "interval_e": 0,
+            "intplaylength": 0,
+            "intplaylengthtype": 1,
+            "sechename": "新加坡",
+            "id": 0,
+            "taskid": 0
+          },
+          "remote_response_preview": {
+            "data": [
+              {
+                "state": 15,
+                "taskid": 0
+              }
+            ]
+          },
+          "resolved_mediaid": "912",
+          "resolved_terminalid": "25",
+          "lookup_attempts": [
+            {
+              "step": "resolve_media_remote_taskmusic",
+              "status": "matched",
+              "source_task_id": "72136",
+              "match_count": 1
+            },
+            {
+              "step": "resolve_terminal_remote_taskterminal",
+              "status": "matched",
+              "source_task_id": "72136",
+              "match_count": 1
+            },
+            {
+              "attempt": 1,
+              "status": "ok",
+              "tasktype": 2,
+              "match_count": 0,
+              "matches": []
+            },
+            {
+              "attempt": 2,
+              "status": "ok",
+              "tasktype": 2,
+              "match_count": 0,
+              "matches": []
+            },
+            {
+              "attempt": 3,
+              "status": "ok",
+              "tasktype": 2,
+              "match_count": 0,
+              "matches": []
+            }
+          ]
+        }
+      ],
+      "failure_count": 2,
+      "execution_state": "failed",
+      "conflict_task_ids": [],
+      "commands": [
+        {
+          "type": "taskinfo",
+          "phase": "create_shadow",
+          "taskid": "dryrun-shadow-1",
+          "payload": {
+            "startdate": "2026-03-22",
+            "starttime": "08:20:00",
+            "taskname": "第一节课上课铃"
+          }
+        },
+        {
+          "type": "taskinfo",
+          "phase": "create_shadow",
+          "taskid": "dryrun-shadow-2",
+          "payload": {
+            "startdate": "2026-03-22",
+            "starttime": "09:00:00",
+            "taskname": "第一节课下课铃"
+          }
+        }
+      ],
+      "created_at": "2026-03-04 11:16:31",
+      "remote_synced": false,
+      "source_task_ids": [],
+      "target_task_ids": [],
+      "once_task_ids": [],
+      "once_task_specs": [],
+      "enable_once_commands": [],
+      "cleanup_attempts": [],
+      "cleaned_task_ids": [],
+      "once_task_failures": [],
+      "rollback_attempts": [],
+      "remote_diagnostics": [],
+      "cleanup_state": "pending",
+      "cleaned_at": ""
+    },
+    {
+      "id": "migrate-1772599200",
+      "action": "migrate",
+      "mode": "once",
+      "schedule_name": "新加坡",
+      "task_ids": [
+        "72142",
+        "72144",
+        "72146"
+      ],
+      "time_start": "2026-03-21 10:10:00",
+      "time_end": "2026-03-21 11:20:00",
+      "new_time_start": "2026-03-22 10:10:00",
+      "new_time_end": "2026-03-22 11:20:00",
+      "shadow_task_ids": [
+        "dryrun-shadow-1",
+        "dryrun-shadow-2",
+        "dryrun-shadow-3"
+      ],
+      "shadow_failures": [
+        {
+          "phase": "create_shadow",
+          "index": 1,
+          "source_task_id": "72142",
+          "taskname": "第三节课上课铃_once_72142_20260322101000",
+          "startdate": "2026-03-22",
+          "starttime": "10:10:00",
+          "failure_code": "taskinfo_no_taskid",
+          "reason": "Remote taskinfo creation failed.",
+          "request_payload_preview": {
+            "taskname": "第三节课上课铃_once_72142_20260322101000",
+            "tasktype": 2,
+            "starttime": "10:10:00",
+            "startdate": "2026-03-22",
+            "enddate": "2026-03-22",
+            "timelength": "20",
+            "timelengthtype": "1",
+            "mediaid": 911,
+            "medianame": "上课铃",
+            "liveterminalid": 25,
+            "liveterminalname": "操场功放",
+            "volume": 80,
+            "priority": 100,
+            "execmode": 0,
+            "datasendmodel": 0,
+            "prepower": 0,
+            "level": 0,
+            "israndomplay": 0,
+            "isinstancy": 2,
+            "cmd": 0,
+            "cmdargs": 0,
+            "bandrate": 0,
+            "samplerate": 0,
+            "caiboprepower": 0,
+            "interval_s": 0,
+            "interval_e": 0,
+            "intplaylength": 0,
+            "intplaylengthtype": 1,
+            "sechename": "新加坡",
+            "id": 0,
+            "taskid": 0
+          },
+          "remote_response_preview": {
+            "data": [
+              {
+                "state": 0,
+                "taskid": 72170
+              }
+            ]
+          },
+          "resolved_mediaid": "911",
+          "resolved_terminalid": "25",
+          "lookup_attempts": [
+            {
+              "step": "resolve_media_remote_taskmusic",
+              "status": "matched",
+              "source_task_id": "72142",
+              "match_count": 1
+            },
+            {
+              "step": "resolve_terminal_remote_taskterminal",
+              "status": "matched",
+              "source_task_id": "72142",
+              "match_count": 1
+            }
+          ],
+          "rollback_attempts": [
+            {
+              "taskid": "72170",
+              "status": "ok",
+              "reason": ""
+            },
+            {
+              "taskid": "72172",
+              "status": "ok",
+              "reason": ""
+            },
+            {
+              "taskid": "72174",
+              "status": "ok",
+              "reason": ""
+            }
+          ]
+        },
+        {
+          "phase": "create_shadow",
+          "index": 2,
+          "source_task_id": "72144",
+          "taskname": "第三节课下课铃_once_72144_20260322105000",
+          "startdate": "2026-03-22",
+          "starttime": "10:50:00",
+          "failure_code": "taskinfo_no_taskid",
+          "reason": "Remote taskinfo creation failed.",
+          "request_payload_preview": {
+            "taskname": "第三节课下课铃_once_72144_20260322105000",
+            "tasktype": 2,
+            "starttime": "10:50:00",
+            "startdate": "2026-03-22",
+            "enddate": "2026-03-22",
+            "timelength": "21",
+            "timelengthtype": "1",
+            "mediaid": 912,
+            "medianame": "下课铃",
+            "liveterminalid": 25,
+            "liveterminalname": "操场功放",
+            "volume": 80,
+            "priority": 100,
+            "execmode": 0,
+            "datasendmodel": 0,
+            "prepower": 0,
+            "level": 0,
+            "israndomplay": 0,
+            "isinstancy": 2,
+            "cmd": 0,
+            "cmdargs": 0,
+            "bandrate": 0,
+            "samplerate": 0,
+            "caiboprepower": 0,
+            "interval_s": 0,
+            "interval_e": 0,
+            "intplaylength": 0,
+            "intplaylengthtype": 1,
+            "sechename": "新加坡",
+            "id": 0,
+            "taskid": 0
+          },
+          "remote_response_preview": {
+            "data": [
+              {
+                "state": 0,
+                "taskid": 72172
+              }
+            ]
+          },
+          "resolved_mediaid": "912",
+          "resolved_terminalid": "25",
+          "lookup_attempts": [
+            {
+              "step": "resolve_media_remote_taskmusic",
+              "status": "matched",
+              "source_task_id": "72144",
+              "match_count": 1
+            },
+            {
+              "step": "resolve_terminal_remote_taskterminal",
+              "status": "matched",
+              "source_task_id": "72144",
+              "match_count": 1
+            }
+          ],
+          "rollback_attempts": [
+            {
+              "taskid": "72170",
+              "status": "ok",
+              "reason": ""
+            },
+            {
+              "taskid": "72172",
+              "status": "ok",
+              "reason": ""
+            },
+            {
+              "taskid": "72174",
+              "status": "ok",
+              "reason": ""
+            }
+          ]
+        },
+        {
+          "phase": "create_shadow",
+          "index": 3,
+          "source_task_id": "72146",
+          "taskname": "第四节课上课铃_once_72146_20260322110000",
+          "startdate": "2026-03-22",
+          "starttime": "11:00:00",
+          "failure_code": "taskinfo_no_taskid",
+          "reason": "Remote taskinfo creation failed.",
+          "request_payload_preview": {
+            "taskname": "第四节课上课铃_once_72146_20260322110000",
+            "tasktype": 2,
+            "starttime": "11:00:00",
+            "startdate": "2026-03-22",
+            "enddate": "2026-03-22",
+            "timelength": "20",
+            "timelengthtype": "1",
+            "mediaid": 911,
+            "medianame": "上课铃",
+            "liveterminalid": 25,
+            "liveterminalname": "操场功放",
+            "volume": 80,
+            "priority": 100,
+            "execmode": 0,
+            "datasendmodel": 0,
+            "prepower": 0,
+            "level": 0,
+            "israndomplay": 0,
+            "isinstancy": 2,
+            "cmd": 0,
+            "cmdargs": 0,
+            "bandrate": 0,
+            "samplerate": 0,
+            "caiboprepower": 0,
+            "interval_s": 0,
+            "interval_e": 0,
+            "intplaylength": 0,
+            "intplaylengthtype": 1,
+            "sechename": "新加坡",
+            "id": 0,
+            "taskid": 0
+          },
+          "remote_response_preview": {
+            "data": [
+              {
+                "state": 0,
+                "taskid": 72174
+              }
+            ]
+          },
+          "resolved_mediaid": "911",
+          "resolved_terminalid": "25",
+          "lookup_attempts": [
+            {
+              "step": "resolve_media_remote_taskmusic",
+              "status": "matched",
+              "source_task_id": "72146",
+              "match_count": 1
+            },
+            {
+              "step": "resolve_terminal_remote_taskterminal",
+              "status": "matched",
+              "source_task_id": "72146",
+              "match_count": 1
+            }
+          ],
+          "rollback_attempts": [
+            {
+              "taskid": "72170",
+              "status": "ok",
+              "reason": ""
+            },
+            {
+              "taskid": "72172",
+              "status": "ok",
+              "reason": ""
+            },
+            {
+              "taskid": "72174",
+              "status": "ok",
+              "reason": ""
+            }
+          ]
+        }
+      ],
+      "failure_count": 3,
+      "execution_state": "failed",
+      "conflict_task_ids": [],
+      "commands": [
+        {
+          "type": "taskinfo",
+          "phase": "create_shadow",
+          "taskid": "dryrun-shadow-1",
+          "payload": {
+            "startdate": "2026-03-22",
+            "starttime": "10:10:00",
+            "taskname": "第三节课上课铃_once_72142_20260322101000"
+          }
+        },
+        {
+          "type": "taskinfo",
+          "phase": "create_shadow",
+          "taskid": "dryrun-shadow-2",
+          "payload": {
+            "startdate": "2026-03-22",
+            "starttime": "10:50:00",
+            "taskname": "第三节课下课铃_once_72144_20260322105000"
+          }
+        },
+        {
+          "type": "taskinfo",
+          "phase": "create_shadow",
+          "taskid": "dryrun-shadow-3",
+          "payload": {
+            "startdate": "2026-03-22",
+            "starttime": "11:00:00",
+            "taskname": "第四节课上课铃_once_72146_20260322110000"
+          }
+        },
+        {
+          "type": "taskinfo",
+          "phase": "rollback_delete_shadow",
+          "taskid": "72170",
+          "status": "ok",
+          "reason": ""
+        },
+        {
+          "type": "taskinfo",
+          "phase": "rollback_delete_shadow",
+          "taskid": "72172",
+          "status": "ok",
+          "reason": ""
+        },
+        {
+          "type": "taskinfo",
+          "phase": "rollback_delete_shadow",
+          "taskid": "72174",
+          "status": "ok",
+          "reason": ""
+        }
+      ],
+      "created_at": "2026-03-04 12:40:00",
+      "remote_synced": false,
+      "source_task_ids": [],
+      "target_task_ids": [],
+      "once_task_ids": [],
+      "once_task_specs": [],
+      "enable_once_commands": [],
+      "cleanup_attempts": [],
+      "cleaned_task_ids": [],
+      "once_task_failures": [],
+      "rollback_attempts": [],
+      "remote_diagnostics": [],
+      "cleanup_state": "pending",
+      "cleaned_at": ""
+    },
+    {
+      "id": "migrate-1772600584",
+      "action": "migrate",
+      "mode": "once",
+      "schedule_name": "新加坡",
+      "task_ids": [
+        "72146",
+        "72148"
+      ],
+      "time_start": "2026-03-21 11:00:00",
+      "time_end": "2026-03-21 11:41:00",
+      "new_time_start": "2026-03-22 11:00:00",
+      "new_time_end": "2026-03-22 11:41:00",
+      "shadow_task_ids": [
+        "dryrun-shadow-1",
+        "dryrun-shadow-2"
+      ],
+      "conflict_task_ids": [],
+      "commands": [
+        {
+          "type": "taskinfo",
+          "phase": "create_shadow",
+          "taskid": "dryrun-shadow-1",
+          "payload": {
+            "startdate": "2026-03-22",
+            "starttime": "11:00:00",
+            "taskname": "第四节课上课铃"
+          }
+        },
+        {
+          "type": "taskinfo",
+          "phase": "create_shadow",
+          "taskid": "dryrun-shadow-2",
+          "payload": {
+            "startdate": "2026-03-22",
+            "starttime": "11:40:00",
+            "taskname": "第四节课下课铃"
+          }
+        },
+        {
+          "type": "enabletask",
+          "phase": "disable_source",
+          "payload": {
+            "id": 0,
+            "taskid": "72146,72148",
+            "enstate": "0,0",
+            "startdate": "2026-03-21",
+            "starttime": "10:59:55",
+            "yuantaskid": "72146,72148"
+          }
+        },
+        {
+          "type": "enabletask",
+          "phase": "restore_source",
+          "payload": {
+            "id": 0,
+            "taskid": "72146,72148",
+            "enstate": "1,1",
+            "startdate": "2026-03-21",
+            "starttime": "11:41:00",
+            "yuantaskid": "72146,72148"
+          }
+        }
+      ],
+      "created_at": "2026-03-04 13:03:04",
+      "remote_synced": false,
+      "source_task_ids": [],
+      "target_task_ids": [],
+      "once_task_ids": [],
+      "once_task_specs": [],
+      "enable_once_commands": [],
+      "cleanup_attempts": [],
+      "cleaned_task_ids": [],
+      "shadow_failures": [],
+      "once_task_failures": [],
+      "rollback_attempts": [],
+      "remote_diagnostics": [],
+      "cleanup_state": "pending",
+      "cleaned_at": ""
+    },
+    {
+      "id": "migrate-1772600761",
+      "action": "migrate",
+      "mode": "once",
+      "schedule_name": "新加坡",
+      "task_ids": [
+        "72150"
+      ],
+      "time_start": "2026-03-21 13:50:00",
+      "time_end": "2026-03-21 13:51:00",
+      "new_time_start": "2026-03-22 13:50:00",
+      "new_time_end": "2026-03-22 13:51:00",
+      "shadow_task_ids": [
+        "dryrun-shadow-1"
+      ],
+      "conflict_task_ids": [],
+      "commands": [
+        {
+          "type": "taskinfo",
+          "phase": "create_shadow",
+          "taskid": "dryrun-shadow-1",
+          "payload": {
+            "startdate": "2026-03-22",
+            "starttime": "13:50:00",
+            "taskname": "午休结束铃"
+          }
+        },
+        {
+          "type": "enabletask",
+          "phase": "disable_source",
+          "payload": {
+            "id": 0,
+            "taskid": "72150",
+            "enstate": "0",
+            "startdate": "2026-03-21",
+            "starttime": "13:49:55",
+            "yuantaskid": "72150"
+          }
+        },
+        {
+          "type": "enabletask",
+          "phase": "restore_source",
+          "payload": {
+            "id": 0,
+            "taskid": "72150",
+            "enstate": "1",
+            "startdate": "2026-03-21",
+            "starttime": "13:51:00",
+            "yuantaskid": "72150"
+          }
+        }
+      ],
+      "created_at": "2026-03-04 13:06:01",
+      "remote_synced": false,
+      "source_task_ids": [],
+      "target_task_ids": [],
+      "once_task_ids": [],
+      "once_task_specs": [],
+      "enable_once_commands": [],
+      "cleanup_attempts": [],
+      "cleaned_task_ids": [],
+      "shadow_failures": [],
+      "once_task_failures": [],
+      "rollback_attempts": [],
+      "remote_diagnostics": [],
+      "cleanup_state": "pending",
+      "cleaned_at": ""
+    },
+    {
+      "id": "migrate-1772602212",
+      "action": "migrate",
+      "mode": "once",
+      "schedule_name": "新加坡",
+      "task_ids": [
+        "72152"
+      ],
+      "time_start": "2026-03-21 14:25:00",
+      "time_end": "2026-03-21 14:45:00",
+      "new_time_start": "2026-03-22 14:25:00",
+      "new_time_end": "2026-03-22 14:45:00",
+      "shadow_task_ids": [
+        "dryrun-shadow-1"
+      ],
+      "conflict_task_ids": [],
+      "commands": [
+        {
+          "type": "taskinfo",
+          "phase": "create_shadow",
+          "taskid": "dryrun-shadow-1",
+          "payload": {
+            "startdate": "2026-03-22",
+            "starttime": "14:25:00",
+            "taskname": "下午第一节课上课"
+          }
+        },
+        {
+          "type": "enabletask",
+          "phase": "disable_source",
+          "payload": {
+            "id": 0,
+            "taskid": "72152",
+            "enstate": "0",
+            "startdate": "2026-03-21",
+            "starttime": "14:24:55",
+            "yuantaskid": "72152"
+          }
+        },
+        {
+          "type": "enabletask",
+          "phase": "restore_source",
+          "payload": {
+            "id": 0,
+            "taskid": "72152",
+            "enstate": "1",
+            "startdate": "2026-03-21",
+            "starttime": "14:45:00",
+            "yuantaskid": "72152"
+          }
+        }
+      ],
+      "created_at": "2026-03-04 13:30:12",
+      "remote_synced": false,
+      "source_task_ids": [],
+      "target_task_ids": [],
+      "once_task_ids": [],
+      "once_task_specs": [],
+      "enable_once_commands": [],
+      "cleanup_attempts": [],
+      "cleaned_task_ids": [],
+      "shadow_failures": [],
+      "once_task_failures": [],
+      "rollback_attempts": [],
+      "remote_diagnostics": [],
+      "cleanup_state": "pending",
+      "cleaned_at": ""
+    },
+    {
+      "id": "migrate-1772602831",
+      "action": "migrate",
+      "mode": "once",
+      "schedule_name": "新加坡",
+      "task_ids": [
+        "72154",
+        "72156"
+      ],
+      "time_start": "2026-03-21 15:05:00",
+      "time_end": "2026-03-21 15:35:00",
+      "new_time_start": "2026-03-22 15:05:00",
+      "new_time_end": "2026-03-22 15:35:00",
+      "shadow_task_ids": [
+        "dryrun-shadow-1",
+        "dryrun-shadow-2"
+      ],
+      "conflict_task_ids": [],
+      "commands": [
+        {
+          "type": "taskinfo",
+          "phase": "create_shadow",
+          "taskid": "dryrun-shadow-1",
+          "payload": {
+            "startdate": "2026-03-22",
+            "starttime": "15:05:00",
+            "taskname": "下午第一节课下课"
+          }
+        },
+        {
+          "type": "taskinfo",
+          "phase": "create_shadow",
+          "taskid": "dryrun-shadow-2",
+          "payload": {
+            "startdate": "2026-03-22",
+            "starttime": "15:15:00",
+            "taskname": "下午第二节课上课"
+          }
+        },
+        {
+          "type": "enabletask",
+          "phase": "disable_source",
+          "payload": {
+            "id": 0,
+            "taskid": "72154,72156",
+            "enstate": "0,0",
+            "startdate": "2026-03-21",
+            "starttime": "15:04:55",
+            "yuantaskid": "72154,72156"
+          }
+        },
+        {
+          "type": "enabletask",
+          "phase": "restore_source",
+          "payload": {
+            "id": 0,
+            "taskid": "72154,72156",
+            "enstate": "1,1",
+            "startdate": "2026-03-21",
+            "starttime": "15:35:00",
+            "yuantaskid": "72154,72156"
+          }
+        }
+      ],
+      "created_at": "2026-03-04 13:40:31",
+      "remote_synced": false,
+      "source_task_ids": [],
+      "target_task_ids": [],
+      "once_task_ids": [],
+      "once_task_specs": [],
+      "enable_once_commands": [],
+      "cleanup_attempts": [],
+      "cleaned_task_ids": [],
+      "shadow_failures": [],
+      "once_task_failures": [],
+      "rollback_attempts": [],
+      "remote_diagnostics": [],
+      "cleanup_state": "pending",
+      "cleaned_at": ""
+    },
+    {
+      "id": "migrate-1772606593",
+      "action": "migrate",
+      "mode": "once",
+      "schedule_name": "新加坡",
+      "task_ids": [
+        "72152"
+      ],
+      "time_start": "2026-03-21 14:25:00",
+      "time_end": "2026-03-21 14:45:00",
+      "new_time_start": "2026-03-22 14:25:00",
+      "new_time_end": "2026-03-22 14:45:00",
+      "shadow_task_ids": [
+        "dryrun-shadow-1"
+      ],
+      "conflict_task_ids": [],
+      "commands": [
+        {
+          "type": "taskinfo",
+          "phase": "create_shadow",
+          "taskid": "dryrun-shadow-1",
+          "payload": {
+            "startdate": "2026-03-22",
+            "starttime": "14:25:00",
+            "taskname": "下午第一节课上课"
+          }
+        },
+        {
+          "type": "enabletask",
+          "phase": "disable_source",
+          "payload": {
+            "id": 0,
+            "taskid": "72152",
+            "enstate": "1",
+            "startdate": "2026-03-21",
+            "starttime": "14:24:55",
+            "yuantaskid": "72152"
+          }
+        },
+        {
+          "type": "enabletask",
+          "phase": "restore_source",
+          "payload": {
+            "id": 0,
+            "taskid": "72152",
+            "enstate": "0",
+            "startdate": "2026-03-21",
+            "starttime": "14:45:00",
+            "yuantaskid": "72152"
+          }
+        }
+      ],
+      "created_at": "2026-03-04 14:43:13",
+      "remote_synced": false,
+      "source_task_ids": [],
+      "target_task_ids": [],
+      "once_task_ids": [],
+      "once_task_specs": [],
+      "enable_once_commands": [],
+      "cleanup_attempts": [],
+      "cleaned_task_ids": [],
+      "shadow_failures": [],
+      "once_task_failures": [],
+      "rollback_attempts": [],
+      "remote_diagnostics": [],
+      "cleanup_state": "pending",
+      "cleaned_at": ""
+    },
+    {
+      "id": "cancel-1773311618",
+      "action": "cancel",
+      "mode": "once",
+      "schedule_name": "寒冬作息",
+      "task_ids": [
+        "72201",
+        "72203",
+        "72205",
+        "72207",
+        "72209",
+        "72211",
+        "72213",
+        "72215",
+        "72217",
+        "72219",
+        "72221",
+        "72223",
+        "72225",
+        "72227",
+        "72229"
+      ],
+      "time_start": "2026-03-13 00:00:00",
+      "time_end": "2026-03-13 23:59:59",
+      "commands": [
+        {
+          "type": "enabletask",
+          "phase": "disable",
+          "payload": {
+            "id": 0,
+            "taskid": "72201,72203,72205,72207,72209,72211,72213,72215,72217,72219,72221,72223,72225,72227,72229",
+            "enstate": "1,1,1,1,1,1,1,1,1,1,1,1,1,1,1",
+            "startdate": "2026-03-12",
+            "starttime": "23:59:55",
+            "yuantaskid": "72201,72203,72205,72207,72209,72211,72213,72215,72217,72219,72221,72223,72225,72227,72229"
+          }
+        },
+        {
+          "type": "enabletask",
+          "phase": "restore",
+          "payload": {
+            "id": 0,
+            "taskid": "72201,72203,72205,72207,72209,72211,72213,72215,72217,72219,72221,72223,72225,72227,72229",
+            "enstate": "0,0,0,0,0,0,0,0,0,0,0,0,0,0,0",
+            "startdate": "2026-03-13",
+            "starttime": "23:59:59",
+            "yuantaskid": "72201,72203,72205,72207,72209,72211,72213,72215,72217,72219,72221,72223,72225,72227,72229"
+          }
+        }
+      ],
+      "created_at": "2026-03-12 18:33:38",
+      "source_task_ids": [],
+      "target_task_ids": [],
+      "shadow_task_ids": [],
+      "once_task_ids": [],
+      "once_task_specs": [],
+      "enable_once_commands": [],
+      "cleanup_attempts": [],
+      "cleaned_task_ids": [],
+      "shadow_failures": [],
+      "once_task_failures": [],
+      "rollback_attempts": [],
+      "remote_diagnostics": [],
+      "cleanup_state": "pending",
+      "cleaned_at": ""
+    },
+    {
+      "id": "cancel-1773407910",
+      "action": "cancel",
+      "mode": "once",
+      "schedule_name": "寒冬作息",
+      "task_ids": [
+        "72205",
+        "72203",
+        "72207",
+        "72209",
+        "72211",
+        "72213",
+        "72215",
+        "72217",
+        "72219",
+        "72221",
+        "72223",
+        "72225",
+        "72227",
+        "72229",
+        "72201"
+      ],
+      "time_start": "2026-03-12 00:00:00",
+      "time_end": "2026-03-12 23:59:59",
+      "commands": [
+        {
+          "type": "enabletask",
+          "phase": "disable",
+          "payload": {
+            "id": 0,
+            "taskid": "72205,72203,72207,72209,72211,72213,72215,72217,72219,72221,72223,72225,72227,72229,72201",
+            "enstate": "1,1,1,1,1,1,1,1,1,1,1,1,1,1,1",
+            "startdate": "2026-03-11",
+            "starttime": "23:59:55",
+            "yuantaskid": "72205,72203,72207,72209,72211,72213,72215,72217,72219,72221,72223,72225,72227,72229,72201"
+          }
+        },
+        {
+          "type": "enabletask",
+          "phase": "restore",
+          "payload": {
+            "id": 0,
+            "taskid": "72205,72203,72207,72209,72211,72213,72215,72217,72219,72221,72223,72225,72227,72229,72201",
+            "enstate": "0,0,0,0,0,0,0,0,0,0,0,0,0,0,0",
+            "startdate": "2026-03-12",
+            "starttime": "23:59:59",
+            "yuantaskid": "72205,72203,72207,72209,72211,72213,72215,72217,72219,72221,72223,72225,72227,72229,72201"
+          }
+        }
+      ],
+      "created_at": "2026-03-13 21:18:30",
+      "source_task_ids": [],
+      "target_task_ids": [],
+      "shadow_task_ids": [],
+      "once_task_ids": [],
+      "once_task_specs": [],
+      "enable_once_commands": [],
+      "cleanup_attempts": [],
+      "cleaned_task_ids": [],
+      "shadow_failures": [],
+      "once_task_failures": [],
+      "rollback_attempts": [],
+      "remote_diagnostics": [],
+      "cleanup_state": "pending",
+      "cleaned_at": ""
+    },
+    {
+      "id": "cancel-1773407950",
+      "action": "cancel",
+      "mode": "once",
+      "schedule_name": "寒冬作息",
+      "task_ids": [
+        "72205",
+        "72203",
+        "72207",
+        "72209",
+        "72211",
+        "72213",
+        "72215",
+        "72217",
+        "72219",
+        "72221",
+        "72223",
+        "72225",
+        "72227",
+        "72229",
+        "72201"
+      ],
+      "time_start": "2026-03-12 00:00:00",
+      "time_end": "2026-03-12 23:59:59",
+      "commands": [
+        {
+          "type": "enabletask",
+          "phase": "disable",
+          "payload": {
+            "id": 0,
+            "taskid": "72205,72203,72207,72209,72211,72213,72215,72217,72219,72221,72223,72225,72227,72229,72201",
+            "enstate": "1,1,1,1,1,1,1,1,1,1,1,1,1,1,1",
+            "startdate": "2026-03-11",
+            "starttime": "23:59:55",
+            "yuantaskid": "72205,72203,72207,72209,72211,72213,72215,72217,72219,72221,72223,72225,72227,72229,72201"
+          }
+        },
+        {
+          "type": "enabletask",
+          "phase": "restore",
+          "payload": {
+            "id": 0,
+            "taskid": "72205,72203,72207,72209,72211,72213,72215,72217,72219,72221,72223,72225,72227,72229,72201",
+            "enstate": "0,0,0,0,0,0,0,0,0,0,0,0,0,0,0",
+            "startdate": "2026-03-12",
+            "starttime": "23:59:59",
+            "yuantaskid": "72205,72203,72207,72209,72211,72213,72215,72217,72219,72221,72223,72225,72227,72229,72201"
+          }
+        }
+      ],
+      "created_at": "2026-03-13 21:19:10",
+      "source_task_ids": [],
+      "target_task_ids": [],
+      "shadow_task_ids": [],
+      "once_task_ids": [],
+      "once_task_specs": [],
+      "enable_once_commands": [],
+      "cleanup_attempts": [],
+      "cleaned_task_ids": [],
+      "shadow_failures": [],
+      "once_task_failures": [],
+      "rollback_attempts": [],
+      "remote_diagnostics": [],
+      "cleanup_state": "pending",
+      "cleaned_at": ""
+    },
+    {
+      "id": "cancel-1773455659",
+      "action": "cancel",
+      "mode": "once",
+      "schedule_name": "寒冬作息",
+      "task_ids": [
+        "72205",
+        "72203",
+        "72207",
+        "72209",
+        "72211",
+        "72213",
+        "72215",
+        "72217",
+        "72219",
+        "72221",
+        "72223",
+        "72225",
+        "72227",
+        "72229",
+        "72201"
+      ],
+      "time_start": "2026-03-14 00:00:00",
+      "time_end": "2026-03-14 23:59:59",
+      "commands": [
+        {
+          "type": "enabletask",
+          "phase": "disable",
+          "payload": {
+            "id": 0,
+            "taskid": "72205,72203,72207,72209,72211,72213,72215,72217,72219,72221,72223,72225,72227,72229,72201",
+            "enstate": "1,1,1,1,1,1,1,1,1,1,1,1,1,1,1",
+            "startdate": "2026-03-13",
+            "starttime": "23:59:55",
+            "yuantaskid": "72205,72203,72207,72209,72211,72213,72215,72217,72219,72221,72223,72225,72227,72229,72201"
+          }
+        },
+        {
+          "type": "enabletask",
+          "phase": "restore",
+          "payload": {
+            "id": 0,
+            "taskid": "72205,72203,72207,72209,72211,72213,72215,72217,72219,72221,72223,72225,72227,72229,72201",
+            "enstate": "0,0,0,0,0,0,0,0,0,0,0,0,0,0,0",
+            "startdate": "2026-03-14",
+            "starttime": "23:59:59",
+            "yuantaskid": "72205,72203,72207,72209,72211,72213,72215,72217,72219,72221,72223,72225,72227,72229,72201"
+          }
+        }
+      ],
+      "created_at": "2026-03-14 10:34:19",
+      "source_task_ids": [],
+      "target_task_ids": [],
+      "shadow_task_ids": [],
+      "once_task_ids": [],
+      "once_task_specs": [],
+      "enable_once_commands": [],
+      "cleanup_attempts": [],
+      "cleaned_task_ids": [],
+      "shadow_failures": [],
+      "once_task_failures": [],
+      "rollback_attempts": [],
+      "remote_diagnostics": [],
+      "cleanup_state": "pending",
+      "cleaned_at": ""
+    },
+    {
+      "id": "cancel-1773575327",
+      "action": "cancel",
+      "mode": "once",
+      "created_at": "2026-03-15 19:48:47",
+      "execution_state": "failed",
+      "active": false,
+      "schedule_name": "夏季作息",
+      "task_ids": [
+        "72841",
+        "72835",
+        "72843",
+        "72837",
+        "72845",
+        "72839",
+        "72857",
+        "72847",
+        "72849",
+        "72851",
+        "72853",
+        "72855",
+        "72859",
+        "72861"
+      ],
+      "time_start": "2026-03-16 00:00:00",
+      "time_end": "2026-03-16 23:59:59",
+      "commands": [
+        {
+          "type": "enabletask",
+          "phase": "disable",
+          "payload": {
+            "id": 0,
+            "taskid": "72841,72835,72843,72837,72845,72839,72857,72847,72849,72851,72853,72855,72859,72861",
+            "enstate": "1,1,1,1,1,1,1,1,1,1,1,1,1,1",
+            "startdate": "2026-03-15",
+            "starttime": "23:59:55",
+            "yuantaskid": "72841,72835,72843,72837,72845,72839,72857,72847,72849,72851,72853,72855,72859,72861"
+          }
+        }
+      ],
+      "failure_reason": "Remote request timed out after 15.0s: POST /task/enabletask",
+      "failed_phase": "restore",
+      "failed_payload": {
+        "id": 0,
+        "taskid": "72841,72835,72843,72837,72845,72839,72857,72847,72849,72851,72853,72855,72859,72861",
+        "enstate": "0,0,0,0,0,0,0,0,0,0,0,0,0,0",
+        "startdate": "2026-03-16",
+        "starttime": "23:59:59",
+        "yuantaskid": "72841,72835,72843,72837,72845,72839,72857,72847,72849,72851,72853,72855,72859,72861"
+      },
+      "remote_synced": false,
+      "source_task_ids": [],
+      "target_task_ids": [],
+      "shadow_task_ids": [],
+      "once_task_ids": [],
+      "once_task_specs": [],
+      "enable_once_commands": [],
+      "cleanup_attempts": [],
+      "cleaned_task_ids": [],
+      "shadow_failures": [],
+      "once_task_failures": [],
+      "rollback_attempts": [],
+      "remote_diagnostics": [],
+      "cleanup_state": "pending",
+      "cleaned_at": ""
+    },
+    {
+      "id": "cancel-1773577585",
+      "action": "cancel",
+      "mode": "once",
+      "created_at": "2026-03-15 20:26:25",
+      "execution_state": "failed",
+      "active": false,
+      "schedule_name": "夏季作息",
+      "task_ids": [
+        "72841",
+        "72835",
+        "72843",
+        "72837",
+        "72845",
+        "72839",
+        "72857",
+        "72847",
+        "72849",
+        "72851",
+        "72853",
+        "72855",
+        "72859",
+        "72861"
+      ],
+      "time_start": "2026-03-16 00:00:00",
+      "time_end": "2026-03-16 23:59:59",
+      "commands": [
+        {
+          "type": "enabletask",
+          "phase": "disable",
+          "payload": {
+            "id": 0,
+            "taskid": "72841,72835,72843,72837,72845,72839,72857,72847,72849,72851,72853,72855,72859,72861",
+            "enstate": "1,1,1,1,1,1,1,1,1,1,1,1,1,1",
+            "startdate": "2026-03-15",
+            "starttime": "23:59:55",
+            "yuantaskid": "72841,72835,72843,72837,72845,72839,72857,72847,72849,72851,72853,72855,72859,72861"
+          }
+        }
+      ],
+      "failure_reason": "Remote request failed:  | method=POST url=http://117.40.88.155:199/api/task/enabletask payload={'json_body': None, 'form_body': {'id': 0, 'taskid': '72841,72835,72843,72837,72845,72839,72857,72847,72849,72851,72853,72855,72859,72861', 'enstate': '0,0,0,0,0,0,0,0,0,0,0,0,0,0', 'startdate': '2026-03-16', 'starttime': '23:59:59', 'yuantaskid': '72841,72835,72843,72837,72845,72839,72857,72847,72849,72851,72853,72855,72859,72861'}}",
+      "failed_phase": "restore",
+      "failed_payload": {
+        "id": 0,
+        "taskid": "72841,72835,72843,72837,72845,72839,72857,72847,72849,72851,72853,72855,72859,72861",
+        "enstate": "0,0,0,0,0,0,0,0,0,0,0,0,0,0",
+        "startdate": "2026-03-16",
+        "starttime": "23:59:59",
+        "yuantaskid": "72841,72835,72843,72837,72845,72839,72857,72847,72849,72851,72853,72855,72859,72861"
+      },
+      "diagnostic_id": "diag-627fad76c7f8",
+      "remote_diagnostics": [
+        {
+          "diagnostic_id": "diag-627fad76c7f8",
+          "action": "cancel",
+          "phase": "disable",
+          "path": "/task/enabletask",
+          "request_payload": {
+            "id": 0,
+            "taskid": "72841,72835,72843,72837,72845,72839,72857,72847,72849,72851,72853,72855,72859,72861",
+            "enstate": "1,1,1,1,1,1,1,1,1,1,1,1,1,1",
+            "startdate": "2026-03-15",
+            "starttime": "23:59:55",
+            "yuantaskid": "72841,72835,72843,72837,72845,72839,72857,72847,72849,72851,72853,72855,72859,72861"
+          },
+          "status_code": 200,
+          "elapsed_ms": 2125.1,
+          "ok": true,
+          "response_body": {
+            "data": [
+              {
+                "taskid": 0,
+                "state": 15
+              }
+            ]
+          },
+          "error_detail": "",
+          "timeout": false
+        },
+        {
+          "diagnostic_id": "diag-627fad76c7f8",
+          "action": "cancel",
+          "phase": "restore",
+          "path": "/task/enabletask",
+          "request_payload": {
+            "id": 0,
+            "taskid": "72841,72835,72843,72837,72845,72839,72857,72847,72849,72851,72853,72855,72859,72861",
+            "enstate": "0,0,0,0,0,0,0,0,0,0,0,0,0,0",
+            "startdate": "2026-03-16",
+            "starttime": "23:59:59",
+            "yuantaskid": "72841,72835,72843,72837,72845,72839,72857,72847,72849,72851,72853,72855,72859,72861"
+          },
+          "status_code": 502,
+          "elapsed_ms": 5285.55,
+          "ok": false,
+          "response_body": "",
+          "error_detail": "",
+          "timeout": false
+        }
+      ],
+      "remote_synced": false,
+      "source_task_ids": [],
+      "target_task_ids": [],
+      "shadow_task_ids": [],
+      "once_task_ids": [],
+      "once_task_specs": [],
+      "enable_once_commands": [],
+      "cleanup_attempts": [],
+      "cleaned_task_ids": [],
+      "shadow_failures": [],
+      "once_task_failures": [],
+      "rollback_attempts": [],
+      "cleanup_state": "pending",
+      "cleaned_at": ""
+    },
+    {
+      "id": "cancel-1773716355",
+      "action": "cancel",
+      "mode": "once",
+      "schedule_name": "寒冬作息",
+      "task_ids": [
+        "72891",
+        "72897",
+        "72899",
+        "72893",
+        "72901",
+        "72895",
+        "72913",
+        "72903",
+        "72905",
+        "72907",
+        "72909",
+        "72911",
+        "72915",
+        "72917"
+      ],
+      "time_start": "2026-03-18 00:00:00",
+      "time_end": "2026-03-18 23:59:59",
+      "commands": [
+        {
+          "type": "enabletask",
+          "phase": "disable",
+          "payload": {
+            "id": 0,
+            "taskid": "72891,72897,72899,72893,72901,72895,72913,72903,72905,72907,72909,72911,72915,72917",
+            "enstate": "1,1,1,1,1,1,1,1,1,1,1,1,1,1",
+            "startdate": "2026-03-17",
+            "starttime": "23:59:55"
+          }
+        },
+        {
+          "type": "enabletask",
+          "phase": "restore",
+          "payload": {
+            "id": 0,
+            "taskid": "72891,72897,72899,72893,72901,72895,72913,72903,72905,72907,72909,72911,72915,72917",
+            "enstate": "0,0,0,0,0,0,0,0,0,0,0,0,0,0",
+            "startdate": "2026-03-18",
+            "starttime": "23:59:59"
+          }
+        }
+      ],
+      "created_at": "2026-03-17 10:59:15",
+      "execution_state": "cleaned",
+      "active": false,
+      "remote_synced": true,
+      "source_task_ids": [],
+      "target_task_ids": [],
+      "shadow_task_ids": [],
+      "once_task_ids": [],
+      "once_task_specs": [],
+      "enable_once_commands": [],
+      "cleanup_attempts": [],
+      "cleaned_task_ids": [],
+      "shadow_failures": [],
+      "once_task_failures": [],
+      "rollback_attempts": [],
+      "remote_diagnostics": [],
+      "cleanup_state": "cleaned",
+      "cleaned_at": "2026-04-22 15:40:32"
+    },
+    {
+      "id": "migrate-1775823619",
+      "action": "migrate",
+      "mode": "once",
+      "created_at": "2026-04-10 20:20:19",
+      "execution_state": "failed",
+      "active": false,
+      "schedule_name": "南昌作息",
+      "task_ids": [
+        "79783",
+        "79785",
+        "79787",
+        "79789",
+        "79791",
+        "79793",
+        "79795",
+        "79797",
+        "79799",
+        "79801",
+        "79803",
+        "79805",
+        "79807",
+        "79809",
+        "79811",
+        "79813",
+        "79815",
+        "79817",
+        "79819",
+        "79821",
+        "79823",
+        "79825",
+        "79827",
+        "79829"
+      ],
+      "time_start": "2026-04-13 07:00:00",
+      "time_end": "2026-04-13 20:51:00",
+      "new_time_start": "2026-04-18 07:00:00",
+      "new_time_end": "2026-04-18 20:51:00",
+      "commands": [
+        {
+          "type": "taskinfo",
+          "phase": "create_shadow",
+          "taskid": "79831",
+          "payload": {
+            "startdate": "2026-04-18",
+            "starttime": "07:00:00",
+            "taskname": "起床_once_79783_20260418070000"
+          }
+        },
+        {
+          "type": "taskinfo",
+          "phase": "create_shadow",
+          "taskid": "79833",
+          "payload": {
+            "startdate": "2026-04-18",
+            "starttime": "08:00:00",
+            "taskname": "预备_once_79785_20260418080000"
+          }
+        },
+        {
+          "type": "taskinfo",
+          "phase": "rollback_delete_shadow",
+          "taskid": "79831",
+          "status": "ok"
+        },
+        {
+          "type": "taskinfo",
+          "phase": "rollback_delete_shadow",
+          "taskid": "79833",
+          "status": "failed",
+          "error": "Remote request failed:  | method=DELETE url=http://117.40.88.155:199/api/task/taskinfo payload={'json_body': '{\"id\": 79833}', 'form_body': None}"
+        }
+      ],
+      "failure_reason": "Remote request failed:  | method=POST url=http://117.40.88.155:199/api/task/jsontaskterminal payload={'json_body': '{\"data\": [{\"id\": 79835, \"terminalid\": 8, \"area\": 255, \"groupid\": 32}, {\"id\": 79835, \"terminalid\": 11, \"area\": 255, \"groupid\": 4}, {\"id\": 79835, \"terminalid\": 11, \"area\": 255, \"groupid\": 19}, {\"id\": 79835, \"terminalid\": 11, \"area\": 255, \"groupid\": 32}, {\"id\": 79835, \"terminalid\": 24, \"area\": 255, \"groupid\": 0}, {\"id\": 79835, \"terminalid\": 25, \"area\": 255, \"groupid\": 0}, {\"id\": 79835, \"terminalid\": 27, \"area\": 255, \"groupid\": 4}, {\"id\": 79835, \"terminalid\": 29, \"area\": 255, \"groupid\": 5}, {\"id\": 79835, \"terminalid\": 29, \"area\": 255, \"groupid\": 20}, {\"id\": 79835, \"terminalid\": 30, \"area\": 255, \"groupid\": 3}, {\"id\": 79835, \"terminalid\": 30, \"area\": 255, \"groupid\": 6}, {\"id\": 79835, \"terminalid\": 31, \"area\": 255, \"groupid\": 0}, {\"id\": 79835, \"terminalid\": 32, \"area\": 255, \"groupid\": 0}, {\"id\": 79835, \"terminalid\": 33, \"area\": 255, \"groupid\": 0}, {\"id\": 79835, \"terminalid\": 36, \"area\": 255, \"groupid\": 0}, {\"id\": 79835, \"terminalid\": 37, \"area\": 255, \"groupid\": 0}, {\"id\": 79835, \"terminalid\": 38, \"area\": 255, \"groupid\": 0}, {\"id\": 79835, \"terminalid\": 39, \"area\": 255, \"groupid\": 0}, {\"id\": 79835, \"terminalid\": 40, \"area\": 255, \"groupid\": 0}, {\"id\": 79835, \"terminalid\": 41, \"area\": 255, \"groupid\": 0}, {\"id\": 79835, \"terminalid\": 44, \"area\": 255, \"groupid\": 0}, {\"id\": 79835, \"terminalid\": 45, \"area\": 255, \"groupid\": 19}, {\"id\": 79835, \"terminalid\": 46, \"area\": 255, \"groupid\": 32}]}', 'form_body': None}",
+      "failed_phase": "create_shadow",
+      "failed_payload": {
+        "startdate": "2026-04-18",
+        "starttime": "08:10:00",
+        "taskname": "第一节上课_once_79787_20260418081000"
+      },
+      "shadow_failures": [
+        {
+          "phase": "create_shadow",
+          "failure_code": "",
+          "reason": "",
+          "failed_payload": {
+            "startdate": "2026-04-18",
+            "starttime": "08:10:00",
+            "taskname": "第一节上课_once_79787_20260418081000"
+          },
+          "diagnostic_id": "diag-e1ae253d0e06",
+          "remote_diagnostics": [
+            {
+              "diagnostic_id": "diag-e1ae253d0e06",
+              "action": "migrate",
+              "phase": "create_shadow",
+              "path": "/task/taskinfo",
+              "request_payload": {
+                "taskname": "起床_once_79783_20260418070000",
+                "tasktype": 2,
+                "starttime": "07:00:00",
+                "startdate": "2026-04-18",
+                "enddate": "2026-04-18",
+                "mediaid": 1124,
+                "timelength": "89",
+                "timelengthtype": "1",
+                "medianame": "10.起床号.mp3",
+                "liveterminalid": 8,
+                "liveterminalname": "讲台终端",
+                "volume": 80,
+                "priority": 100,
+                "execmode": 0,
+                "datasendmodel": 0,
+                "prepower": 0,
+                "level": 0,
+                "israndomplay": 0,
+                "cmd": 0,
+                "cmdargs": "0",
+                "bandrate": 0,
+                "samplerate": 0,
+                "caiboprepower": 0,
+                "interval_s": 0,
+                "intplaylength": 0,
+                "intplaylengthtype": 1,
+                "sechename": "南昌作息"
+              },
+              "status_code": 200,
+              "elapsed_ms": 838.36,
+              "ok": true,
+              "response_body": {
+                "data": [
+                  {
+                    "state": 0,
+                    "taskid": 79831
+                  }
+                ]
+              },
+              "error_detail": "",
+              "timeout": false,
+              "lookup_attempts": [],
+              "failure_code": "",
+              "reason": "",
+              "match_ids": [],
+              "request_payload_preview": {
+                "taskname": "起床_once_79783_20260418070000",
+                "startdate": "2026-04-18",
+                "starttime": "07:00:00"
+              },
+              "remote_response_preview": {
+                "data": [
+                  {
+                    "state": 0,
+                    "taskid": 79831
+                  }
+                ]
+              }
+            },
+            {
+              "diagnostic_id": "diag-e1ae253d0e06",
+              "action": "migrate",
+              "phase": "create_shadow",
+              "path": "/task/taskinfo",
+              "request_payload": {
+                "taskname": "预备_once_79785_20260418080000",
+                "tasktype": 2,
+                "starttime": "08:00:00",
+                "startdate": "2026-04-18",
+                "enddate": "2026-04-18",
+                "mediaid": 911,
+                "timelength": "20",
+                "timelengthtype": "1",
+                "medianame": "上课铃",
+                "liveterminalid": 8,
+                "liveterminalname": "讲台终端",
+                "volume": 80,
+                "priority": 100,
+                "execmode": 0,
+                "datasendmodel": 0,
+                "prepower": 0,
+                "level": 0,
+                "israndomplay": 0,
+                "cmd": 0,
+                "cmdargs": "0",
+                "bandrate": 0,
+                "samplerate": 0,
+                "caiboprepower": 0,
+                "interval_s": 0,
+                "intplaylength": 0,
+                "intplaylengthtype": 1,
+                "sechename": "南昌作息"
+              },
+              "status_code": 200,
+              "elapsed_ms": 774.79,
+              "ok": true,
+              "response_body": {
+                "data": [
+                  {
+                    "state": 0,
+                    "taskid": 79833
+                  }
+                ]
+              },
+              "error_detail": "",
+              "timeout": false,
+              "lookup_attempts": [],
+              "failure_code": "",
+              "reason": "",
+              "match_ids": [],
+              "request_payload_preview": {
+                "taskname": "预备_once_79785_20260418080000",
+                "startdate": "2026-04-18",
+                "starttime": "08:00:00"
+              },
+              "remote_response_preview": {
+                "data": [
+                  {
+                    "state": 0,
+                    "taskid": 79833
+                  }
+                ]
+              }
+            },
+            {
+              "diagnostic_id": "diag-e1ae253d0e06",
+              "action": "migrate",
+              "phase": "create_shadow",
+              "path": "/task/taskinfo",
+              "request_payload": {
+                "taskname": "第一节上课_once_79787_20260418081000",
+                "tasktype": 2,
+                "starttime": "08:10:00",
+                "startdate": "2026-04-18",
+                "enddate": "2026-04-18",
+                "mediaid": 911,
+                "timelength": "20",
+                "timelengthtype": "1",
+                "medianame": "上课铃",
+                "liveterminalid": 8,
+                "liveterminalname": "讲台终端",
+                "volume": 80,
+                "priority": 100,
+                "execmode": 0,
+                "datasendmodel": 0,
+                "prepower": 0,
+                "level": 0,
+                "israndomplay": 0,
+                "cmd": 0,
+                "cmdargs": "0",
+                "bandrate": 0,
+                "samplerate": 0,
+                "caiboprepower": 0,
+                "interval_s": 0,
+                "intplaylength": 0,
+                "intplaylengthtype": 1,
+                "sechename": "南昌作息"
+              },
+              "status_code": 200,
+              "elapsed_ms": 767.25,
+              "ok": true,
+              "response_body": {
+                "data": [
+                  {
+                    "state": 0,
+                    "taskid": 79835
+                  }
+                ]
+              },
+              "error_detail": "",
+              "timeout": false,
+              "lookup_attempts": [],
+              "failure_code": "",
+              "reason": "",
+              "match_ids": [],
+              "request_payload_preview": {
+                "taskname": "第一节上课_once_79787_20260418081000",
+                "startdate": "2026-04-18",
+                "starttime": "08:10:00"
+              },
+              "remote_response_preview": {
+                "data": [
+                  {
+                    "state": 0,
+                    "taskid": 79835
+                  }
+                ]
+              }
+            }
+          ],
+          "rollback_attempts": [
+            {
+              "taskid": "79831",
+              "status": "ok"
+            },
+            {
+              "taskid": "79833",
+              "status": "failed",
+              "error": "Remote request failed:  | method=DELETE url=http://117.40.88.155:199/api/task/taskinfo payload={'json_body': '{\"id\": 79833}', 'form_body': None}"
+            }
+          ],
+          "request_payload_preview": {
+            "taskname": "第一节上课_once_79787_20260418081000",
+            "startdate": "2026-04-18",
+            "starttime": "08:10:00"
+          },
+          "remote_response_preview": {
+            "data": [
+              {
+                "state": 0,
+                "taskid": 79835
+              }
+            ]
+          },
+          "lookup_attempts": [],
+          "match_ids": [],
+          "request_payload": {
+            "taskname": "第一节上课_once_79787_20260418081000",
+            "tasktype": 2,
+            "starttime": "08:10:00",
+            "startdate": "2026-04-18",
+            "enddate": "2026-04-18",
+            "mediaid": 911,
+            "timelength": "20",
+            "timelengthtype": "1",
+            "medianame": "上课铃",
+            "liveterminalid": 8,
+            "liveterminalname": "讲台终端",
+            "volume": 80,
+            "priority": 100,
+            "execmode": 0,
+            "datasendmodel": 0,
+            "prepower": 0,
+            "level": 0,
+            "israndomplay": 0,
+            "cmd": 0,
+            "cmdargs": "0",
+            "bandrate": 0,
+            "samplerate": 0,
+            "caiboprepower": 0,
+            "interval_s": 0,
+            "intplaylength": 0,
+            "intplaylengthtype": 1,
+            "sechename": "南昌作息"
+          },
+          "response_body": {
+            "data": [
+              {
+                "state": 0,
+                "taskid": 79835
+              }
+            ]
+          },
+          "status_code": 200,
+          "error_detail": "",
+          "timeout": false,
+          "ok": true
+        }
+      ],
+      "rollback_attempts": [
+        {
+          "taskid": "79831",
+          "status": "ok"
+        },
+        {
+          "taskid": "79833",
+          "status": "failed",
+          "error": "Remote request failed:  | method=DELETE url=http://117.40.88.155:199/api/task/taskinfo payload={'json_body': '{\"id\": 79833}', 'form_body': None}"
+        }
+      ],
+      "remote_diagnostics": [
+        {
+          "diagnostic_id": "diag-e1ae253d0e06",
+          "action": "migrate",
+          "phase": "create_shadow",
+          "path": "/task/taskinfo",
+          "request_payload": {
+            "taskname": "起床_once_79783_20260418070000",
+            "tasktype": 2,
+            "starttime": "07:00:00",
+            "startdate": "2026-04-18",
+            "enddate": "2026-04-18",
+            "mediaid": 1124,
+            "timelength": "89",
+            "timelengthtype": "1",
+            "medianame": "10.起床号.mp3",
+            "liveterminalid": 8,
+            "liveterminalname": "讲台终端",
+            "volume": 80,
+            "priority": 100,
+            "execmode": 0,
+            "datasendmodel": 0,
+            "prepower": 0,
+            "level": 0,
+            "israndomplay": 0,
+            "cmd": 0,
+            "cmdargs": "0",
+            "bandrate": 0,
+            "samplerate": 0,
+            "caiboprepower": 0,
+            "interval_s": 0,
+            "intplaylength": 0,
+            "intplaylengthtype": 1,
+            "sechename": "南昌作息"
+          },
+          "status_code": 200,
+          "elapsed_ms": 838.36,
+          "ok": true,
+          "response_body": {
+            "data": [
+              {
+                "state": 0,
+                "taskid": 79831
+              }
+            ]
+          },
+          "error_detail": "",
+          "timeout": false,
+          "lookup_attempts": [],
+          "failure_code": "",
+          "reason": "",
+          "match_ids": [],
+          "request_payload_preview": {
+            "taskname": "起床_once_79783_20260418070000",
+            "startdate": "2026-04-18",
+            "starttime": "07:00:00"
+          },
+          "remote_response_preview": {
+            "data": [
+              {
+                "state": 0,
+                "taskid": 79831
+              }
+            ]
+          }
+        },
+        {
+          "diagnostic_id": "diag-e1ae253d0e06",
+          "action": "migrate",
+          "phase": "create_shadow",
+          "path": "/task/taskinfo",
+          "request_payload": {
+            "taskname": "预备_once_79785_20260418080000",
+            "tasktype": 2,
+            "starttime": "08:00:00",
+            "startdate": "2026-04-18",
+            "enddate": "2026-04-18",
+            "mediaid": 911,
+            "timelength": "20",
+            "timelengthtype": "1",
+            "medianame": "上课铃",
+            "liveterminalid": 8,
+            "liveterminalname": "讲台终端",
+            "volume": 80,
+            "priority": 100,
+            "execmode": 0,
+            "datasendmodel": 0,
+            "prepower": 0,
+            "level": 0,
+            "israndomplay": 0,
+            "cmd": 0,
+            "cmdargs": "0",
+            "bandrate": 0,
+            "samplerate": 0,
+            "caiboprepower": 0,
+            "interval_s": 0,
+            "intplaylength": 0,
+            "intplaylengthtype": 1,
+            "sechename": "南昌作息"
+          },
+          "status_code": 200,
+          "elapsed_ms": 774.79,
+          "ok": true,
+          "response_body": {
+            "data": [
+              {
+                "state": 0,
+                "taskid": 79833
+              }
+            ]
+          },
+          "error_detail": "",
+          "timeout": false,
+          "lookup_attempts": [],
+          "failure_code": "",
+          "reason": "",
+          "match_ids": [],
+          "request_payload_preview": {
+            "taskname": "预备_once_79785_20260418080000",
+            "startdate": "2026-04-18",
+            "starttime": "08:00:00"
+          },
+          "remote_response_preview": {
+            "data": [
+              {
+                "state": 0,
+                "taskid": 79833
+              }
+            ]
+          }
+        },
+        {
+          "diagnostic_id": "diag-e1ae253d0e06",
+          "action": "migrate",
+          "phase": "create_shadow",
+          "path": "/task/taskinfo",
+          "request_payload": {
+            "taskname": "第一节上课_once_79787_20260418081000",
+            "tasktype": 2,
+            "starttime": "08:10:00",
+            "startdate": "2026-04-18",
+            "enddate": "2026-04-18",
+            "mediaid": 911,
+            "timelength": "20",
+            "timelengthtype": "1",
+            "medianame": "上课铃",
+            "liveterminalid": 8,
+            "liveterminalname": "讲台终端",
+            "volume": 80,
+            "priority": 100,
+            "execmode": 0,
+            "datasendmodel": 0,
+            "prepower": 0,
+            "level": 0,
+            "israndomplay": 0,
+            "cmd": 0,
+            "cmdargs": "0",
+            "bandrate": 0,
+            "samplerate": 0,
+            "caiboprepower": 0,
+            "interval_s": 0,
+            "intplaylength": 0,
+            "intplaylengthtype": 1,
+            "sechename": "南昌作息"
+          },
+          "status_code": 200,
+          "elapsed_ms": 767.25,
+          "ok": true,
+          "response_body": {
+            "data": [
+              {
+                "state": 0,
+                "taskid": 79835
+              }
+            ]
+          },
+          "error_detail": "",
+          "timeout": false,
+          "lookup_attempts": [],
+          "failure_code": "",
+          "reason": "",
+          "match_ids": [],
+          "request_payload_preview": {
+            "taskname": "第一节上课_once_79787_20260418081000",
+            "startdate": "2026-04-18",
+            "starttime": "08:10:00"
+          },
+          "remote_response_preview": {
+            "data": [
+              {
+                "state": 0,
+                "taskid": 79835
+              }
+            ]
+          }
+        }
+      ],
+      "remote_synced": false,
+      "failure_count": 1,
+      "source_task_ids": [],
+      "target_task_ids": [],
+      "shadow_task_ids": [],
+      "once_task_ids": [],
+      "once_task_specs": [],
+      "enable_once_commands": [],
+      "cleanup_attempts": [],
+      "cleaned_task_ids": [],
+      "once_task_failures": [],
+      "cleanup_state": "pending",
+      "cleaned_at": ""
+    }
+  ],
+  "generated_at": "2026-04-22 15:40:32"
+}

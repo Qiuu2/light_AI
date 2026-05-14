@@ -1,0 +1,81 @@
+{
+  "default": {
+    "kind": "小学",
+    "season": "夏季",
+    "local_template_file": "school_summer_default.json"
+  },
+  "kind_aliases": {
+    "小学部": "小学",
+    "小学生": "小学",
+    "小": "小学",
+    "中学生": "中学",
+    "中学部": "中学",
+    "初中": "中学",
+    "中": "中学",
+    "高中部": "高中",
+    "高中生": "高中",
+    "高": "高中",
+    "大学部": "大学",
+    "大学生": "大学",
+    "大": "大学",
+    "学校": "小学"
+  },
+  "season_aliases": {
+    "夏": "夏季",
+    "暑期": "夏季",
+    "冬": "冬季",
+    "寒期": "冬季"
+  },
+  "kind_templates": {
+    "小学": {
+      "default_season": "夏季",
+      "season_templates": {
+        "夏季": {
+          "local_template_file": "school_summer_default.json"
+        },
+        "冬季": {
+          "local_template_file": "school_summer_default.json"
+        }
+      }
+    },
+    "中学": {
+      "default_season": "夏季",
+      "season_templates": {
+        "夏季": {
+          "source_schedule_name": "中学夏季作息方案",
+          "remote_template": "中学夏季作息方案"
+        },
+        "冬季": {
+          "source_schedule_name": "中学冬季作息方案",
+          "remote_template": "中学冬季作息方案"
+        }
+      }
+    },
+    "高中": {
+      "default_season": "夏季",
+      "season_templates": {
+        "夏季": {
+          "source_schedule_name": "中学夏季作息方案",
+          "remote_template": "中学夏季作息方案"
+        },
+        "冬季": {
+          "source_schedule_name": "中学冬季作息方案",
+          "remote_template": "中学冬季作息方案"
+        }
+      }
+    },
+    "大学": {
+      "default_season": "夏季",
+      "season_templates": {
+        "夏季": {
+          "source_schedule_name": "大学夏季作息方案",
+          "remote_template": "大学夏季作息方案"
+        },
+        "冬季": {
+          "source_schedule_name": "大学冬季作息方案",
+          "remote_template": "大学冬季作息方案"
+        }
+      }
+    }
+  }
+}

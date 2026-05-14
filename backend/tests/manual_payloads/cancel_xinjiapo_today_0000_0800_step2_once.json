@@ -1,0 +1,11 @@
+{
+  "text": "一次性",
+  "intent": "",
+  "slots": {},
+  "status": "success",
+  "intent_confidence": 1,
+  "entities": {},
+  "missing_slots": [],
+  "clear_pending": false,
+  "pending_only": true
+}

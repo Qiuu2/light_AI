@@ -1,0 +1,15 @@
+{
+  "text": "取消新加坡作息今天0点到8点的任务",
+  "intent": "cancel_schedule",
+  "slots": {
+    "schedule_name": "新加坡",
+    "time_range_start": "2026-02-28 00:00:00",
+    "time_range_end": "2026-02-28 08:00:00"
+  },
+  "status": "success",
+  "intent_confidence": 1,
+  "entities": {},
+  "missing_slots": [],
+  "clear_pending": false,
+  "pending_only": false
+}

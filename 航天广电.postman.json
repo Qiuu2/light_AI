@@ -1,0 +1,4308 @@
+{
+    "info": {
+        "name": "航天广电",
+        "description": "",
+        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    },
+    "item": [
+        {
+            "name": "executetask",
+            "description": "",
+            "event": [],
+            "auth": {},
+            "request": {
+                "auth": {},
+                "method": "POST",
+                "body": {
+                    "mode": "formdata",
+                    "formdata": [
+                        {
+                            "key": "taskid",
+                            "value": "126",
+                            "description": "任务id",
+                            "type": "text",
+                            "disabled": false
+                        }
+                    ]
+                },
+                "header": [],
+                "url": {
+                    "raw": "{{baseUrl}}/action/executetask",
+                    "path": [
+                        "action",
+                        "executetask"
+                    ],
+                    "host": [
+                        "{{baseUrl}}"
+                    ],
+                    "query": [],
+                    "variable": []
+                }
+            },
+            "response": [],
+            "protocolProfileBehavior": {
+                "strictSSL": false,
+                "followRedirects": true
+            }
+        },
+        {
+            "name": "openprogram",
+            "description": "",
+            "event": [],
+            "auth": {},
+            "request": {
+                "auth": {},
+                "method": "GET",
+                "body": {},
+                "header": [],
+                "url": {
+                    "raw": "{{baseUrl}}/action/openprogram",
+                    "path": [
+                        "action",
+                        "openprogram"
+                    ],
+                    "host": [
+                        "{{baseUrl}}"
+                    ],
+                    "query": [
+                        {
+                            "key": "id",
+                            "value": "2",
+                            "description": "",
+                            "type": "string"
+                        },
+                        {
+                            "key": "dhxr1778144082860",
+                            "value": "1",
+                            "description": "",
+                            "type": "string"
+                        }
+                    ],
+                    "variable": []
+                }
+            },
+            "response": [],
+            "protocolProfileBehavior": {
+                "strictSSL": false,
+                "followRedirects": true
+            }
+        },
+        {
+            "name": "login",
+            "description": "",
+            "event": [],
+            "auth": {},
+            "request": {
+                "auth": {},
+                "method": "POST",
+                "body": {},
+                "header": [],
+                "url": {
+                    "raw": "{{baseUrl}}/action/login",
+                    "path": [
+                        "action",
+                        "login"
+                    ],
+                    "host": [
+                        "{{baseUrl}}"
+                    ],
+                    "query": [
+                        {
+                            "key": "username",
+                            "value": "useradmin",
+                            "description": "",
+                            "type": "string"
+                        },
+                        {
+                            "key": "password",
+                            "value": "123456",
+                            "description": "",
+                            "type": "string"
+                        }
+                    ],
+                    "variable": []
+                }
+            },
+            "response": [
+                {
+                    "name": "成功",
+                    "originalRequest": {
+                        "method": "POST",
+                        "header": [],
+                        "url": {
+                            "raw": "{{baseUrl}}/action/login",
+                            "path": [
+                                "action",
+                                "login"
+                            ],
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "query": [
+                                {
+                                    "key": "username",
+                                    "value": "useradmin",
+                                    "description": "",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "password",
+                                    "value": "123456",
+                                    "description": "",
+                                    "disabled": false
+                                }
+                            ],
+                            "variable": []
+                        },
+                        "body": {}
+                    },
+                    "cookie": []
+                }
+            ],
+            "protocolProfileBehavior": {
+                "strictSSL": false,
+                "followRedirects": true
+            }
+        },
+        {
+            "name": "gettaskinfo",
+            "description": "",
+            "event": [],
+            "auth": {},
+            "request": {
+                "auth": {},
+                "method": "POST",
+                "body": {
+                    "mode": "urlencoded",
+                    "urlencoded": []
+                },
+                "header": [],
+                "url": {
+                    "raw": "{{baseUrl}}/action/basicparameters",
+                    "path": [
+                        "action",
+                        "basicparameters"
+                    ],
+                    "host": [
+                        "{{baseUrl}}"
+                    ],
+                    "query": [],
+                    "variable": []
+                }
+            },
+            "response": [
+                {
+                    "name": "成功",
+                    "originalRequest": {
+                        "method": "POST",
+                        "header": [],
+                        "url": {
+                            "raw": "{{baseUrl}}/action/basicparameters",
+                            "path": [
+                                "action",
+                                "basicparameters"
+                            ],
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "query": [],
+                            "variable": []
+                        },
+                        "body": {
+                            "mode": "urlencoded"
+                        }
+                    },
+                    "cookie": []
+                }
+            ],
+            "protocolProfileBehavior": {
+                "strictSSL": false,
+                "followRedirects": true
+            }
+        },
+        {
+            "name": "taskstart",
+            "description": "",
+            "event": [],
+            "auth": {},
+            "request": {
+                "auth": {},
+                "method": "POST",
+                "body": {
+                    "mode": "urlencoded",
+                    "urlencoded": [
+                        {
+                            "key": "taskid",
+                            "value": "120",
+                            "type": "text",
+                            "disabled": false
+                        }
+                    ]
+                },
+                "header": [],
+                "url": {
+                    "raw": "{{baseUrl}}/action/taskstart",
+                    "path": [
+                        "action",
+                        "taskstart"
+                    ],
+                    "host": [
+                        "{{baseUrl}}"
+                    ],
+                    "query": [],
+                    "variable": []
+                }
+            },
+            "response": [
+                {
+                    "name": "成功",
+                    "originalRequest": {
+                        "method": "POST",
+                        "header": [],
+                        "url": {
+                            "raw": "{{baseUrl}}/action/taskstart",
+                            "path": [
+                                "action",
+                                "taskstart"
+                            ],
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "query": [],
+                            "variable": []
+                        },
+                        "body": {
+                            "mode": "urlencoded",
+                            "urlencoded": [
+                                {
+                                    "key": "taskid",
+                                    "value": "120",
+                                    "type": "text",
+                                    "disabled": false
+                                }
+                            ]
+                        }
+                    },
+                    "cookie": []
+                }
+            ],
+            "protocolProfileBehavior": {
+                "strictSSL": false,
+                "followRedirects": true
+            }
+        },
+        {
+            "name": "stoptask",
+            "description": "",
+            "event": [],
+            "auth": {},
+            "request": {
+                "auth": {},
+                "method": "POST",
+                "body": {
+                    "mode": "urlencoded",
+                    "urlencoded": [
+                        {
+                            "key": "taskid",
+                            "value": "120",
+                            "type": "text",
+                            "disabled": false
+                        }
+                    ]
+                },
+                "header": [],
+                "url": {
+                    "raw": "{{baseUrl}}/action/stoptask",
+                    "path": [
+                        "action",
+                        "stoptask"
+                    ],
+                    "host": [
+                        "{{baseUrl}}"
+                    ],
+                    "query": [],
+                    "variable": []
+                }
+            },
+            "response": [
+                {
+                    "name": "成功",
+                    "originalRequest": {
+                        "method": "POST",
+                        "header": [],
+                        "url": {
+                            "raw": "{{baseUrl}}/action/stoptask",
+                            "path": [
+                                "action",
+                                "stoptask"
+                            ],
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "query": [],
+                            "variable": []
+                        },
+                        "body": {
+                            "mode": "urlencoded",
+                            "urlencoded": [
+                                {
+                                    "key": "taskid",
+                                    "value": "120",
+                                    "type": "text",
+                                    "disabled": false
+                                }
+                            ]
+                        }
+                    },
+                    "cookie": []
+                }
+            ],
+            "protocolProfileBehavior": {
+                "strictSSL": false,
+                "followRedirects": true
+            }
+        },
+        {
+            "name": "gettaskmedia",
+            "description": "",
+            "event": [],
+            "auth": {},
+            "request": {
+                "auth": {},
+                "method": "POST",
+                "body": {
+                    "mode": "urlencoded",
+                    "urlencoded": [
+                        {
+                            "key": "taskid",
+                            "value": "120",
+                            "type": "text",
+                            "disabled": false
+                        }
+                    ]
+                },
+                "header": [],
+                "url": {
+                    "raw": "{{baseUrl}}/action/gettaskmedia",
+                    "path": [
+                        "action",
+                        "gettaskmedia"
+                    ],
+                    "host": [
+                        "{{baseUrl}}"
+                    ],
+                    "query": [],
+                    "variable": []
+                }
+            },
+            "response": [
+                {
+                    "name": "成功",
+                    "originalRequest": {
+                        "method": "POST",
+                        "header": [],
+                        "url": {
+                            "raw": "{{baseUrl}}/action/gettaskmedia",
+                            "path": [
+                                "action",
+                                "gettaskmedia"
+                            ],
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "query": [],
+                            "variable": []
+                        },
+                        "body": {
+                            "mode": "urlencoded",
+                            "urlencoded": [
+                                {
+                                    "key": "taskid",
+                                    "value": "120",
+                                    "type": "text",
+                                    "disabled": false
+                                }
+                            ]
+                        }
+                    },
+                    "cookie": []
+                }
+            ],
+            "protocolProfileBehavior": {
+                "strictSSL": false,
+                "followRedirects": true
+            }
+        },
+        {
+            "name": "gettaskterminal",
+            "description": "",
+            "event": [],
+            "auth": {},
+            "request": {
+                "auth": {},
+                "method": "POST",
+                "body": {
+                    "mode": "urlencoded",
+                    "urlencoded": [
+                        {
+                            "key": "taskid",
+                            "value": "120",
+                            "type": "text",
+                            "disabled": false
+                        }
+                    ]
+                },
+                "header": [],
+                "url": {
+                    "raw": "{{baseUrl}}/action/gettaskterminal",
+                    "path": [
+                        "action",
+                        "gettaskterminal"
+                    ],
+                    "host": [
+                        "{{baseUrl}}"
+                    ],
+                    "query": [],
+                    "variable": []
+                }
+            },
+            "response": [
+                {
+                    "name": "成功",
+                    "originalRequest": {
+                        "method": "POST",
+                        "header": [],
+                        "url": {
+                            "raw": "{{baseUrl}}/action/gettaskterminal",
+                            "path": [
+                                "action",
+                                "gettaskterminal"
+                            ],
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "query": [],
+                            "variable": []
+                        },
+                        "body": {
+                            "mode": "urlencoded",
+                            "urlencoded": [
+                                {
+                                    "key": "taskid",
+                                    "value": "120",
+                                    "type": "text",
+                                    "disabled": false
+                                }
+                            ]
+                        }
+                    },
+                    "cookie": []
+                }
+            ],
+            "protocolProfileBehavior": {
+                "strictSSL": false,
+                "followRedirects": true
+            }
+        },
+        {
+            "name": "getmedia",
+            "description": "",
+            "event": [],
+            "auth": {},
+            "request": {
+                "auth": {},
+                "method": "POST",
+                "body": {},
+                "header": [],
+                "url": {
+                    "raw": "{{baseUrl}}/action/getmedia",
+                    "path": [
+                        "action",
+                        "getmedia"
+                    ],
+                    "host": [
+                        "{{baseUrl}}"
+                    ],
+                    "query": [],
+                    "variable": []
+                }
+            },
+            "response": [
+                {
+                    "name": "成功",
+                    "originalRequest": {
+                        "method": "POST",
+                        "header": [],
+                        "url": {
+                            "raw": "{{baseUrl}}/action/getmedia",
+                            "path": [
+                                "action",
+                                "getmedia"
+                            ],
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "query": [],
+                            "variable": []
+                        },
+                        "body": {}
+                    },
+                    "cookie": []
+                }
+            ],
+            "protocolProfileBehavior": {
+                "strictSSL": false,
+                "followRedirects": true
+            }
+        },
+        {
+            "name": "getterminal",
+            "description": "",
+            "event": [],
+            "auth": {},
+            "request": {
+                "auth": {},
+                "method": "POST",
+                "body": {},
+                "header": [],
+                "url": {
+                    "raw": "{{baseUrl}}/action/getterminal",
+                    "path": [
+                        "action",
+                        "getterminal"
+                    ],
+                    "host": [
+                        "{{baseUrl}}"
+                    ],
+                    "query": [],
+                    "variable": []
+                }
+            },
+            "response": [
+                {
+                    "name": "成功",
+                    "originalRequest": {
+                        "method": "POST",
+                        "header": [],
+                        "url": {
+                            "raw": "{{baseUrl}}/action/getterminal",
+                            "path": [
+                                "action",
+                                "getterminal"
+                            ],
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "query": [],
+                            "variable": []
+                        },
+                        "body": {}
+                    },
+                    "cookie": []
+                }
+            ],
+            "protocolProfileBehavior": {
+                "strictSSL": false,
+                "followRedirects": true
+            }
+        },
+        {
+            "name": "executemptask",
+            "description": "",
+            "event": [],
+            "auth": {},
+            "request": {
+                "auth": {},
+                "method": "POST",
+                "body": {
+                    "mode": "urlencoded",
+                    "urlencoded": [
+                        {
+                            "key": "media",
+                            "value": "360,361",
+                            "description": "媒体id",
+                            "type": "text",
+                            "disabled": false
+                        },
+                        {
+                            "key": "terminal",
+                            "value": "1_70,2_447,2_448",
+                            "description": "终端id,1_70（1表示分组，分组id=70），2_447(2表示未分组，终端id=447)",
+                            "type": "text",
+                            "disabled": false
+                        },
+                        {
+                            "key": "playmode",
+                            "value": "0",
+                            "description": "0=时长，1=次数",
+                            "type": "text",
+                            "disabled": false
+                        },
+                        {
+                            "key": "timehour",
+                            "value": "0",
+                            "description": "播放时",
+                            "type": "text",
+                            "disabled": false
+                        },
+                        {
+                            "key": "timeminute",
+                            "value": "2",
+                            "description": "播放分",
+                            "type": "text",
+                            "disabled": false
+                        },
+                        {
+                            "key": "timesecond",
+                            "value": "0",
+                            "description": "播放秒",
+                            "type": "text",
+                            "disabled": false
+                        },
+                        {
+                            "key": "times",
+                            "value": "1",
+                            "description": "次数",
+                            "type": "text",
+                            "disabled": false
+                        },
+                        {
+                            "key": "volume",
+                            "value": "80",
+                            "description": "音量（0-100）",
+                            "type": "text",
+                            "disabled": false
+                        },
+                        {
+                            "key": "random",
+                            "value": "0",
+                            "description": "0=顺序播放，1=随机",
+                            "type": "text",
+                            "disabled": false
+                        },
+                        {
+                            "key": "area0",
+                            "value": "1",
+                            "description": "分区1",
+                            "type": "text",
+                            "disabled": false
+                        },
+                        {
+                            "key": "area1",
+                            "value": "1",
+                            "type": "text",
+                            "disabled": false
+                        },
+                        {
+                            "key": "area2",
+                            "value": "1",
+                            "type": "text",
+                            "disabled": false
+                        },
+                        {
+                            "key": "area3",
+                            "type": "text",
+                            "disabled": false
+                        }
+                    ]
+                },
+                "header": [],
+                "url": {
+                    "raw": "{{baseUrl}}/action/executetmptask",
+                    "path": [
+                        "action",
+                        "executetmptask"
+                    ],
+                    "host": [
+                        "{{baseUrl}}"
+                    ],
+                    "query": [],
+                    "variable": []
+                }
+            },
+            "response": [
+                {
+                    "name": "成功",
+                    "originalRequest": {
+                        "method": "POST",
+                        "header": [],
+                        "url": {
+                            "raw": "{{baseUrl}}/action/executetmptask",
+                            "path": [
+                                "action",
+                                "executetmptask"
+                            ],
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "query": [],
+                            "variable": []
+                        },
+                        "body": {
+                            "mode": "urlencoded",
+                            "urlencoded": [
+                                {
+                                    "key": "media",
+                                    "value": "360,361",
+                                    "description": "媒体id",
+                                    "type": "text",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "terminal",
+                                    "value": "1_70,2_447,2_448",
+                                    "description": "终端id,1_70（1表示分组，分组id=70），2_447(2表示未分组，终端id=447)",
+                                    "type": "text",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "playmode",
+                                    "value": "0",
+                                    "description": "0=时长，1=次数",
+                                    "type": "text",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "timehour",
+                                    "value": "0",
+                                    "description": "播放时",
+                                    "type": "text",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "timeminute",
+                                    "value": "2",
+                                    "description": "播放分",
+                                    "type": "text",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "timesecond",
+                                    "value": "0",
+                                    "description": "播放秒",
+                                    "type": "text",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "times",
+                                    "value": "1",
+                                    "description": "次数",
+                                    "type": "text",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "volume",
+                                    "value": "80",
+                                    "description": "音量（0-100）",
+                                    "type": "text",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "random",
+                                    "value": "0",
+                                    "description": "0=顺序播放，1=随机",
+                                    "type": "text",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "area0",
+                                    "value": "1",
+                                    "description": "分区1",
+                                    "type": "text",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "area1",
+                                    "value": "1",
+                                    "type": "text",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "area2",
+                                    "value": "1",
+                                    "type": "text",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "area3",
+                                    "value": "",
+                                    "type": "text",
+                                    "disabled": false
+                                }
+                            ]
+                        }
+                    },
+                    "cookie": []
+                }
+            ],
+            "protocolProfileBehavior": {
+                "strictSSL": false,
+                "followRedirects": true
+            }
+        },
+        {
+            "name": "stoptmptask",
+            "description": "",
+            "event": [],
+            "auth": {},
+            "request": {
+                "auth": {},
+                "method": "POST",
+                "body": {},
+                "header": [],
+                "url": {
+                    "raw": "{{baseUrl}}/action/stoptmptask",
+                    "path": [
+                        "action",
+                        "stoptmptask"
+                    ],
+                    "host": [
+                        "{{baseUrl}}"
+                    ],
+                    "query": [],
+                    "variable": []
+                }
+            },
+            "response": [
+                {
+                    "name": "成功",
+                    "originalRequest": {
+                        "method": "POST",
+                        "header": [],
+                        "url": {
+                            "raw": "{{baseUrl}}/action/stoptmptask",
+                            "path": [
+                                "action",
+                                "stoptmptask"
+                            ],
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "query": [],
+                            "variable": []
+                        },
+                        "body": {}
+                    },
+                    "cookie": []
+                }
+            ],
+            "protocolProfileBehavior": {
+                "strictSSL": false,
+                "followRedirects": true
+            }
+        },
+        {
+            "name": "addholiday",
+            "description": "",
+            "event": [],
+            "auth": {},
+            "request": {
+                "auth": {},
+                "method": "POST",
+                "body": {
+                    "mode": "urlencoded",
+                    "urlencoded": [
+                        {
+                            "key": "holidayname",
+                            "value": "22",
+                            "description": "节日名称",
+                            "type": "text",
+                            "disabled": false
+                        },
+                        {
+                            "key": "startdate",
+                            "value": "2026-04-15",
+                            "type": "text",
+                            "disabled": false
+                        }
+                    ]
+                },
+                "header": [],
+                "url": {
+                    "raw": "{{baseUrl}}/action/addholiday",
+                    "path": [
+                        "action",
+                        "addholiday"
+                    ],
+                    "host": [
+                        "{{baseUrl}}"
+                    ],
+                    "query": [],
+                    "variable": []
+                }
+            },
+            "response": [
+                {
+                    "name": "成功",
+                    "originalRequest": {
+                        "method": "POST",
+                        "header": [],
+                        "url": {
+                            "raw": "{{baseUrl}}/action/addholiday",
+                            "path": [
+                                "action",
+                                "addholiday"
+                            ],
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "query": [],
+                            "variable": []
+                        },
+                        "body": {
+                            "mode": "urlencoded",
+                            "urlencoded": [
+                                {
+                                    "key": "holidayname",
+                                    "value": "22",
+                                    "description": "节日名称",
+                                    "type": "text",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "startdate",
+                                    "value": "2026-04-15",
+                                    "type": "text",
+                                    "disabled": false
+                                }
+                            ]
+                        }
+                    },
+                    "cookie": []
+                }
+            ],
+            "protocolProfileBehavior": {
+                "strictSSL": false,
+                "followRedirects": true
+            }
+        },
+        {
+            "name": "modifyholiday",
+            "description": "",
+            "event": [],
+            "auth": {},
+            "request": {
+                "auth": {},
+                "method": "POST",
+                "body": {
+                    "mode": "urlencoded",
+                    "urlencoded": [
+                        {
+                            "key": "holidayname",
+                            "value": "22",
+                            "description": "节日名称",
+                            "type": "text",
+                            "disabled": false
+                        },
+                        {
+                            "key": "startdate",
+                            "value": "2026-04-15",
+                            "description": "开始日期",
+                            "type": "text",
+                            "disabled": false
+                        },
+                        {
+                            "key": "enddate",
+                            "value": "2026-04-15",
+                            "description": "结束日期",
+                            "type": "text",
+                            "disabled": false
+                        },
+                        {
+                            "key": "deftmedias",
+                            "value": "1",
+                            "description": "1=启用，0=停用",
+                            "type": "text",
+                            "disabled": false
+                        }
+                    ]
+                },
+                "header": [],
+                "url": {
+                    "raw": "{{baseUrl}}/action/modifyholiday",
+                    "path": [
+                        "action",
+                        "modifyholiday"
+                    ],
+                    "host": [
+                        "{{baseUrl}}"
+                    ],
+                    "query": [
+                        {
+                            "key": "taskid",
+                            "value": "8",
+                            "description": "任务id",
+                            "type": "string"
+                        }
+                    ],
+                    "variable": []
+                }
+            },
+            "response": [
+                {
+                    "name": "成功",
+                    "originalRequest": {
+                        "method": "POST",
+                        "header": [],
+                        "url": {
+                            "raw": "{{baseUrl}}/action/modifyholiday",
+                            "path": [
+                                "action",
+                                "modifyholiday"
+                            ],
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "query": [
+                                {
+                                    "key": "taskid",
+                                    "value": "8",
+                                    "description": "任务id",
+                                    "disabled": false
+                                }
+                            ],
+                            "variable": []
+                        },
+                        "body": {
+                            "mode": "urlencoded",
+                            "urlencoded": [
+                                {
+                                    "key": "holidayname",
+                                    "value": "22",
+                                    "description": "节日名称",
+                                    "type": "text",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "startdate",
+                                    "value": "2026-04-15",
+                                    "description": "开始日期",
+                                    "type": "text",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "enddate",
+                                    "value": "2026-04-15",
+                                    "description": "结束日期",
+                                    "type": "text",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "deftmedias",
+                                    "value": "1",
+                                    "description": "1=启用，0=停用",
+                                    "type": "text",
+                                    "disabled": false
+                                }
+                            ]
+                        }
+                    },
+                    "cookie": []
+                }
+            ],
+            "protocolProfileBehavior": {
+                "strictSSL": false,
+                "followRedirects": true
+            }
+        },
+        {
+            "name": "delholiday",
+            "description": "",
+            "event": [],
+            "auth": {},
+            "request": {
+                "auth": {},
+                "method": "POST",
+                "body": {
+                    "mode": "formdata",
+                    "formdata": [
+                        {
+                            "key": "taskid",
+                            "value": "9",
+                            "type": "text",
+                            "disabled": false
+                        }
+                    ]
+                },
+                "header": [],
+                "url": {
+                    "raw": "{{baseUrl}}/action/delholiday",
+                    "path": [
+                        "action",
+                        "delholiday"
+                    ],
+                    "host": [
+                        "{{baseUrl}}"
+                    ],
+                    "query": [],
+                    "variable": []
+                }
+            },
+            "response": [
+                {
+                    "name": "成功",
+                    "originalRequest": {
+                        "method": "POST",
+                        "header": [],
+                        "url": {
+                            "raw": "{{baseUrl}}/action/delholiday",
+                            "path": [
+                                "action",
+                                "delholiday"
+                            ],
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "query": [],
+                            "variable": []
+                        },
+                        "body": {
+                            "mode": "formdata",
+                            "formdata": [
+                                {
+                                    "key": "taskid",
+                                    "value": "9",
+                                    "type": "text",
+                                    "disabled": false
+                                }
+                            ]
+                        }
+                    },
+                    "cookie": []
+                }
+            ],
+            "protocolProfileBehavior": {
+                "strictSSL": false,
+                "followRedirects": true
+            }
+        },
+        {
+            "name": "getholiday",
+            "description": "",
+            "event": [],
+            "auth": {},
+            "request": {
+                "auth": {},
+                "method": "POST",
+                "body": {},
+                "header": [],
+                "url": {
+                    "raw": "{{baseUrl}}/action/getholiday",
+                    "path": [
+                        "action",
+                        "getholiday"
+                    ],
+                    "host": [
+                        "{{baseUrl}}"
+                    ],
+                    "query": [],
+                    "variable": []
+                }
+            },
+            "response": [
+                {
+                    "name": "成功",
+                    "originalRequest": {
+                        "method": "POST",
+                        "header": [],
+                        "url": {
+                            "raw": "{{baseUrl}}/action/getholiday",
+                            "path": [
+                                "action",
+                                "getholiday"
+                            ],
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "query": [],
+                            "variable": []
+                        },
+                        "body": {}
+                    },
+                    "cookie": []
+                }
+            ],
+            "protocolProfileBehavior": {
+                "strictSSL": false,
+                "followRedirects": true
+            }
+        },
+        {
+            "name": "getallsech",
+            "description": "",
+            "event": [],
+            "auth": {},
+            "request": {
+                "auth": {},
+                "method": "POST",
+                "body": {},
+                "header": [],
+                "url": {
+                    "raw": "{{baseUrl}}/action/getallsechtask",
+                    "path": [
+                        "action",
+                        "getallsechtask"
+                    ],
+                    "host": [
+                        "{{baseUrl}}"
+                    ],
+                    "query": [],
+                    "variable": []
+                }
+            },
+            "response": [
+                {
+                    "name": "成功",
+                    "originalRequest": {
+                        "method": "POST",
+                        "header": [],
+                        "url": {
+                            "raw": "{{baseUrl}}/action/getallsechtask",
+                            "path": [
+                                "action",
+                                "getallsechtask"
+                            ],
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "query": [],
+                            "variable": []
+                        },
+                        "body": {}
+                    },
+                    "cookie": []
+                }
+            ],
+            "protocolProfileBehavior": {
+                "strictSSL": false,
+                "followRedirects": true
+            }
+        },
+        {
+            "name": "getbaseinfo",
+            "description": "",
+            "event": [],
+            "auth": {},
+            "request": {
+                "auth": {},
+                "method": "POST",
+                "body": {},
+                "header": [],
+                "url": {
+                    "raw": "{{baseUrl}}/action/getbasicinfo",
+                    "path": [
+                        "action",
+                        "getbasicinfo"
+                    ],
+                    "host": [
+                        "{{baseUrl}}"
+                    ],
+                    "query": [],
+                    "variable": []
+                }
+            },
+            "response": [
+                {
+                    "name": "成功",
+                    "originalRequest": {
+                        "method": "POST",
+                        "header": [],
+                        "url": {
+                            "raw": "{{baseUrl}}/action/getbasicinfo",
+                            "path": [
+                                "action",
+                                "getbasicinfo"
+                            ],
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "query": [],
+                            "variable": []
+                        },
+                        "body": {}
+                    },
+                    "cookie": []
+                }
+            ],
+            "protocolProfileBehavior": {
+                "strictSSL": false,
+                "followRedirects": true
+            }
+        },
+        {
+            "name": "getExtarea",
+            "description": "",
+            "event": [],
+            "auth": {},
+            "request": {
+                "auth": {},
+                "method": "POST",
+                "body": {},
+                "header": [],
+                "url": {
+                    "raw": "{{baseUrl}}/action/getbasicinfo",
+                    "path": [
+                        "action",
+                        "getbasicinfo"
+                    ],
+                    "host": [
+                        "{{baseUrl}}"
+                    ],
+                    "query": [],
+                    "variable": []
+                }
+            },
+            "response": [
+                {
+                    "name": "成功",
+                    "originalRequest": {
+                        "method": "POST",
+                        "header": [],
+                        "url": {
+                            "raw": "{{baseUrl}}/action/getbasicinfo",
+                            "path": [
+                                "action",
+                                "getbasicinfo"
+                            ],
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "query": [],
+                            "variable": []
+                        },
+                        "body": {}
+                    },
+                    "cookie": []
+                }
+            ],
+            "protocolProfileBehavior": {
+                "strictSSL": false,
+                "followRedirects": true
+            }
+        },
+        {
+            "name": "setExtarea",
+            "description": "",
+            "event": [],
+            "auth": {},
+            "request": {
+                "auth": {},
+                "method": "POST",
+                "body": {
+                    "mode": "urlencoded",
+                    "urlencoded": [
+                        {
+                            "key": "terminalname",
+                            "value": "9",
+                            "description": "扩展终端分区名称",
+                            "type": "text",
+                            "disabled": false
+                        },
+                        {
+                            "key": "terminaladdr",
+                            "value": "10",
+                            "description": "扩展终端分区地址",
+                            "type": "text",
+                            "disabled": false
+                        }
+                    ]
+                },
+                "header": [],
+                "url": {
+                    "raw": "{{baseUrl}}/action/addterminal",
+                    "path": [
+                        "action",
+                        "addterminal"
+                    ],
+                    "host": [
+                        "{{baseUrl}}"
+                    ],
+                    "query": [],
+                    "variable": []
+                }
+            },
+            "response": [
+                {
+                    "name": "成功",
+                    "originalRequest": {
+                        "method": "POST",
+                        "header": [],
+                        "url": {
+                            "raw": "{{baseUrl}}/action/addterminal",
+                            "path": [
+                                "action",
+                                "addterminal"
+                            ],
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "query": [],
+                            "variable": []
+                        },
+                        "body": {
+                            "mode": "urlencoded",
+                            "urlencoded": [
+                                {
+                                    "key": "terminalname",
+                                    "value": "9",
+                                    "description": "扩展终端分区名称",
+                                    "type": "text",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "terminaladdr",
+                                    "value": "10",
+                                    "description": "扩展终端分区地址",
+                                    "type": "text",
+                                    "disabled": false
+                                }
+                            ]
+                        }
+                    },
+                    "cookie": []
+                }
+            ],
+            "protocolProfileBehavior": {
+                "strictSSL": false,
+                "followRedirects": true
+            }
+        },
+        {
+            "name": "delExtarea",
+            "description": "",
+            "event": [],
+            "auth": {},
+            "request": {
+                "auth": {},
+                "method": "POST",
+                "body": {},
+                "header": [],
+                "url": {
+                    "raw": "{{baseUrl}}/action/delterminal",
+                    "path": [
+                        "action",
+                        "delterminal"
+                    ],
+                    "host": [
+                        "{{baseUrl}}"
+                    ],
+                    "query": [],
+                    "variable": []
+                }
+            },
+            "response": [
+                {
+                    "name": "成功",
+                    "originalRequest": {
+                        "method": "POST",
+                        "header": [],
+                        "url": {
+                            "raw": "{{baseUrl}}/action/delterminal",
+                            "path": [
+                                "action",
+                                "delterminal"
+                            ],
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "query": [],
+                            "variable": []
+                        },
+                        "body": {}
+                    },
+                    "cookie": []
+                }
+            ],
+            "protocolProfileBehavior": {
+                "strictSSL": false,
+                "followRedirects": true
+            }
+        },
+        {
+            "name": "getquicktask",
+            "description": "",
+            "event": [],
+            "auth": {},
+            "request": {
+                "auth": {},
+                "method": "POST",
+                "body": {},
+                "header": [],
+                "url": {
+                    "raw": "{{baseUrl}}/action/getquicktask",
+                    "path": [
+                        "action",
+                        "getquicktask"
+                    ],
+                    "host": [
+                        "{{baseUrl}}"
+                    ],
+                    "query": [],
+                    "variable": []
+                }
+            },
+            "response": [
+                {
+                    "name": "成功",
+                    "originalRequest": {
+                        "method": "POST",
+                        "header": [],
+                        "url": {
+                            "raw": "{{baseUrl}}/action/getquicktask",
+                            "path": [
+                                "action",
+                                "getquicktask"
+                            ],
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "query": [],
+                            "variable": []
+                        },
+                        "body": {}
+                    },
+                    "cookie": []
+                }
+            ],
+            "protocolProfileBehavior": {
+                "strictSSL": false,
+                "followRedirects": true
+            }
+        },
+        {
+            "name": "getfiretask",
+            "description": "",
+            "event": [],
+            "auth": {},
+            "request": {
+                "auth": {},
+                "method": "POST",
+                "body": {},
+                "header": [],
+                "url": {
+                    "raw": "{{baseUrl}}/action/getfiretask",
+                    "path": [
+                        "action",
+                        "getfiretask"
+                    ],
+                    "host": [
+                        "{{baseUrl}}"
+                    ],
+                    "query": [],
+                    "variable": []
+                }
+            },
+            "response": [
+                {
+                    "name": "成功",
+                    "originalRequest": {
+                        "method": "POST",
+                        "header": [],
+                        "url": {
+                            "raw": "{{baseUrl}}/action/getfiretask",
+                            "path": [
+                                "action",
+                                "getfiretask"
+                            ],
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "query": [],
+                            "variable": []
+                        },
+                        "body": {}
+                    },
+                    "cookie": []
+                }
+            ],
+            "protocolProfileBehavior": {
+                "strictSSL": false,
+                "followRedirects": true
+            }
+        },
+        {
+            "name": "getextgroup",
+            "description": "",
+            "event": [],
+            "auth": {},
+            "request": {
+                "auth": {},
+                "method": "POST",
+                "body": {},
+                "header": [],
+                "url": {
+                    "raw": "{{baseUrl}}/action/getextgroup",
+                    "path": [
+                        "action",
+                        "getextgroup"
+                    ],
+                    "host": [
+                        "{{baseUrl}}"
+                    ],
+                    "query": [],
+                    "variable": []
+                }
+            },
+            "response": [
+                {
+                    "name": "成功",
+                    "originalRequest": {
+                        "method": "POST",
+                        "header": [],
+                        "url": {
+                            "raw": "{{baseUrl}}/action/getextgroup",
+                            "path": [
+                                "action",
+                                "getextgroup"
+                            ],
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "query": [],
+                            "variable": []
+                        },
+                        "body": {}
+                    },
+                    "cookie": []
+                }
+            ],
+            "protocolProfileBehavior": {
+                "strictSSL": false,
+                "followRedirects": true
+            }
+        },
+        {
+            "name": "modifyExtarea",
+            "description": "",
+            "event": [],
+            "auth": {},
+            "request": {
+                "auth": {},
+                "method": "POST",
+                "body": {
+                    "mode": "urlencoded",
+                    "urlencoded": [
+                        {
+                            "key": "terminalname",
+                            "value": "31",
+                            "description": "扩展终端分区名称",
+                            "type": "text",
+                            "disabled": false
+                        },
+                        {
+                            "key": "terminaladdr",
+                            "value": "3",
+                            "description": "扩展终端分区地址",
+                            "type": "text",
+                            "disabled": false
+                        }
+                    ]
+                },
+                "header": [],
+                "url": {
+                    "raw": "{{baseUrl}}/action/modifyterminal",
+                    "path": [
+                        "action",
+                        "modifyterminal"
+                    ],
+                    "host": [
+                        "{{baseUrl}}"
+                    ],
+                    "query": [],
+                    "variable": []
+                }
+            },
+            "response": [
+                {
+                    "name": "成功",
+                    "originalRequest": {
+                        "method": "POST",
+                        "header": [],
+                        "url": {
+                            "raw": "{{baseUrl}}/action/modifyterminal",
+                            "path": [
+                                "action",
+                                "modifyterminal"
+                            ],
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "query": [],
+                            "variable": []
+                        },
+                        "body": {
+                            "mode": "urlencoded",
+                            "urlencoded": [
+                                {
+                                    "key": "terminalname",
+                                    "value": "31",
+                                    "description": "扩展终端分区名称",
+                                    "type": "text",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "terminaladdr",
+                                    "value": "3",
+                                    "description": "扩展终端分区地址",
+                                    "type": "text",
+                                    "disabled": false
+                                }
+                            ]
+                        }
+                    },
+                    "cookie": []
+                }
+            ],
+            "protocolProfileBehavior": {
+                "strictSSL": false,
+                "followRedirects": true
+            }
+        },
+        {
+            "name": "addgroup",
+            "description": "",
+            "event": [],
+            "auth": {},
+            "request": {
+                "auth": {},
+                "method": "POST",
+                "body": {
+                    "mode": "urlencoded",
+                    "urlencoded": [
+                        {
+                            "key": "groupname",
+                            "value": "852",
+                            "description": "分组名称",
+                            "type": "text",
+                            "disabled": false
+                        }
+                    ]
+                },
+                "header": [],
+                "url": {
+                    "raw": "{{baseUrl}}/action/addgroup",
+                    "path": [
+                        "action",
+                        "addgroup"
+                    ],
+                    "host": [
+                        "{{baseUrl}}"
+                    ],
+                    "query": [
+                        {
+                            "key": "media2",
+                            "value": "452,451",
+                            "description": "扩展终端分区id",
+                            "type": "string"
+                        }
+                    ],
+                    "variable": []
+                }
+            },
+            "response": [
+                {
+                    "name": "成功",
+                    "originalRequest": {
+                        "method": "POST",
+                        "header": [],
+                        "url": {
+                            "raw": "{{baseUrl}}/action/addgroup",
+                            "path": [
+                                "action",
+                                "addgroup"
+                            ],
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "query": [
+                                {
+                                    "key": "media2",
+                                    "value": "452,451",
+                                    "description": "扩展终端分区id",
+                                    "disabled": false
+                                }
+                            ],
+                            "variable": []
+                        },
+                        "body": {
+                            "mode": "urlencoded",
+                            "urlencoded": [
+                                {
+                                    "key": "groupname",
+                                    "value": "852",
+                                    "description": "分组名称",
+                                    "type": "text",
+                                    "disabled": false
+                                }
+                            ]
+                        }
+                    },
+                    "cookie": []
+                }
+            ],
+            "protocolProfileBehavior": {
+                "strictSSL": false,
+                "followRedirects": true
+            }
+        },
+        {
+            "name": "modifygroup",
+            "description": "",
+            "event": [],
+            "auth": {},
+            "request": {
+                "auth": {},
+                "method": "POST",
+                "body": {
+                    "mode": "urlencoded",
+                    "urlencoded": [
+                        {
+                            "key": "media",
+                            "value": "72",
+                            "description": "分组id",
+                            "type": "text",
+                            "disabled": false
+                        },
+                        {
+                            "key": "groupname",
+                            "value": "3999",
+                            "description": "分组名称",
+                            "type": "text",
+                            "disabled": false
+                        }
+                    ]
+                },
+                "header": [],
+                "url": {
+                    "raw": "{{baseUrl}}/action/modifygroup",
+                    "path": [
+                        "action",
+                        "modifygroup"
+                    ],
+                    "host": [
+                        "{{baseUrl}}"
+                    ],
+                    "query": [
+                        {
+                            "key": "media2",
+                            "value": "449,451",
+                            "description": "扩展终端分区id",
+                            "type": "string"
+                        },
+                        {
+                            "key": "groupid",
+                            "value": "72",
+                            "description": "分组id",
+                            "type": "string"
+                        }
+                    ],
+                    "variable": []
+                }
+            },
+            "response": [
+                {
+                    "name": "成功",
+                    "originalRequest": {
+                        "method": "POST",
+                        "header": [],
+                        "url": {
+                            "raw": "{{baseUrl}}/action/modifygroup",
+                            "path": [
+                                "action",
+                                "modifygroup"
+                            ],
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "query": [
+                                {
+                                    "key": "media2",
+                                    "value": "449,451",
+                                    "description": "扩展终端分区id",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "groupid",
+                                    "value": "72",
+                                    "description": "分组id",
+                                    "disabled": false
+                                }
+                            ],
+                            "variable": []
+                        },
+                        "body": {
+                            "mode": "urlencoded",
+                            "urlencoded": [
+                                {
+                                    "key": "media",
+                                    "value": "72",
+                                    "description": "分组id",
+                                    "type": "text",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "groupname",
+                                    "value": "3999",
+                                    "description": "分组名称",
+                                    "type": "text",
+                                    "disabled": false
+                                }
+                            ]
+                        }
+                    },
+                    "cookie": []
+                }
+            ],
+            "protocolProfileBehavior": {
+                "strictSSL": false,
+                "followRedirects": true
+            }
+        },
+        {
+            "name": "delgroup",
+            "description": "",
+            "event": [],
+            "auth": {},
+            "request": {
+                "auth": {},
+                "method": "POST",
+                "body": {
+                    "mode": "urlencoded",
+                    "urlencoded": [
+                        {
+                            "key": "groupid",
+                            "value": "71",
+                            "description": "分组id",
+                            "type": "text",
+                            "disabled": false
+                        }
+                    ]
+                },
+                "header": [],
+                "url": {
+                    "raw": "{{baseUrl}}/action/deltegroup",
+                    "path": [
+                        "action",
+                        "deltegroup"
+                    ],
+                    "host": [
+                        "{{baseUrl}}"
+                    ],
+                    "query": [],
+                    "variable": []
+                }
+            },
+            "response": [
+                {
+                    "name": "成功",
+                    "originalRequest": {
+                        "method": "POST",
+                        "header": [],
+                        "url": {
+                            "raw": "{{baseUrl}}/action/deltegroup",
+                            "path": [
+                                "action",
+                                "deltegroup"
+                            ],
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "query": [],
+                            "variable": []
+                        },
+                        "body": {
+                            "mode": "urlencoded",
+                            "urlencoded": [
+                                {
+                                    "key": "groupid",
+                                    "value": "71",
+                                    "description": "分组id",
+                                    "type": "text",
+                                    "disabled": false
+                                }
+                            ]
+                        }
+                    },
+                    "cookie": []
+                }
+            ],
+            "protocolProfileBehavior": {
+                "strictSSL": false,
+                "followRedirects": true
+            }
+        },
+        {
+            "name": "getterminalid",
+            "description": "",
+            "event": [],
+            "auth": {},
+            "request": {
+                "auth": {},
+                "method": "POST",
+                "body": {
+                    "mode": "formdata",
+                    "formdata": [
+                        {
+                            "key": "groupid",
+                            "value": "70",
+                            "description": "分组id",
+                            "type": "text",
+                            "disabled": false
+                        }
+                    ]
+                },
+                "header": [],
+                "url": {
+                    "raw": "{{baseUrl}}/action/getterminalid",
+                    "path": [
+                        "action",
+                        "getterminalid"
+                    ],
+                    "host": [
+                        "{{baseUrl}}"
+                    ],
+                    "query": [],
+                    "variable": []
+                }
+            },
+            "response": [
+                {
+                    "name": "成功",
+                    "originalRequest": {
+                        "method": "POST",
+                        "header": [],
+                        "url": {
+                            "raw": "{{baseUrl}}/action/getterminalid",
+                            "path": [
+                                "action",
+                                "getterminalid"
+                            ],
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "query": [],
+                            "variable": []
+                        },
+                        "body": {
+                            "mode": "formdata",
+                            "formdata": [
+                                {
+                                    "key": "groupid",
+                                    "value": "70",
+                                    "description": "分组id",
+                                    "type": "text",
+                                    "disabled": false
+                                }
+                            ]
+                        }
+                    },
+                    "cookie": []
+                }
+            ],
+            "protocolProfileBehavior": {
+                "strictSSL": false,
+                "followRedirects": true
+            }
+        },
+        {
+            "name": "opensech",
+            "description": "",
+            "event": [],
+            "auth": {},
+            "request": {
+                "auth": {},
+                "method": "POST",
+                "body": {},
+                "header": [],
+                "url": {
+                    "raw": "{{baseUrl}}/action/opensech",
+                    "path": [
+                        "action",
+                        "opensech"
+                    ],
+                    "host": [
+                        "{{baseUrl}}"
+                    ],
+                    "query": [
+                        {
+                            "key": "id",
+                            "value": "1",
+                            "description": "方案id",
+                            "type": "string"
+                        }
+                    ],
+                    "variable": []
+                }
+            },
+            "response": [
+                {
+                    "name": "成功",
+                    "originalRequest": {
+                        "method": "POST",
+                        "header": [],
+                        "url": {
+                            "raw": "{{baseUrl}}/action/opensech",
+                            "path": [
+                                "action",
+                                "opensech"
+                            ],
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "query": [
+                                {
+                                    "key": "id",
+                                    "value": "1",
+                                    "description": "方案id",
+                                    "disabled": false
+                                }
+                            ],
+                            "variable": []
+                        },
+                        "body": {}
+                    },
+                    "cookie": []
+                }
+            ],
+            "protocolProfileBehavior": {
+                "strictSSL": false,
+                "followRedirects": true
+            }
+        },
+        {
+            "name": "saveprogramname",
+            "description": "",
+            "event": [],
+            "auth": {},
+            "request": {
+                "auth": {},
+                "method": "POST",
+                "body": {
+                    "mode": "formdata",
+                    "formdata": [
+                        {
+                            "key": "id",
+                            "value": "1",
+                            "description": "方案id",
+                            "type": "text",
+                            "disabled": false
+                        },
+                        {
+                            "key": "name",
+                            "value": "方案18",
+                            "description": "方案名称",
+                            "type": "text",
+                            "disabled": false
+                        }
+                    ]
+                },
+                "header": [],
+                "url": {
+                    "raw": "{{baseUrl}}/action/saveprogramname",
+                    "path": [
+                        "action",
+                        "saveprogramname"
+                    ],
+                    "host": [
+                        "{{baseUrl}}"
+                    ],
+                    "query": [],
+                    "variable": []
+                }
+            },
+            "response": [
+                {
+                    "name": "成功",
+                    "originalRequest": {
+                        "method": "POST",
+                        "header": [],
+                        "url": {
+                            "raw": "{{baseUrl}}/action/saveprogramname",
+                            "path": [
+                                "action",
+                                "saveprogramname"
+                            ],
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "query": [],
+                            "variable": []
+                        },
+                        "body": {
+                            "mode": "formdata",
+                            "formdata": [
+                                {
+                                    "key": "id",
+                                    "value": "1",
+                                    "description": "方案id",
+                                    "type": "text",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "name",
+                                    "value": "方案18",
+                                    "description": "方案名称",
+                                    "type": "text",
+                                    "disabled": false
+                                }
+                            ]
+                        }
+                    },
+                    "cookie": []
+                }
+            ],
+            "protocolProfileBehavior": {
+                "strictSSL": false,
+                "followRedirects": true
+            }
+        },
+        {
+            "name": "copygudingprogram",
+            "description": "",
+            "event": [],
+            "auth": {},
+            "request": {
+                "auth": {},
+                "method": "POST",
+                "body": {
+                    "mode": "formdata",
+                    "formdata": [
+                        {
+                            "key": "id",
+                            "value": "5",
+                            "description": "新方案id(复制方案)",
+                            "type": "text",
+                            "disabled": false
+                        },
+                        {
+                            "key": "yuan",
+                            "value": "3",
+                            "description": "源方案id",
+                            "type": "text",
+                            "disabled": false
+                        }
+                    ]
+                },
+                "header": [],
+                "url": {
+                    "raw": "{{baseUrl}}/action/copygudingprogram",
+                    "path": [
+                        "action",
+                        "copygudingprogram"
+                    ],
+                    "host": [
+                        "{{baseUrl}}"
+                    ],
+                    "query": [],
+                    "variable": []
+                }
+            },
+            "response": [
+                {
+                    "name": "成功",
+                    "originalRequest": {
+                        "method": "POST",
+                        "header": [],
+                        "url": {
+                            "raw": "{{baseUrl}}/action/copygudingprogram",
+                            "path": [
+                                "action",
+                                "copygudingprogram"
+                            ],
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "query": [],
+                            "variable": []
+                        },
+                        "body": {
+                            "mode": "formdata",
+                            "formdata": [
+                                {
+                                    "key": "id",
+                                    "value": "5",
+                                    "description": "新方案id(复制方案)",
+                                    "type": "text",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "yuan",
+                                    "value": "3",
+                                    "description": "源方案id",
+                                    "type": "text",
+                                    "disabled": false
+                                }
+                            ]
+                        }
+                    },
+                    "cookie": []
+                }
+            ],
+            "protocolProfileBehavior": {
+                "strictSSL": false,
+                "followRedirects": true
+            }
+        },
+        {
+            "name": "deletegudingprogram",
+            "description": "",
+            "event": [],
+            "auth": {},
+            "request": {
+                "auth": {},
+                "method": "GET",
+                "body": {},
+                "header": [],
+                "url": {
+                    "raw": "{{baseUrl}}/action/deletegudinggrogram",
+                    "path": [
+                        "action",
+                        "deletegudinggrogram"
+                    ],
+                    "host": [
+                        "{{baseUrl}}"
+                    ],
+                    "query": [
+                        {
+                            "key": "id",
+                            "value": "3",
+                            "description": "方案id(删除方案)",
+                            "type": "string"
+                        },
+                        {
+                            "key": "dhxr1778144592355",
+                            "value": "1",
+                            "description": "",
+                            "type": "string"
+                        }
+                    ],
+                    "variable": []
+                }
+            },
+            "response": [
+                {
+                    "name": "成功",
+                    "originalRequest": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{baseUrl}}/action/deletegudinggrogram",
+                            "path": [
+                                "action",
+                                "deletegudinggrogram"
+                            ],
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "query": [
+                                {
+                                    "key": "id",
+                                    "value": "3",
+                                    "description": "方案id(删除方案)",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "dhxr1778144592355",
+                                    "value": "1",
+                                    "description": "",
+                                    "type": "string"
+                                }
+                            ],
+                            "variable": []
+                        },
+                        "body": {}
+                    },
+                    "cookie": []
+                }
+            ],
+            "protocolProfileBehavior": {
+                "strictSSL": false,
+                "followRedirects": true
+            }
+        },
+        {
+            "name": "activeprogram",
+            "description": "",
+            "event": [],
+            "auth": {},
+            "request": {
+                "auth": {},
+                "method": "POST",
+                "body": {
+                    "mode": "formdata",
+                    "formdata": [
+                        {
+                            "key": "id",
+                            "value": "5",
+                            "description": "方案id(启用方案)",
+                            "type": "text",
+                            "disabled": false
+                        }
+                    ]
+                },
+                "header": [],
+                "url": {
+                    "raw": "{{baseUrl}}/action/activeprogram",
+                    "path": [
+                        "action",
+                        "activeprogram"
+                    ],
+                    "host": [
+                        "{{baseUrl}}"
+                    ],
+                    "query": [],
+                    "variable": []
+                }
+            },
+            "response": [
+                {
+                    "name": "成功",
+                    "originalRequest": {
+                        "method": "POST",
+                        "header": [],
+                        "url": {
+                            "raw": "{{baseUrl}}/action/activeprogram",
+                            "path": [
+                                "action",
+                                "activeprogram"
+                            ],
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "query": [],
+                            "variable": []
+                        },
+                        "body": {
+                            "mode": "formdata",
+                            "formdata": [
+                                {
+                                    "key": "id",
+                                    "value": "5",
+                                    "description": "方案id(启用方案)",
+                                    "type": "text",
+                                    "disabled": false
+                                }
+                            ]
+                        }
+                    },
+                    "cookie": []
+                }
+            ],
+            "protocolProfileBehavior": {
+                "strictSSL": false,
+                "followRedirects": true
+            }
+        },
+        {
+            "name": "addtask",
+            "description": "",
+            "event": [],
+            "auth": {},
+            "request": {
+                "auth": {},
+                "method": "POST",
+                "body": {
+                    "mode": "formdata",
+                    "formdata": [
+                        {
+                            "key": "media",
+                            "value": "359,360,361",
+                            "description": "媒体id",
+                            "type": "text",
+                            "disabled": false
+                        },
+                        {
+                            "key": "terminal",
+                            "value": "2_446,2_445",
+                            "description": "分区id（2表示未分组）",
+                            "type": "text",
+                            "disabled": false
+                        },
+                        {
+                            "key": "taskname",
+                            "value": "32222",
+                            "description": "任务名称",
+                            "type": "text",
+                            "disabled": false
+                        },
+                        {
+                            "key": "playhour",
+                            "value": "12",
+                            "description": "播放时",
+                            "type": "text",
+                            "disabled": false
+                        },
+                        {
+                            "key": "playminute",
+                            "value": "10",
+                            "description": "播放分",
+                            "type": "text",
+                            "disabled": false
+                        },
+                        {
+                            "key": "playsecond",
+                            "value": "0",
+                            "description": "播放秒",
+                            "type": "text",
+                            "disabled": false
+                        },
+                        {
+                            "key": "playmode",
+                            "value": "0",
+                            "description": "播放时长或次数，0是时长，1是次数",
+                            "type": "text",
+                            "disabled": false
+                        },
+                        {
+                            "key": "timehour",
+                            "value": "3",
+                            "description": "时长（时）",
+                            "type": "text",
+                            "disabled": false
+                        },
+                        {
+                            "key": "timeminute",
+                            "value": "3",
+                            "description": "时长(分)",
+                            "type": "text",
+                            "disabled": false
+                        },
+                        {
+                            "key": "timesecond",
+                            "value": "3",
+                            "description": "时长(秒)",
+                            "type": "text",
+                            "disabled": false
+                        },
+                        {
+                            "key": "times",
+                            "value": "1",
+                            "description": "播放次数（playmode=0，次数未生效）",
+                            "type": "text",
+                            "disabled": false
+                        },
+                        {
+                            "key": "volume",
+                            "value": "80",
+                            "description": "音量（0-100）",
+                            "type": "text",
+                            "disabled": false
+                        },
+                        {
+                            "key": "enableordis",
+                            "value": "0",
+                            "description": "启用=0，停用=1",
+                            "type": "text",
+                            "disabled": false
+                        },
+                        {
+                            "key": "area0",
+                            "value": "1",
+                            "description": "分区1",
+                            "type": "text",
+                            "disabled": false
+                        },
+                        {
+                            "key": "area1",
+                            "value": "1",
+                            "description": "分区2",
+                            "type": "text",
+                            "disabled": false
+                        },
+                        {
+                            "key": "area2",
+                            "value": "1",
+                            "description": "分区3",
+                            "type": "text",
+                            "disabled": false
+                        },
+                        {
+                            "key": "area3",
+                            "value": "1",
+                            "description": "分区4",
+                            "type": "text",
+                            "disabled": false
+                        },
+                        {
+                            "key": "area4",
+                            "value": "1",
+                            "description": "分区5",
+                            "type": "text",
+                            "disabled": false
+                        },
+                        {
+                            "key": "area5",
+                            "value": "1",
+                            "description": "分区6",
+                            "type": "text",
+                            "disabled": false
+                        },
+                        {
+                            "key": "area6",
+                            "value": "1",
+                            "description": "功放电源",
+                            "type": "text",
+                            "disabled": false
+                        },
+                        {
+                            "key": "area7",
+                            "value": "0",
+                            "description": "外控电源",
+                            "type": "text",
+                            "disabled": false
+                        },
+                        {
+                            "key": "workmode",
+                            "value": "0",
+                            "description": "执行模式 每日=0，手动=1（手动日期全为0）",
+                            "type": "text",
+                            "disabled": false
+                        },
+                        {
+                            "key": "day0",
+                            "value": "1",
+                            "description": "周一",
+                            "type": "text",
+                            "disabled": false
+                        },
+                        {
+                            "key": "day1",
+                            "value": "1",
+                            "description": "周二",
+                            "type": "text",
+                            "disabled": false
+                        },
+                        {
+                            "key": "day2",
+                            "value": "1",
+                            "description": "周三",
+                            "type": "text",
+                            "disabled": false
+                        },
+                        {
+                            "key": "day3",
+                            "value": "1",
+                            "description": "周四",
+                            "type": "text",
+                            "disabled": false
+                        },
+                        {
+                            "key": "day4",
+                            "value": "1",
+                            "description": "周五",
+                            "type": "text",
+                            "disabled": false
+                        },
+                        {
+                            "key": "day5",
+                            "value": "1",
+                            "description": "周六",
+                            "type": "text",
+                            "disabled": false
+                        },
+                        {
+                            "key": "day6",
+                            "value": "1",
+                            "description": "周日",
+                            "type": "text",
+                            "disabled": false
+                        },
+                        {
+                            "key": "pretime",
+                            "value": "10",
+                            "description": "功放预开",
+                            "type": "text",
+                            "disabled": false
+                        },
+                        {
+                            "key": "delaytime",
+                            "value": "10",
+                            "description": "功放迟关",
+                            "type": "text",
+                            "disabled": false
+                        },
+                        {
+                            "key": "random",
+                            "value": "0",
+                            "description": "随机播放",
+                            "type": "text",
+                            "disabled": false
+                        }
+                    ]
+                },
+                "header": [],
+                "url": {
+                    "raw": "{{baseUrl}}/action/addtask",
+                    "path": [
+                        "action",
+                        "addtask"
+                    ],
+                    "host": [
+                        "{{baseUrl}}"
+                    ],
+                    "query": [
+                        {
+                            "key": "id",
+                            "value": "1",
+                            "description": "方案id",
+                            "type": "string"
+                        }
+                    ],
+                    "variable": []
+                }
+            },
+            "response": [
+                {
+                    "name": "成功",
+                    "originalRequest": {
+                        "method": "POST",
+                        "header": [],
+                        "url": {
+                            "raw": "{{baseUrl}}/action/addtask",
+                            "path": [
+                                "action",
+                                "addtask"
+                            ],
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "query": [
+                                {
+                                    "key": "id",
+                                    "value": "1",
+                                    "description": "方案id",
+                                    "disabled": false
+                                }
+                            ],
+                            "variable": []
+                        },
+                        "body": {
+                            "mode": "formdata",
+                            "formdata": [
+                                {
+                                    "key": "media",
+                                    "value": "359,360,361",
+                                    "description": "媒体id",
+                                    "type": "text",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "terminal",
+                                    "value": "2_446,2_445",
+                                    "description": "分区id（2表示未分组）",
+                                    "type": "text",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "taskname",
+                                    "value": "32222",
+                                    "description": "任务名称",
+                                    "type": "text",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "playhour",
+                                    "value": "12",
+                                    "description": "播放时",
+                                    "type": "text",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "playminute",
+                                    "value": "10",
+                                    "description": "播放分",
+                                    "type": "text",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "playsecond",
+                                    "value": "0",
+                                    "description": "播放秒",
+                                    "type": "text",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "playmode",
+                                    "value": "0",
+                                    "description": "播放时长或次数，0是时长，1是次数",
+                                    "type": "text",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "timehour",
+                                    "value": "3",
+                                    "description": "时长（时）",
+                                    "type": "text",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "timeminute",
+                                    "value": "3",
+                                    "description": "时长(分)",
+                                    "type": "text",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "timesecond",
+                                    "value": "3",
+                                    "description": "时长(秒)",
+                                    "type": "text",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "times",
+                                    "value": "1",
+                                    "description": "播放次数（playmode=0，次数未生效）",
+                                    "type": "text",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "volume",
+                                    "value": "80",
+                                    "description": "音量（0-100）",
+                                    "type": "text",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "enableordis",
+                                    "value": "0",
+                                    "description": "启用=0，停用=1",
+                                    "type": "text",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "area0",
+                                    "value": "1",
+                                    "description": "分区1",
+                                    "type": "text",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "area1",
+                                    "value": "1",
+                                    "description": "分区2",
+                                    "type": "text",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "area2",
+                                    "value": "1",
+                                    "description": "分区3",
+                                    "type": "text",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "area3",
+                                    "value": "1",
+                                    "description": "分区4",
+                                    "type": "text",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "area4",
+                                    "value": "1",
+                                    "description": "分区5",
+                                    "type": "text",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "area5",
+                                    "value": "1",
+                                    "description": "分区6",
+                                    "type": "text",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "area6",
+                                    "value": "1",
+                                    "description": "功放电源",
+                                    "type": "text",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "area7",
+                                    "value": "0",
+                                    "description": "外控电源",
+                                    "type": "text",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "workmode",
+                                    "value": "0",
+                                    "description": "执行模式 每日=0，手动=1（手动日期全为0）",
+                                    "type": "text",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "day0",
+                                    "value": "1",
+                                    "description": "周一",
+                                    "type": "text",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "day1",
+                                    "value": "1",
+                                    "description": "周二",
+                                    "type": "text",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "day2",
+                                    "value": "1",
+                                    "description": "周三",
+                                    "type": "text",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "day3",
+                                    "value": "1",
+                                    "description": "周四",
+                                    "type": "text",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "day4",
+                                    "value": "1",
+                                    "description": "周五",
+                                    "type": "text",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "day5",
+                                    "value": "1",
+                                    "description": "周六",
+                                    "type": "text",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "day6",
+                                    "value": "1",
+                                    "description": "周日",
+                                    "type": "text",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "pretime",
+                                    "value": "10",
+                                    "description": "功放预开",
+                                    "type": "text",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "delaytime",
+                                    "value": "10",
+                                    "description": "功放迟关",
+                                    "type": "text",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "random",
+                                    "value": "0",
+                                    "description": "随机播放",
+                                    "type": "text",
+                                    "disabled": false
+                                }
+                            ]
+                        }
+                    },
+                    "cookie": []
+                }
+            ],
+            "protocolProfileBehavior": {
+                "strictSSL": false,
+                "followRedirects": true
+            }
+        },
+        {
+            "name": "modifytask",
+            "description": "",
+            "event": [],
+            "auth": {},
+            "request": {
+                "auth": {},
+                "method": "POST",
+                "body": {
+                    "mode": "formdata",
+                    "formdata": [
+                        {
+                            "key": "media",
+                            "value": "359,360,361",
+                            "description": "媒体id",
+                            "type": "text",
+                            "disabled": false
+                        },
+                        {
+                            "key": "terminal",
+                            "value": "2_446,2_445",
+                            "description": "分区id（2表示未分组）",
+                            "type": "text",
+                            "disabled": false
+                        },
+                        {
+                            "key": "taskname",
+                            "value": "32222",
+                            "description": "任务名称",
+                            "type": "text",
+                            "disabled": false
+                        },
+                        {
+                            "key": "playhour",
+                            "value": "12",
+                            "description": "播放时",
+                            "type": "text",
+                            "disabled": false
+                        },
+                        {
+                            "key": "playminute",
+                            "value": "10",
+                            "description": "播放分",
+                            "type": "text",
+                            "disabled": false
+                        },
+                        {
+                            "key": "playsecond",
+                            "value": "0",
+                            "description": "播放秒",
+                            "type": "text",
+                            "disabled": false
+                        },
+                        {
+                            "key": "playmode",
+                            "value": "0",
+                            "description": "播放时长或次数，0是时长，1是次数",
+                            "type": "text",
+                            "disabled": false
+                        },
+                        {
+                            "key": "timehour",
+                            "value": "3",
+                            "description": "时长（时）",
+                            "type": "text",
+                            "disabled": false
+                        },
+                        {
+                            "key": "timeminute",
+                            "value": "3",
+                            "description": "时长(分)",
+                            "type": "text",
+                            "disabled": false
+                        },
+                        {
+                            "key": "timesecond",
+                            "value": "3",
+                            "description": "时长(秒)",
+                            "type": "text",
+                            "disabled": false
+                        },
+                        {
+                            "key": "times",
+                            "value": "1",
+                            "description": "播放次数（playmode=0，次数未生效）",
+                            "type": "text",
+                            "disabled": false
+                        },
+                        {
+                            "key": "volume",
+                            "value": "80",
+                            "description": "音量（0-100）",
+                            "type": "text",
+                            "disabled": false
+                        },
+                        {
+                            "key": "enableordis",
+                            "value": "0",
+                            "description": "启用=0，停用=1",
+                            "type": "text",
+                            "disabled": false
+                        },
+                        {
+                            "key": "area0",
+                            "value": "1",
+                            "description": "分区1",
+                            "type": "text",
+                            "disabled": false
+                        },
+                        {
+                            "key": "area1",
+                            "value": "1",
+                            "description": "分区2",
+                            "type": "text",
+                            "disabled": false
+                        },
+                        {
+                            "key": "area2",
+                            "value": "1",
+                            "description": "分区3",
+                            "type": "text",
+                            "disabled": false
+                        },
+                        {
+                            "key": "area3",
+                            "value": "1",
+                            "description": "分区4",
+                            "type": "text",
+                            "disabled": false
+                        },
+                        {
+                            "key": "area4",
+                            "value": "1",
+                            "description": "分区5",
+                            "type": "text",
+                            "disabled": false
+                        },
+                        {
+                            "key": "area5",
+                            "value": "1",
+                            "description": "分区6",
+                            "type": "text",
+                            "disabled": false
+                        },
+                        {
+                            "key": "area6",
+                            "value": "1",
+                            "description": "功放电源",
+                            "type": "text",
+                            "disabled": false
+                        },
+                        {
+                            "key": "area7",
+                            "value": "0",
+                            "description": "外控电源",
+                            "type": "text",
+                            "disabled": false
+                        },
+                        {
+                            "key": "workmode",
+                            "value": "0",
+                            "description": "执行模式 每日=0，手动=1（手动日期全为0）",
+                            "type": "text",
+                            "disabled": false
+                        },
+                        {
+                            "key": "day0",
+                            "value": "1",
+                            "description": "周一",
+                            "type": "text",
+                            "disabled": false
+                        },
+                        {
+                            "key": "day1",
+                            "value": "1",
+                            "description": "周二",
+                            "type": "text",
+                            "disabled": false
+                        },
+                        {
+                            "key": "day2",
+                            "value": "1",
+                            "description": "周三",
+                            "type": "text",
+                            "disabled": false
+                        },
+                        {
+                            "key": "day3",
+                            "value": "1",
+                            "description": "周四",
+                            "type": "text",
+                            "disabled": false
+                        },
+                        {
+                            "key": "day4",
+                            "value": "1",
+                            "description": "周五",
+                            "type": "text",
+                            "disabled": false
+                        },
+                        {
+                            "key": "day5",
+                            "value": "1",
+                            "description": "周六",
+                            "type": "text",
+                            "disabled": false
+                        },
+                        {
+                            "key": "day6",
+                            "value": "1",
+                            "description": "周日",
+                            "type": "text",
+                            "disabled": false
+                        },
+                        {
+                            "key": "pretime",
+                            "value": "10",
+                            "description": "功放预开",
+                            "type": "text",
+                            "disabled": false
+                        },
+                        {
+                            "key": "delaytime",
+                            "value": "10",
+                            "description": "功放迟关",
+                            "type": "text",
+                            "disabled": false
+                        },
+                        {
+                            "key": "random",
+                            "value": "0",
+                            "description": "随机播放",
+                            "type": "text",
+                            "disabled": false
+                        }
+                    ]
+                },
+                "header": [],
+                "url": {
+                    "raw": "{{baseUrl}}/action/modifytask",
+                    "path": [
+                        "action",
+                        "modifytask"
+                    ],
+                    "host": [
+                        "{{baseUrl}}"
+                    ],
+                    "query": [
+                        {
+                            "key": "taskid",
+                            "value": "119",
+                            "description": "任务id",
+                            "type": "string"
+                        }
+                    ],
+                    "variable": []
+                }
+            },
+            "response": [
+                {
+                    "name": "成功",
+                    "originalRequest": {
+                        "method": "POST",
+                        "header": [],
+                        "url": {
+                            "raw": "{{baseUrl}}/action/modifytask",
+                            "path": [
+                                "action",
+                                "modifytask"
+                            ],
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "query": [
+                                {
+                                    "key": "taskid",
+                                    "value": "119",
+                                    "description": "任务id",
+                                    "disabled": false
+                                }
+                            ],
+                            "variable": []
+                        },
+                        "body": {
+                            "mode": "formdata",
+                            "formdata": [
+                                {
+                                    "key": "media",
+                                    "value": "359,360,361",
+                                    "description": "媒体id",
+                                    "type": "text",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "terminal",
+                                    "value": "2_446,2_445",
+                                    "description": "分区id（2表示未分组）",
+                                    "type": "text",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "taskname",
+                                    "value": "32222",
+                                    "description": "任务名称",
+                                    "type": "text",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "playhour",
+                                    "value": "12",
+                                    "description": "播放时",
+                                    "type": "text",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "playminute",
+                                    "value": "10",
+                                    "description": "播放分",
+                                    "type": "text",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "playsecond",
+                                    "value": "0",
+                                    "description": "播放秒",
+                                    "type": "text",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "playmode",
+                                    "value": "0",
+                                    "description": "播放时长或次数，0是时长，1是次数",
+                                    "type": "text",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "timehour",
+                                    "value": "3",
+                                    "description": "时长（时）",
+                                    "type": "text",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "timeminute",
+                                    "value": "3",
+                                    "description": "时长(分)",
+                                    "type": "text",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "timesecond",
+                                    "value": "3",
+                                    "description": "时长(秒)",
+                                    "type": "text",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "times",
+                                    "value": "1",
+                                    "description": "播放次数（playmode=0，次数未生效）",
+                                    "type": "text",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "volume",
+                                    "value": "80",
+                                    "description": "音量（0-100）",
+                                    "type": "text",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "enableordis",
+                                    "value": "0",
+                                    "description": "启用=0，停用=1",
+                                    "type": "text",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "area0",
+                                    "value": "1",
+                                    "description": "分区1",
+                                    "type": "text",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "area1",
+                                    "value": "1",
+                                    "description": "分区2",
+                                    "type": "text",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "area2",
+                                    "value": "1",
+                                    "description": "分区3",
+                                    "type": "text",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "area3",
+                                    "value": "1",
+                                    "description": "分区4",
+                                    "type": "text",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "area4",
+                                    "value": "1",
+                                    "description": "分区5",
+                                    "type": "text",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "area5",
+                                    "value": "1",
+                                    "description": "分区6",
+                                    "type": "text",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "area6",
+                                    "value": "1",
+                                    "description": "功放电源",
+                                    "type": "text",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "area7",
+                                    "value": "0",
+                                    "description": "外控电源",
+                                    "type": "text",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "workmode",
+                                    "value": "0",
+                                    "description": "执行模式 每日=0，手动=1（手动日期全为0）",
+                                    "type": "text",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "day0",
+                                    "value": "1",
+                                    "description": "周一",
+                                    "type": "text",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "day1",
+                                    "value": "1",
+                                    "description": "周二",
+                                    "type": "text",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "day2",
+                                    "value": "1",
+                                    "description": "周三",
+                                    "type": "text",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "day3",
+                                    "value": "1",
+                                    "description": "周四",
+                                    "type": "text",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "day4",
+                                    "value": "1",
+                                    "description": "周五",
+                                    "type": "text",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "day5",
+                                    "value": "1",
+                                    "description": "周六",
+                                    "type": "text",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "day6",
+                                    "value": "1",
+                                    "description": "周日",
+                                    "type": "text",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "pretime",
+                                    "value": "10",
+                                    "description": "功放预开",
+                                    "type": "text",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "delaytime",
+                                    "value": "10",
+                                    "description": "功放迟关",
+                                    "type": "text",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "random",
+                                    "value": "0",
+                                    "description": "随机播放",
+                                    "type": "text",
+                                    "disabled": false
+                                }
+                            ]
+                        }
+                    },
+                    "cookie": []
+                }
+            ],
+            "protocolProfileBehavior": {
+                "strictSSL": false,
+                "followRedirects": true
+            }
+        },
+        {
+            "name": "deltask",
+            "description": "",
+            "event": [],
+            "auth": {},
+            "request": {
+                "auth": {},
+                "method": "POST",
+                "body": {
+                    "mode": "formdata",
+                    "formdata": [
+                        {
+                            "key": "taskid",
+                            "value": "119",
+                            "type": "text",
+                            "disabled": false
+                        }
+                    ]
+                },
+                "header": [],
+                "url": {
+                    "raw": "{{baseUrl}}/action/deletetask",
+                    "path": [
+                        "action",
+                        "deletetask"
+                    ],
+                    "host": [
+                        "{{baseUrl}}"
+                    ],
+                    "query": [],
+                    "variable": []
+                }
+            },
+            "response": [
+                {
+                    "name": "成功",
+                    "originalRequest": {
+                        "method": "POST",
+                        "header": [],
+                        "url": {
+                            "raw": "{{baseUrl}}/action/deletetask",
+                            "path": [
+                                "action",
+                                "deletetask"
+                            ],
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "query": [],
+                            "variable": []
+                        },
+                        "body": {
+                            "mode": "formdata",
+                            "formdata": [
+                                {
+                                    "key": "taskid",
+                                    "value": "119",
+                                    "type": "text",
+                                    "disabled": false
+                                }
+                            ]
+                        }
+                    },
+                    "cookie": []
+                }
+            ],
+            "protocolProfileBehavior": {
+                "strictSSL": false,
+                "followRedirects": true
+            }
+        },
+        {
+            "name": "setvolume",
+            "description": "",
+            "event": [],
+            "auth": {},
+            "request": {
+                "auth": {},
+                "method": "POST",
+                "body": {
+                    "mode": "formdata",
+                    "formdata": [
+                        {
+                            "key": "volume",
+                            "value": "30",
+                            "description": "音量",
+                            "type": "text",
+                            "disabled": false
+                        }
+                    ]
+                },
+                "header": [],
+                "url": {
+                    "raw": "{{baseUrl}}/action/setvolume",
+                    "path": [
+                        "action",
+                        "setvolume"
+                    ],
+                    "host": [
+                        "{{baseUrl}}"
+                    ],
+                    "query": [],
+                    "variable": []
+                }
+            },
+            "response": [
+                {
+                    "name": "成功",
+                    "originalRequest": {
+                        "method": "POST",
+                        "header": [],
+                        "url": {
+                            "raw": "{{baseUrl}}/action/setvolume",
+                            "path": [
+                                "action",
+                                "setvolume"
+                            ],
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "query": [],
+                            "variable": []
+                        },
+                        "body": {
+                            "mode": "formdata",
+                            "formdata": [
+                                {
+                                    "key": "volume",
+                                    "value": "30",
+                                    "description": "音量",
+                                    "type": "text",
+                                    "disabled": false
+                                }
+                            ]
+                        }
+                    },
+                    "cookie": []
+                }
+            ],
+            "protocolProfileBehavior": {
+                "strictSSL": false,
+                "followRedirects": true
+            }
+        },
+        {
+            "name": "modifyyaokongtask",
+            "description": "",
+            "event": [],
+            "auth": {},
+            "request": {
+                "auth": {},
+                "method": "POST",
+                "body": {
+                    "mode": "formdata",
+                    "formdata": [
+                        {
+                            "key": "media",
+                            "value": "360,361",
+                            "description": "媒体id",
+                            "type": "text",
+                            "disabled": false
+                        },
+                        {
+                            "key": "terminal",
+                            "value": "1_70,2_446,2_450",
+                            "description": "终端分区,(1表示分组，70表示分组id,2=未分组，446=扩展分区id)",
+                            "type": "text",
+                            "disabled": false
+                        },
+                        {
+                            "key": "taskname",
+                            "value": "2sks",
+                            "description": "任务名称",
+                            "type": "text",
+                            "disabled": false
+                        },
+                        {
+                            "key": "playmode",
+                            "value": "1",
+                            "description": "0=时长，1=次数",
+                            "type": "text",
+                            "disabled": false
+                        },
+                        {
+                            "key": "timehour",
+                            "value": "0",
+                            "description": "时长（时）",
+                            "type": "text",
+                            "disabled": false
+                        },
+                        {
+                            "key": "timeminute",
+                            "value": "0",
+                            "description": "时长（分）",
+                            "type": "text",
+                            "disabled": false
+                        },
+                        {
+                            "key": "timesecond",
+                            "value": "0",
+                            "description": "时长（秒）",
+                            "type": "text",
+                            "disabled": false
+                        },
+                        {
+                            "key": "times",
+                            "value": "1",
+                            "description": "次数",
+                            "type": "text",
+                            "disabled": false
+                        },
+                        {
+                            "key": "yaokong",
+                            "value": "null",
+                            "description": "遥控任务生效",
+                            "type": "text",
+                            "disabled": false
+                        },
+                        {
+                            "key": "setenables",
+                            "value": "1",
+                            "description": "1=启用，0=停用",
+                            "type": "text",
+                            "disabled": false
+                        },
+                        {
+                            "key": "area0",
+                            "value": "1",
+                            "description": "分区1",
+                            "type": "text",
+                            "disabled": false
+                        },
+                        {
+                            "key": "area1",
+                            "value": "1",
+                            "description": "分区2",
+                            "type": "text",
+                            "disabled": false
+                        },
+                        {
+                            "key": "area2",
+                            "value": "1",
+                            "description": "分区3",
+                            "type": "text",
+                            "disabled": false
+                        },
+                        {
+                            "key": "area3",
+                            "value": "1",
+                            "description": "分区4",
+                            "type": "text",
+                            "disabled": false
+                        },
+                        {
+                            "key": "area4",
+                            "value": "1",
+                            "description": "分区5",
+                            "type": "text",
+                            "disabled": false
+                        },
+                        {
+                            "key": "area5",
+                            "value": "1",
+                            "description": "分区6",
+                            "type": "text",
+                            "disabled": false
+                        },
+                        {
+                            "key": "area6",
+                            "value": "1",
+                            "description": "功放电源",
+                            "type": "text",
+                            "disabled": false
+                        },
+                        {
+                            "key": "area7",
+                            "value": "0",
+                            "description": "外控电源",
+                            "type": "text",
+                            "disabled": false
+                        },
+                        {
+                            "key": "quick",
+                            "value": "0",
+                            "description": "快捷键，没用",
+                            "type": "text",
+                            "disabled": false
+                        },
+                        {
+                            "key": "volume",
+                            "value": "60",
+                            "description": "音量",
+                            "type": "text",
+                            "disabled": false
+                        },
+                        {
+                            "key": "random",
+                            "value": "0",
+                            "description": "1=随机，0=顺序",
+                            "type": "text",
+                            "disabled": false
+                        }
+                    ]
+                },
+                "header": [],
+                "url": {
+                    "raw": "{{baseUrl}}/action/yaokongtask",
+                    "path": [
+                        "action",
+                        "yaokongtask"
+                    ],
+                    "host": [
+                        "{{baseUrl}}"
+                    ],
+                    "query": [
+                        {
+                            "key": "taskid",
+                            "value": "13",
+                            "description": "任务id",
+                            "type": "string"
+                        }
+                    ],
+                    "variable": []
+                }
+            },
+            "response": [
+                {
+                    "name": "成功",
+                    "originalRequest": {
+                        "method": "POST",
+                        "header": [],
+                        "url": {
+                            "raw": "{{baseUrl}}/action/yaokongtask",
+                            "path": [
+                                "action",
+                                "yaokongtask"
+                            ],
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "query": [
+                                {
+                                    "key": "taskid",
+                                    "value": "13",
+                                    "description": "任务id",
+                                    "disabled": false
+                                }
+                            ],
+                            "variable": []
+                        },
+                        "body": {
+                            "mode": "formdata",
+                            "formdata": [
+                                {
+                                    "key": "media",
+                                    "value": "360,361",
+                                    "description": "媒体id",
+                                    "type": "text",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "terminal",
+                                    "value": "1_70,2_446,2_450",
+                                    "description": "终端分区,(1表示分组，70表示分组id,2=未分组，446=扩展分区id)",
+                                    "type": "text",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "taskname",
+                                    "value": "2sks",
+                                    "description": "任务名称",
+                                    "type": "text",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "playmode",
+                                    "value": "1",
+                                    "description": "0=时长，1=次数",
+                                    "type": "text",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "timehour",
+                                    "value": "0",
+                                    "description": "时长（时）",
+                                    "type": "text",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "timeminute",
+                                    "value": "0",
+                                    "description": "时长（分）",
+                                    "type": "text",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "timesecond",
+                                    "value": "0",
+                                    "description": "时长（秒）",
+                                    "type": "text",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "times",
+                                    "value": "1",
+                                    "description": "次数",
+                                    "type": "text",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "yaokong",
+                                    "value": "null",
+                                    "description": "遥控任务生效",
+                                    "type": "text",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "setenables",
+                                    "value": "1",
+                                    "description": "1=启用，0=停用",
+                                    "type": "text",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "area0",
+                                    "value": "1",
+                                    "description": "分区1",
+                                    "type": "text",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "area1",
+                                    "value": "1",
+                                    "description": "分区2",
+                                    "type": "text",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "area2",
+                                    "value": "1",
+                                    "description": "分区3",
+                                    "type": "text",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "area3",
+                                    "value": "1",
+                                    "description": "分区4",
+                                    "type": "text",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "area4",
+                                    "value": "1",
+                                    "description": "分区5",
+                                    "type": "text",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "area5",
+                                    "value": "1",
+                                    "description": "分区6",
+                                    "type": "text",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "area6",
+                                    "value": "1",
+                                    "description": "功放电源",
+                                    "type": "text",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "area7",
+                                    "value": "0",
+                                    "description": "外控电源",
+                                    "type": "text",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "quick",
+                                    "value": "0",
+                                    "description": "快捷键，没用",
+                                    "type": "text",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "volume",
+                                    "value": "60",
+                                    "description": "音量",
+                                    "type": "text",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "random",
+                                    "value": "0",
+                                    "description": "1=随机，0=顺序",
+                                    "type": "text",
+                                    "disabled": false
+                                }
+                            ]
+                        }
+                    },
+                    "cookie": []
+                }
+            ],
+            "protocolProfileBehavior": {
+                "strictSSL": false,
+                "followRedirects": true
+            }
+        },
+        {
+            "name": "modifyalarm",
+            "description": "",
+            "event": [],
+            "auth": {},
+            "request": {
+                "auth": {},
+                "method": "POST",
+                "body": {
+                    "mode": "formdata",
+                    "formdata": [
+                        {
+                            "key": "media",
+                            "value": "360,361",
+                            "description": "媒体id",
+                            "type": "text",
+                            "disabled": false
+                        },
+                        {
+                            "key": "terminal",
+                            "value": "1_70,2_446,2_450",
+                            "description": "终端分区,(1表示分组，70表示分组id,2=未分组，446=扩展分区id)",
+                            "type": "text",
+                            "disabled": false
+                        },
+                        {
+                            "key": "alarmname",
+                            "value": "2sks",
+                            "description": "任务名称",
+                            "type": "text",
+                            "disabled": false
+                        },
+                        {
+                            "key": "area0",
+                            "value": "1",
+                            "description": "分区1",
+                            "type": "text",
+                            "disabled": false
+                        },
+                        {
+                            "key": "area1",
+                            "value": "1",
+                            "description": "分区2",
+                            "type": "text",
+                            "disabled": false
+                        },
+                        {
+                            "key": "area2",
+                            "value": "1",
+                            "description": "分区3",
+                            "type": "text",
+                            "disabled": false
+                        },
+                        {
+                            "key": "area3",
+                            "value": "1",
+                            "description": "分区4",
+                            "type": "text",
+                            "disabled": false
+                        },
+                        {
+                            "key": "area4",
+                            "value": "1",
+                            "description": "分区5",
+                            "type": "text",
+                            "disabled": false
+                        },
+                        {
+                            "key": "area5",
+                            "value": "1",
+                            "description": "分区6",
+                            "type": "text",
+                            "disabled": false
+                        },
+                        {
+                            "key": "area6",
+                            "value": "1",
+                            "description": "功放电源",
+                            "type": "text",
+                            "disabled": false
+                        },
+                        {
+                            "key": "area7",
+                            "value": "0",
+                            "description": "外控电源",
+                            "type": "text",
+                            "disabled": false
+                        },
+                        {
+                            "key": "deftmedias",
+                            "value": "1",
+                            "description": "1=播放默认媒体。0=media栏生效",
+                            "type": "text",
+                            "disabled": false
+                        },
+                        {
+                            "key": "volume",
+                            "value": "60",
+                            "description": "音量",
+                            "type": "text",
+                            "disabled": false
+                        }
+                    ]
+                },
+                "header": [],
+                "url": {
+                    "raw": "{{baseUrl}}/action/modifyalarm",
+                    "path": [
+                        "action",
+                        "modifyalarm"
+                    ],
+                    "host": [
+                        "{{baseUrl}}"
+                    ],
+                    "query": [
+                        {
+                            "key": "taskid",
+                            "value": "13",
+                            "description": "任务id",
+                            "type": "string"
+                        }
+                    ],
+                    "variable": []
+                }
+            },
+            "response": [
+                {
+                    "name": "成功",
+                    "originalRequest": {
+                        "method": "POST",
+                        "header": [],
+                        "url": {
+                            "raw": "{{baseUrl}}/action/modifyalarm",
+                            "path": [
+                                "action",
+                                "modifyalarm"
+                            ],
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "query": [
+                                {
+                                    "key": "taskid",
+                                    "value": "13",
+                                    "description": "任务id",
+                                    "disabled": false
+                                }
+                            ],
+                            "variable": []
+                        },
+                        "body": {
+                            "mode": "formdata",
+                            "formdata": [
+                                {
+                                    "key": "media",
+                                    "value": "360,361",
+                                    "description": "媒体id",
+                                    "type": "text",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "terminal",
+                                    "value": "1_70,2_446,2_450",
+                                    "description": "终端分区,(1表示分组，70表示分组id,2=未分组，446=扩展分区id)",
+                                    "type": "text",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "alarmname",
+                                    "value": "2sks",
+                                    "description": "任务名称",
+                                    "type": "text",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "area0",
+                                    "value": "1",
+                                    "description": "分区1",
+                                    "type": "text",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "area1",
+                                    "value": "1",
+                                    "description": "分区2",
+                                    "type": "text",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "area2",
+                                    "value": "1",
+                                    "description": "分区3",
+                                    "type": "text",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "area3",
+                                    "value": "1",
+                                    "description": "分区4",
+                                    "type": "text",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "area4",
+                                    "value": "1",
+                                    "description": "分区5",
+                                    "type": "text",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "area5",
+                                    "value": "1",
+                                    "description": "分区6",
+                                    "type": "text",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "area6",
+                                    "value": "1",
+                                    "description": "功放电源",
+                                    "type": "text",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "area7",
+                                    "value": "0",
+                                    "description": "外控电源",
+                                    "type": "text",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "deftmedias",
+                                    "value": "1",
+                                    "description": "1=播放默认媒体。0=media栏生效",
+                                    "type": "text",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "volume",
+                                    "value": "60",
+                                    "description": "音量",
+                                    "type": "text",
+                                    "disabled": false
+                                }
+                            ]
+                        }
+                    },
+                    "cookie": []
+                }
+            ],
+            "protocolProfileBehavior": {
+                "strictSSL": false,
+                "followRedirects": true
+            }
+        }
+    ],
+    "variable": [],
+    "event": [],
+    "auth": {}
+}

@@ -1,0 +1,23 @@
+[Unit]
+Description=AI Speaker FastAPI Service
+After=network.target
+StartLimitIntervalSec=300
+StartLimitBurst=5
+
+[Service]
+Type=simple
+User=it0
+WorkingDirectory=/home/it0/AI_speaker
+Environment="PATH=/home/it0/miniconda3/envs/ai-speaker-py39/bin:/home/it0/miniconda3/condabin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin"
+Environment="PYTHONUNBUFFERED=1"
+EnvironmentFile=-/etc/ai-speaker/ai-speaker.env
+ExecStart=/home/it0/miniconda3/envs/ai-speaker-py39/bin/python -m uvicorn backend.api_public:app --host 0.0.0.0 --port 5018
+Restart=always
+RestartSec=5
+KillSignal=SIGINT
+TimeoutStopSec=30
+LimitNOFILE=65535
+UMask=0027
+
+[Install]
+WantedBy=multi-user.target

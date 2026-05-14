@@ -1,0 +1,225 @@
+{
+  "name": "debug_apply_action_testset",
+  "version": "1.0",
+  "description": "Manual API testset for POST /debug/apply_action. This bypasses ENGINE.infer and executes intent+slots directly.",
+  "endpoint": {
+    "method": "POST",
+    "path": "/debug/apply_action"
+  },
+  "warnings": [
+    "These cases can modify local schedules and may sync to remote when REMOTE_BASE_URL is enabled.",
+    "Run on test environment first.",
+    "For multi-step flows, keep step order."
+  ],
+  "single_cases": [
+    {
+      "id": "query_task_schedule",
+      "request": {
+        "intent": "query_task",
+        "text": "查询夏季作息",
+        "slots": {
+          "schedule_name": "夏季作息"
+        }
+      },
+      "expect": {
+        "applied": true
+      }
+    },
+    {
+      "id": "play_task",
+      "request": {
+        "intent": "play_task",
+        "text": "播放夏季作息第一节课上课铃",
+        "slots": {
+          "schedule_name": "夏季作息",
+          "task_name": "第一节课上课铃"
+        }
+      },
+      "expect": {
+        "applied": true
+      }
+    },
+    {
+      "id": "stop_task",
+      "request": {
+        "intent": "stop_task",
+        "text": "停止夏季作息第一节课上课铃",
+        "slots": {
+          "schedule_name": "夏季作息",
+          "task_name": "第一节课上课铃"
+        }
+      },
+      "expect": {
+        "applied": true
+      }
+    },
+    {
+      "id": "pause_task",
+      "request": {
+        "intent": "pause_task",
+        "text": "暂停夏季作息第一节课上课铃",
+        "slots": {
+          "schedule_name": "夏季作息",
+          "task_name": "第一节课上课铃"
+        }
+      },
+      "expect": {
+        "applied": true
+      }
+    },
+    {
+      "id": "resume_task",
+      "request": {
+        "intent": "resume_task",
+        "text": "恢复夏季作息第一节课上课铃",
+        "slots": {
+          "schedule_name": "夏季作息",
+          "task_name": "第一节课上课铃"
+        }
+      },
+      "expect": {
+        "applied": true
+      }
+    },
+    {
+      "id": "replace_media_in_task",
+      "request": {
+        "intent": "replace_media_in_task",
+        "text": "把夏季作息里的经典提示音替换为孤勇者",
+        "slots": {
+          "schedule_name": "夏季作息",
+          "media_name": "经典提示音",
+          "new_media_name": "陈奕迅  孤勇者"
+        }
+      },
+      "expect": {
+        "applied": true
+      }
+    },
+    {
+      "id": "move_schedule_permanent_direct",
+      "request": {
+        "intent": "move_schedule",
+        "text": "把夏季作息周三挪到周六，永久生效",
+        "slots": {
+          "schedule_name": "夏季作息",
+          "source_time": "周三",
+          "target_time": "周六"
+        }
+      },
+      "expect": {
+        "applied": true
+      }
+    },
+    {
+      "id": "swap_schedule_permanent_direct",
+      "request": {
+        "intent": "swap_schedule",
+        "text": "把夏季作息周三和周六对调，永久生效",
+        "slots": {
+          "schedule_name": "夏季作息",
+          "source_time": "周三",
+          "target_time": "周六"
+        }
+      },
+      "expect": {
+        "applied": true
+      }
+    }
+  ],
+  "flow_cases": [
+    {
+      "id": "move_schedule_once_flow",
+      "steps": [
+        {
+          "name": "step1_create_pending",
+          "request": {
+            "intent": "move_schedule",
+            "text": "把夏季作息周三挪到周六",
+            "slots": {
+              "schedule_name": "夏季作息",
+              "source_time": "周三",
+              "target_time": "周六"
+            }
+          },
+          "expect": {
+            "applied": true,
+            "pending_action_not_null": true
+          }
+        },
+        {
+          "name": "step2_confirm_once",
+          "request": {
+            "pending_only": true,
+            "text": "一次性"
+          },
+          "expect": {
+            "applied": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "swap_schedule_once_flow",
+      "steps": [
+        {
+          "name": "step1_create_pending",
+          "request": {
+            "intent": "swap_schedule",
+            "text": "把夏季作息周三和周六对调",
+            "slots": {
+              "schedule_name": "夏季作息",
+              "source_time": "周三",
+              "target_time": "周六"
+            }
+          },
+          "expect": {
+            "applied": true,
+            "pending_action_not_null": true
+          }
+        },
+        {
+          "name": "step2_confirm_once",
+          "request": {
+            "pending_only": true,
+            "text": "一次性"
+          },
+          "expect": {
+            "applied": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "cancel_schedule_once_flow",
+      "steps": [
+        {
+          "name": "step1_create_pending",
+          "request": {
+            "intent": "cancel_schedule",
+            "text": "取消夏季作息08:20到08:21",
+            "slots": {
+              "schedule_name": "夏季作息",
+              "TIME_START": "2026-02-12 08:20:00",
+              "TIME_END": "2026-02-12 08:21:00"
+            }
+          },
+          "expect": {
+            "applied": true,
+            "pending_action_not_null": true
+          }
+        },
+        {
+          "name": "step2_confirm_once",
+          "request": {
+            "pending_only": true,
+            "text": "一次性"
+          },
+          "expect": {
+            "applied": true
+          }
+        }
+      ]
+    }
+  ]
+}

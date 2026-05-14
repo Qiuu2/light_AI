@@ -1,0 +1,53 @@
+[
+  {
+    "text": "创建一个春季作息方案",
+    "intent": "create_scheme",
+    "slots": {
+      "schedule_kind": "春季",
+      "schedule_name": "春季作息-测试"
+    },
+    "status": "success",
+    "intent_confidence": 1,
+    "entities": {},
+    "missing_slots": [],
+    "clear_pending": false,
+    "pending_only": false
+  },
+  {
+    "text": "将冬季作息中2026-02-27 08:00到2026-02-27 10:00的任务取消",
+    "intent": "cancel_schedule",
+    "slots": {
+      "schedule_name": "冬季作息",
+      "time_range_start": "2026-02-27 08:00:00",
+      "time_range_end": "2026-02-27 10:00:00"
+    },
+    "status": "success",
+    "intent_confidence": 1,
+    "entities": {},
+    "missing_slots": [],
+    "clear_pending": false,
+    "pending_only": false
+  },
+  {
+    "text": "一次性",
+    "intent": "",
+    "slots": {},
+    "status": "success",
+    "intent_confidence": 1,
+    "entities": {},
+    "missing_slots": [],
+    "clear_pending": false,
+    "pending_only": true
+  },
+  {
+    "text": "永久",
+    "intent": "",
+    "slots": {},
+    "status": "success",
+    "intent_confidence": 1,
+    "entities": {},
+    "missing_slots": [],
+    "clear_pending": false,
+    "pending_only": true
+  }
+]
