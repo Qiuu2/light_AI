@@ -24,68 +24,6 @@
         <div class="title">
           <i class="el-icon-microphone" />
           <span>AI助手</span>
-          <div
-            v-if="hasScheduleTemplateSelection"
-            class="header-school-kind"
-            @mousedown.stop
-            @click.stop
-          >
-            <el-popover
-              v-model="schoolKindPopoverVisible"
-              placement="bottom-start"
-              width="260"
-              trigger="click"
-              popper-class="school-kind-popper"
-            >
-              <div class="school-kind-popover">
-                <div class="school-kind-popover-title">切换模板配置</div>
-                <div class="school-kind-popover-row">
-                  <div class="school-kind-popover-label">学校类型</div>
-                  <el-select
-                    :value="defaultScheduleKind"
-                    class="school-kind-popover-select"
-                    size="mini"
-                    clearable
-                    filterable
-                    placeholder="请先设置"
-                    :loading="assistantSettingsLoading || assistantSettingsSaving"
-                    @change="handleScheduleKindChange"
-                  >
-                    <el-option
-                      v-for="kind in allowedScheduleKinds"
-                      :key="`header-kind-${kind}`"
-                      :label="kind"
-                      :value="kind"
-                    />
-                  </el-select>
-                </div>
-                <div class="school-kind-popover-row">
-                  <div class="school-kind-popover-label">作息季节</div>
-                  <el-select
-                    :value="defaultScheduleSeason"
-                    class="school-kind-popover-select"
-                    size="mini"
-                    clearable
-                    filterable
-                    placeholder="请先设置"
-                    :loading="assistantSettingsLoading || assistantSettingsSaving"
-                    @change="handleScheduleSeasonChange"
-                  >
-                    <el-option
-                      v-for="season in allowedScheduleSeasons"
-                      :key="`header-season-${season}`"
-                      :label="season"
-                      :value="season"
-                    />
-                  </el-select>
-                </div>
-              </div>
-              <button slot="reference" type="button" class="school-kind-chip">
-                <span>{{ scheduleTemplateSelectionLabel }}</span>
-                <i class="el-icon-arrow-down" />
-              </button>
-            </el-popover>
-          </div>
         </div>
         <div class="actions" @mousedown.stop>
           <el-tooltip content="查看成功日志" placement="top">

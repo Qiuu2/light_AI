@@ -1,0 +1,207 @@
+/**
+ * Light Theme — 紧凑密度 + Element UI 微调
+ *
+ * 用法：在 src/main.js 里 `import '@/styles/light-theme.scss'`
+ * 放在 import Element UI 样式之后，确保覆盖优先级正确。
+ *
+ * 仅作用于 .light-page 容器下的内容，不影响其他页面。
+ */
+
+/* ========= 设计 Token ========= */
+:root {
+  /* 字体 */
+  --lt-font: 'PingFang SC', -apple-system, BlinkMacSystemFont, 'Helvetica Neue',
+             'Microsoft YaHei', 'Source Han Sans CN', 'Noto Sans SC', sans-serif;
+  --lt-mono: 'SF Mono', ui-monospace, 'JetBrains Mono', Menlo, Consolas, monospace;
+
+  /* 文本色 */
+  --lt-t1: #1f2329;        /* 主文 */
+  --lt-t2: #4e5969;        /* 次文 */
+  --lt-t3: #86909c;        /* 辅文 */
+  --lt-t4: #c0c4cc;        /* 占位/禁用 */
+
+  /* 面板 */
+  --lt-bg: #f4f5f7;
+  --lt-surface: #ffffff;
+  --lt-surface-2: #fafbfc;
+  --lt-surface-hover: #f5f7fa;
+
+  /* 线 */
+  --lt-line: #e4e7ed;
+  --lt-line-soft: #ebeef2;
+  --lt-line-strong: #d4d7de;
+
+  /* 主色（沿用 Element 默认蓝） */
+  --lt-p: #409eff;
+  --lt-p-hover: #66b1ff;
+  --lt-p-soft: #ecf5ff;
+  --lt-p-line: #d9ecff;
+
+  /* 语义色 */
+  --lt-ok: #67c23a;
+  --lt-ok-soft: #f0f9eb;
+  --lt-warn: #e6a23c;
+  --lt-warn-soft: #fdf6ec;
+  --lt-danger: #f56c6c;
+  --lt-danger-soft: #fef0f0;
+  --lt-info: #909399;
+
+  /* 圆角 */
+  --lt-r-sm: 3px;
+  --lt-r: 4px;
+  --lt-r-lg: 6px;
+
+  /* 阴影 */
+  --lt-shadow-1: 0 1px 2px rgba(15, 23, 42, 0.04), 0 0 0 1px rgba(15, 23, 42, 0.04);
+  --lt-shadow-2: 0 2px 8px rgba(15, 23, 42, 0.08), 0 0 0 1px rgba(15, 23, 42, 0.04);
+}
+
+/* ========= 页面容器 ========= */
+.light-page {
+  padding: 16px;
+  background: var(--lt-bg);
+  min-height: 100%;
+  font-family: var(--lt-font);
+  color: var(--lt-t1);
+  font-size: 13px;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+
+  /* ===== Element UI 紧凑覆盖（仅作用域内） ===== */
+
+  /* 卡片 */
+  .el-card {
+    border-radius: var(--lt-r-lg);
+    border-color: var(--lt-line);
+    box-shadow: var(--lt-shadow-1);
+
+    .el-card__header {
+      padding: 12px 16px;
+      border-bottom-color: var(--lt-line-soft);
+      font-weight: 600;
+      color: var(--lt-t1);
+    }
+    .el-card__body {
+      padding: 14px 16px;
+    }
+  }
+
+  /* 表格 — 紧凑模式 */
+  .el-table {
+    font-size: 12px;
+    color: var(--lt-t1);
+
+    th.el-table__cell {
+      background: var(--lt-surface-2);
+      color: var(--lt-t2);
+      font-weight: 500;
+      padding: 8px 0;
+    }
+    td.el-table__cell {
+      padding: 6px 0;
+    }
+    .cell {
+      padding-left: 10px;
+      padding-right: 10px;
+      line-height: 1.5;
+    }
+    &.el-table--mini td.el-table__cell {
+      padding: 5px 0;
+    }
+  }
+
+  /* 按钮 — 紧凑 + 间距 */
+  .el-button + .el-button {
+    margin-left: 6px;
+  }
+  .el-button--mini {
+    padding: 5px 10px;
+  }
+  .el-button--small {
+    padding: 6px 12px;
+  }
+
+  /* 标签 */
+  .el-tag--mini {
+    height: 18px;
+    line-height: 16px;
+    padding: 0 6px;
+  }
+
+  /* 表单 */
+  .el-form-item {
+    margin-bottom: 14px;
+  }
+  .el-form-item__label {
+    font-weight: 500;
+    color: var(--lt-t2);
+    font-size: 12px;
+  }
+  .el-input--small .el-input__inner,
+  .el-input--mini .el-input__inner {
+    border-color: var(--lt-line-strong);
+  }
+  .el-input--small .el-input__inner:focus,
+  .el-select__inner:focus {
+    border-color: var(--lt-p);
+  }
+
+  /* Alert */
+  .el-alert {
+    padding: 8px 12px;
+    border-radius: var(--lt-r);
+    font-size: 12px;
+    .el-alert__title {
+      font-size: 12px;
+      line-height: 1.5;
+    }
+  }
+
+  /* 分割线 */
+  .el-divider--horizontal {
+    margin: 12px 0;
+  }
+
+  /* 对话框 */
+  .el-dialog__header {
+    padding: 14px 20px;
+    border-bottom: 1px solid var(--lt-line-soft);
+  }
+  .el-dialog__title {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--lt-t1);
+  }
+  .el-dialog__body {
+    padding: 18px 20px;
+  }
+  .el-dialog__footer {
+    padding: 12px 20px;
+    border-top: 1px solid var(--lt-line-soft);
+  }
+
+  /* Checkbox / Radio — 紧凑 */
+  .el-checkbox + .el-checkbox,
+  .el-radio + .el-radio {
+    margin-left: 12px;
+  }
+}
+
+/* ========= 通用工具 ========= */
+.lt-mono { font-family: var(--lt-mono); }
+.lt-muted { color: var(--lt-t3); }
+.lt-tiny { font-size: 11px; }
+
+/* 紧凑表格单元格的状态点 */
+.lt-dot {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  margin-right: 4px;
+  vertical-align: middle;
+}
+.lt-dot--ok { background: var(--lt-ok); }
+.lt-dot--warn { background: var(--lt-warn); }
+.lt-dot--danger { background: var(--lt-danger); }
+.lt-dot--info { background: var(--lt-info); }
