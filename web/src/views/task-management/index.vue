@@ -1,53 +1,111 @@
+<!--
+  任务管理 — 紧凑表格 + 状态筛选 + 搜索
+
+  接口（不动）:
+    fetchLightTasks      GET    /api/light/tasks
+    executeLightTask     POST   /api/light/tasks/{id}/execute   (重放)
+    stopLightTask        POST   /api/light/tasks/{id}/stop      (停止)
+-->
 <template>
   <div class="light-page">
-    <div class="page-head">
-      <div>
-        <h2>任务管理</h2>
-        <p>查看快捷任务，执行或停止已有任务。</p>
-      </div>
-      <el-button size="small" icon="el-icon-refresh" :loading="loading" @click="loadTasks">刷新</el-button>
-    </div>
+    <page-header
+      title="任务管理"
+      subtitle="查看快捷任务、状态、运行情况；支持搜索与按状态筛选"
+    >
+      <template #status>
+        <el-tag size="small" type="info" effect="plain">
+          共 {{ taskRows.length }} 条
+        </el-tag>
+      </template>
+      <el-button size="small" icon="el-icon-refresh" :loading="loading" @click="loadTasks">
+        刷新
+      </el-button>
+    </page-header>
 
-    <el-card shadow="never" class="table-card">
-      <el-table v-loading="loading" :data="taskRows" border size="small" empty-text="暂无任务数据">
-        <el-table-column type="index" width="48" />
-        <el-table-column label="任务ID" width="110">
-          <template slot-scope="{ row }">{{ taskId(row) || '-' }}</template>
-        </el-table-column>
-        <el-table-column label="任务名称" min-width="180">
-          <template slot-scope="{ row }">{{ row.taskname || row.name || row.title || '-' }}</template>
-        </el-table-column>
-        <el-table-column label="播放时间" width="130">
-          <template slot-scope="{ row }">{{ row.playtime || row.time || '-' }}</template>
-        </el-table-column>
-        <el-table-column label="状态" width="110">
+    <el-card shadow="never">
+      <task-filter-bar
+        :tab.sync="tab"
+        :search.sync="search"
+        :counts="counts"
+      />
+
+      <el-table
+        v-loading="loading"
+        :data="filteredRows"
+        border
+        size="mini"
+        empty-text="暂无任务数据"
+        class="lt-task-mgmt-table"
+      >
+        <el-table-column type="index" width="44" />
+
+        <el-table-column label="任务 ID" width="80">
           <template slot-scope="{ row }">
-            <el-tag size="mini">{{ row.status || row.state || row.enableordis || '未知' }}</el-tag>
+            <span class="lt-mono lt-muted">{{ taskId(row) || '-' }}</span>
           </template>
         </el-table-column>
-        <el-table-column label="原始字段" min-width="260">
+
+        <el-table-column label="任务名称" min-width="160">
+          <template slot-scope="{ row }">{{ taskName(row) }}</template>
+        </el-table-column>
+
+        <el-table-column label="播放时间" width="110">
           <template slot-scope="{ row }">
-            <span class="raw-preview">{{ compactRow(row) }}</span>
+            <span class="lt-mono">{{ row.playtime || row.time || '-' }}</span>
           </template>
         </el-table-column>
-        <el-table-column label="操作" width="160" fixed="right">
+
+        <el-table-column label="状态" width="100">
           <template slot-scope="{ row }">
-            <el-button type="text" size="mini" :loading="busyId === `run-${taskId(row)}`" @click="execute(row)">执行</el-button>
-            <el-button type="text" size="mini" class="danger-link" :loading="busyId === `stop-${taskId(row)}`" @click="stop(row)">停止</el-button>
+            <task-status-tag :status="statusOf(row)" />
+          </template>
+        </el-table-column>
+
+        <el-table-column label="原始字段" min-width="240">
+          <template slot-scope="{ row }">
+            <span class="lt-raw">{{ compactRow(row) }}</span>
+          </template>
+        </el-table-column>
+
+        <el-table-column label="操作" width="140" fixed="right">
+          <template slot-scope="{ row }">
+            <el-button
+              type="text"
+              size="mini"
+              :loading="busyId === `run-${taskId(row)}`"
+              @click="execute(row)"
+            >
+              <i class="el-icon-video-play" /> 执行
+            </el-button>
+            <el-button
+              type="text"
+              size="mini"
+              class="lt-danger-link"
+              :loading="busyId === `stop-${taskId(row)}`"
+              @click="stop(row)"
+            >
+              <i class="el-icon-video-pause" /> 停止
+            </el-button>
           </template>
         </el-table-column>
       </el-table>
     </el-card>
 
-    <el-card v-if="lastRaw" shadow="never" class="raw-card">
-      <div slot="header">最近一次接口响应</div>
-      <pre>{{ lastRaw }}</pre>
+    <el-card v-if="lastRaw" shadow="never" class="lt-raw-card">
+      <div slot="header" class="lt-raw-card__header">
+        <span>最近一次接口响应</span>
+        <el-button type="text" size="mini" @click="lastRaw = ''">关闭</el-button>
+      </div>
+      <pre class="lt-raw-card__pre">{{ lastRaw }}</pre>
     </el-card>
   </div>
 </template>
 
 <script>
 import { executeLightTask, fetchLightTasks, stopLightTask } from '@/api/lightService'
+import PageHeader from '@/components/PageHeader'
+import TaskStatusTag from './components/TaskStatusTag.vue'
+import TaskFilterBar from './components/TaskFilterBar.vue'
 
 function listFromPayload(payload) {
   if (Array.isArray(payload)) return payload
@@ -59,24 +117,61 @@ function listFromPayload(payload) {
   return []
 }
 
+const RUNNING_PATTERNS = ['运行', '播放', 'running', 'playing', 'active', '执行中']
+const FAILED_PATTERNS = ['失败', 'fail', 'error', '异常']
+const ENDED_PATTERNS = ['结束', 'done', 'finished', 'completed', 'idle', '已停止']
+
+function bucket(status) {
+  const s = String(status || '').toLowerCase()
+  if (RUNNING_PATTERNS.some((p) => s.includes(p.toLowerCase()))) return 'running'
+  if (FAILED_PATTERNS.some((p) => s.includes(p.toLowerCase()))) return 'failed'
+  if (ENDED_PATTERNS.some((p) => s.includes(p.toLowerCase()))) return 'done'
+  if (s === '1') return 'running'
+  if (s === '0') return 'done'
+  return 'other'
+}
+
 export default {
   name: 'TaskManagement',
+  components: { PageHeader, TaskStatusTag, TaskFilterBar },
+
   data() {
     return {
       loading: false,
       busyId: '',
       tasksPayload: null,
-      lastRaw: ''
+      lastRaw: '',
+      tab: 'all',
+      search: ''
     }
   },
+
   computed: {
     taskRows() {
       return listFromPayload(this.tasksPayload)
+    },
+    counts() {
+      const out = { all: this.taskRows.length, running: 0, failed: 0, done: 0 }
+      this.taskRows.forEach((r) => {
+        const b = bucket(this.statusOf(r))
+        if (b in out) out[b] += 1
+      })
+      return out
+    },
+    filteredRows() {
+      const q = String(this.search || '').trim().toLowerCase()
+      return this.taskRows.filter((r) => {
+        if (this.tab !== 'all' && bucket(this.statusOf(r)) !== this.tab) return false
+        if (!q) return true
+        const id = String(this.taskId(r) || '').toLowerCase()
+        const name = String(this.taskName(r) || '').toLowerCase()
+        return id.includes(q) || name.includes(q)
+      })
     }
   },
-  created() {
-    this.loadTasks()
-  },
+
+  created() { this.loadTasks() },
+
   methods: {
     async loadTasks() {
       this.loading = true
@@ -90,11 +185,12 @@ export default {
     },
     async execute(row) {
       const id = this.taskId(row)
-      if (!id) return this.$message.warning('未找到任务ID')
+      if (!id) return this.$message.warning('未找到任务 ID')
       this.busyId = `run-${id}`
       try {
         const resp = await executeLightTask(id)
         this.showResult(resp, '执行请求已提交')
+        if (resp && resp.success !== false) await this.loadTasks()
       } catch (err) {
         this.$message.error(this.errorText(err, '执行失败'))
       } finally {
@@ -103,11 +199,12 @@ export default {
     },
     async stop(row) {
       const id = this.taskId(row)
-      if (!id) return this.$message.warning('未找到任务ID')
+      if (!id) return this.$message.warning('未找到任务 ID')
       this.busyId = `stop-${id}`
       try {
         const resp = await stopLightTask(id)
         this.showResult(resp, '停止请求已提交')
+        if (resp && resp.success !== false) await this.loadTasks()
       } catch (err) {
         this.$message.error(this.errorText(err, '停止失败'))
       } finally {
@@ -119,12 +216,10 @@ export default {
       const ok = resp && resp.success !== false
       this.$message[ok ? 'success' : 'warning']((resp && resp.message) || fallback)
     },
-    taskId(row) {
-      return String(row.taskid || row.task_id || row.id || '').trim()
-    },
-    compactRow(row) {
-      return JSON.stringify(row).slice(0, 220)
-    },
+    taskId(row) { return String(row.taskid || row.task_id || row.id || '').trim() },
+    taskName(row) { return row.taskname || row.name || row.title || '-' },
+    statusOf(row) { return row.status || row.state || row.enableordis || '' },
+    compactRow(row) { return JSON.stringify(row).slice(0, 220) },
     errorText(err, fallback) {
       return err && err.response && err.response.data && err.response.data.detail
         ? err.response.data.detail
@@ -134,49 +229,42 @@ export default {
 }
 </script>
 
-<style scoped>
-.light-page {
-  padding: 20px;
+<style lang="scss" scoped>
+.lt-task-mgmt-table {
+  ::v-deep .el-table__cell { font-size: 12px; }
 }
-.page-head {
-  display: flex;
-  justify-content: space-between;
-  gap: 16px;
-  margin-bottom: 14px;
-}
-.page-head h2 {
-  margin: 0;
-  font-size: 22px;
-  color: #1f2d3d;
-}
-.page-head p {
-  margin: 6px 0 0;
-  color: #606266;
-  font-size: 13px;
-}
-.table-card,
-.raw-card {
-  border-radius: 8px;
-}
-.raw-card {
-  margin-top: 14px;
-}
-.raw-card pre {
-  margin: 0;
-  white-space: pre-wrap;
-  word-break: break-word;
-  font-size: 12px;
-}
-.raw-preview {
+.lt-mono { font-family: var(--lt-mono); }
+.lt-muted { color: var(--lt-t3); }
+.lt-raw {
   display: inline-block;
   max-width: 100%;
-  color: #606266;
+  color: var(--lt-t3);
   font-size: 12px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  font-family: var(--lt-mono);
 }
-.danger-link {
-  color: #f56c6c;
+.lt-danger-link { color: var(--lt-danger) !important; }
+
+.lt-raw-card {
+  margin-top: 12px;
+
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 13px;
+  }
+  &__pre {
+    margin: 0;
+    white-space: pre-wrap;
+    word-break: break-word;
+    font-size: 12px;
+    font-family: var(--lt-mono);
+    color: var(--lt-t2);
+    max-height: 280px;
+    overflow: auto;
+  }
 }
 </style>

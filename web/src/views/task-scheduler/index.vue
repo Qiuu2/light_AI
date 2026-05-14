@@ -1,27 +1,23 @@
-<!--
-  作息管理（Task Scheduler）
+﻿<!--
+  浣滄伅绠＄悊锛圱ask Scheduler锛?
+  甯冨眬锛?    椤堕儴 PageHeader: 鏍囬 + 鐘舵€?+ 鍒锋柊/鏂板 鎸夐挳
+    涓讳綋 grid:
+      宸?SchemeRail   鏂规鐩綍锛? 濂楋紝杩蜂綘鏃堕棿杞达級
+      鍙?TaskDetailHeader + TaskTable  鏂规璇︽儏锛堟爣棰?+ 鏃堕棿杞?+ 绱у噾琛級
 
-  布局：
-    顶部 PageHeader: 标题 + 状态 + 刷新/新增 按钮
-    主体 grid:
-      左 SchemeRail   方案目录（8 套，迷你时间轴）
-      右 TaskDetailHeader + TaskTable  方案详情（标题 + 时间轴 + 紧凑表）
+    寮圭獥 TaskDialog   鏂板 / 缂栬緫鍏辩敤
 
-    弹窗 TaskDialog   新增 / 编辑共用
-
-  保留全部原有业务逻辑：
-    - 多接口并行加载 (schedules / current-schedule-tasks / resources)
-    - 当前启用方案识别 (resources.basic 里的 Current_Scheme)
-    - 编辑任务时拉 details，处理 detailWarning
+  淇濈暀鍏ㄩ儴鍘熸湁涓氬姟閫昏緫锛?    - 澶氭帴鍙ｅ苟琛屽姞杞?(schedules / current-schedule-tasks / resources)
+    - 褰撳墠鍚敤鏂规璇嗗埆 (resources.basic 閲岀殑 Current_Scheme)
+    - 缂栬緫浠诲姟鏃舵媺 details锛屽鐞?detailWarning
     - activateLightSchedule / deleteLightTask
-    - listFromPayload / treeLeafOptions（用于 media / terminal 资源解析）
--->
+    - listFromPayload / treeLeafOptions锛堢敤浜?media / terminal 璧勬簮瑙ｆ瀽锛?-->
 
 <template>
   <div class="light-page">
     <page-header
       title="作息管理"
-      subtitle="维护铃声方案与任务 · 左侧选择方案，右侧编辑任务、查看时间分布"
+      subtitle="维护铃声方案与任务，左侧选择方案，右侧编辑任务并查看时间分布"
     >
       <template #status>
         <el-tag
@@ -59,12 +55,12 @@
       :type="lastSuccess ? 'success' : 'warning'"
       show-icon
       :closable="true"
-      @close="lastMessage = ''"
       class="lt-result-alert"
+      @close="lastMessage = ''"
     />
 
     <div class="lt-scheduler-layout">
-      <!-- 左：方案目录 -->
+      <!-- 宸︼細鏂规鐩綍 -->
       <scheme-rail
         :schemes="scheduleSchemes"
         :selected-id="selectedSchemeId"
@@ -74,7 +70,7 @@
         @select="selectScheme"
       />
 
-      <!-- 右：方案详情 -->
+      <!-- 鍙筹細鏂规璇︽儏 -->
       <el-card shadow="never" class="lt-detail-card">
         <task-detail-header
           v-if="selectedScheme"
@@ -132,13 +128,13 @@ import TaskTable from './components/TaskTable.vue'
 import TaskDialog from './components/TaskDialog.vue'
 
 const DAY_OPTIONS = [
-  { key: 'day0', label: '周一' },
-  { key: 'day1', label: '周二' },
-  { key: 'day2', label: '周三' },
-  { key: 'day3', label: '周四' },
-  { key: 'day4', label: '周五' },
-  { key: 'day5', label: '周六' },
-  { key: 'day6', label: '周日' }
+  { key: 'day0', label: '鍛ㄤ竴' },
+  { key: 'day1', label: '鍛ㄤ簩' },
+  { key: 'day2', label: '鍛ㄤ笁' },
+  { key: 'day3', label: '鍛ㄥ洓' },
+  { key: 'day4', label: '鍛ㄤ簲' },
+  { key: 'day5', label: '鍛ㄥ叚' },
+  { key: 'day6', label: '鍛ㄦ棩' }
 ]
 
 function listFromPayload(payload) {
@@ -276,7 +272,7 @@ export default {
     },
     selectedSchemeTaskError() {
       return this.selectedScheme && this.selectedScheme.task_error
-        ? `该方案详情加载失败：${this.selectedScheme.task_error}`
+        ? `璇ユ柟妗堣鎯呭姞杞藉け璐ワ細${this.selectedScheme.task_error}`
         : ''
     },
     currentSchemeId() {
@@ -290,7 +286,7 @@ export default {
     },
     currentSchemeLabel() {
       if (this.currentSchemeError) return ''
-      if (this.currentScheme) return this.currentScheme.name || `方案${this.currentScheme.id}`
+      if (this.currentScheme) return this.currentScheme.name || `鏂规${this.currentScheme.id}`
       return this.currentSchemeId ? `ID ${this.currentSchemeId}` : ''
     },
     mediaOptions() {
@@ -345,7 +341,7 @@ export default {
         const r = await fetchLightSchedules()
         if (!r || r.success === false) {
           this.schedulesPayload = null
-          this.schedulesError = (r && r.message) || '作息目录加载失败'
+          this.schedulesError = (r && r.message) || '浣滄伅鐩綍鍔犺浇澶辫触'
           return
         }
         this.schedulesPayload = r
@@ -358,7 +354,7 @@ export default {
         }
       } catch (err) {
         this.schedulesPayload = null
-        this.schedulesError = this.errorText(err, '作息目录加载失败')
+        this.schedulesError = this.errorText(err, '浣滄伅鐩綍鍔犺浇澶辫触')
       } finally {
         this.schedulesLoading = false
       }
@@ -370,13 +366,13 @@ export default {
         const r = await fetchCurrentLightScheduleTasks()
         if (!r || r.success === false) {
           this.currentTasksPayload = null
-          this.currentTasksError = (r && r.message) || '当前任务加载失败'
+          this.currentTasksError = (r && r.message) || '褰撳墠浠诲姟鍔犺浇澶辫触'
           return
         }
         this.currentTasksPayload = r
       } catch (err) {
         this.currentTasksPayload = null
-        this.currentTasksError = this.errorText(err, '当前任务加载失败')
+        this.currentTasksError = this.errorText(err, '褰撳墠浠诲姟鍔犺浇澶辫触')
       } finally {
         this.currentTasksLoading = false
       }
@@ -416,9 +412,22 @@ export default {
         String(scheme.id) === this.currentSchemeId
       )
     },
+    async waitForSchemeActivation(programId, maxAttempts = 10, intervalMs = 500) {
+      for (let attempt = 0; attempt < maxAttempts; attempt += 1) {
+        await this.loadResourcesData()
+        if (this.currentSchemeId === programId) {
+          await this.loadCurrentTasksData()
+          return true
+        }
+        if (attempt < maxAttempts - 1) {
+          await new Promise((resolve) => setTimeout(resolve, intervalMs))
+        }
+      }
+      return false
+    },
     async activateScheme(scheme) {
       const programId = String((scheme && scheme.id) || '').trim()
-      if (!programId) return this.$message.warning('未找到可启用的作息 ID')
+      if (!programId) return this.$message.warning('鏈壘鍒板彲鍚敤鐨勪綔鎭?ID')
       if (this.isCurrentScheme(scheme)) return
       this.activatingProgramId = programId
       this.scheduleSyncMessage = '当前作息切换请求已提交，正在同步远端状态…'
@@ -431,9 +440,8 @@ export default {
         }
         this.handleResult(resp, '当前作息切换请求已提交')
         this.selectedSchemeId = programId
-        await this.loadAll()
-        this.scheduleSyncMessage =
-          this.currentSchemeId === programId ? '' : '切换请求已提交，远端状态同步中…'
+        const activated = await this.waitForSchemeActivation(programId)
+        this.scheduleSyncMessage = activated ? '' : '切换请求已提交，远端状态同步中…'
       } catch (err) {
         this.scheduleSyncMessage = ''
         this.$message.error(this.errorText(err, '切换当前作息失败'))
@@ -470,7 +478,7 @@ export default {
         pretime: String(row.pretime || this.dataAt(row, 13) || '10'),
         delaytime: String(row.delaytime || this.dataAt(row, 14) || '10')
       })
-      // area / day 字段尽量从 row 复制
+      // area / day 瀛楁灏介噺浠?row 澶嶅埗
       Object.keys(form).forEach((k) => {
         if (/^area\d$/.test(k) || /^day\d$/.test(k)) {
           if (row[k] !== undefined && row[k] !== null) form[k] = String(row[k])
@@ -486,7 +494,7 @@ export default {
       this.dialogInitial = { form, selectedMedia, selectedTerminal, checkedDays }
       this.dialog = { visible: true, mode: 'edit' }
 
-      // 后端拉详情，用于补全字段
+      // 鍚庣鎷夎鎯咃紝鐢ㄤ簬琛ュ叏瀛楁
       if (form.taskId) {
         await this.loadTaskDetails(form.taskId)
       }
@@ -497,21 +505,21 @@ export default {
         const resp = await fetchLightTaskDetails(taskId)
         if (!resp || resp.success === false) {
           this.detailWarning =
-            (resp && resp.message) || '任务详情未完整加载，请核对媒体、终端和分区后再提交'
+            (resp && resp.message) || '浠诲姟璇︽儏鏈畬鏁村姞杞斤紝璇锋牳瀵瑰獟浣撱€佺粓绔拰鍒嗗尯鍚庡啀鎻愪氦'
           return
         }
         this.applyTaskDetails(resp.data || {})
       } catch (err) {
         this.detailWarning = this.errorText(
           err,
-          '任务详情未完整加载，请核对媒体、终端和分区后再提交'
+          '浠诲姟璇︽儏鏈畬鏁村姞杞斤紝璇锋牳瀵瑰獟浣撱€佺粓绔拰鍒嗗尯鍚庡啀鎻愪氦'
         )
       } finally {
         this.detailLoading = false
       }
     },
     applyTaskDetails(details) {
-      // 把后端补回来的详情 merge 进 dialogInitial，然后让 dialog 重新应用
+      // 鎶婂悗绔ˉ鍥炴潵鐨勮鎯?merge 杩?dialogInitial锛岀劧鍚庤 dialog 閲嶆柊搴旂敤
       const next = JSON.parse(JSON.stringify(this.dialogInitial || {}))
       next.form = next.form || defaultForm()
 
@@ -533,19 +541,18 @@ export default {
       mergeFields(details.area)
       mergeFields(details.prepower)
 
-      // 重算 checkedDays
+      // 閲嶇畻 checkedDays
       next.checkedDays = DAY_OPTIONS
         .filter((d) => String(next.form[d.key]) !== '0')
         .map((d) => d.key)
 
       this.dialogInitial = next
-      // 强制 dialog re-apply: 通过先关后开会闪烁，所以用 watch + key
-      // 这里其实最简单做法：手动通知 dialog 重新 apply
-      // 但 dialog 现在只在 visible 变 true 时 apply。所以这里调一下：
+      // 寮哄埗 dialog re-apply: 閫氳繃鍏堝叧鍚庡紑浼氶棯鐑侊紝鎵€浠ョ敤 watch + key
+      // 杩欓噷鍏跺疄鏈€绠€鍗曞仛娉曪細鎵嬪姩閫氱煡 dialog 閲嶆柊 apply
+      // 浣?dialog 鐜板湪鍙湪 visible 鍙?true 鏃?apply銆傛墍浠ヨ繖閲岃皟涓€涓嬶細
       this.$nextTick(() => {
-        // 让 dialog 重新 apply: 临时 toggle visible 不优雅
-        // 既然 dialog 应用 initial 是 watch(visible)，我们直接广播事件让它重 apply
-        // 简化：把 visible 先 false 再 true
+        // 璁?dialog 閲嶆柊 apply: 涓存椂 toggle visible 涓嶄紭闆?        // 鏃㈢劧 dialog 搴旂敤 initial 鏄?watch(visible)锛屾垜浠洿鎺ュ箍鎾簨浠惰瀹冮噸 apply
+        // 绠€鍖栵細鎶?visible 鍏?false 鍐?true
       })
     },
     extractIds(payload, keys) {
@@ -597,7 +604,7 @@ export default {
         this.dialog.visible = false
         await this.loadAll()
       } catch (err) {
-        this.$message.error(this.errorText(err, '提交失败'))
+        this.$message.error(this.errorText(err, '鎻愪氦澶辫触'))
       } finally {
         this.saving = false
       }
@@ -635,11 +642,11 @@ export default {
     // ====== Delete ======
     async confirmDelete(row) {
       const id = String(this.taskId(row) || '')
-      if (!id) return this.$message.warning('未找到任务 ID')
+      if (!id) return this.$message.warning('鏈壘鍒颁换鍔?ID')
       try {
         await this.$confirm(
-          `确定删除任务 ${this.taskName(row) || id} 吗？`,
-          '删除确认',
+          `纭畾鍒犻櫎浠诲姟 ${this.taskName(row) || id} 鍚楋紵`,
+          '鍒犻櫎纭',
           { type: 'warning' }
         )
       } catch (err) {
@@ -662,7 +669,9 @@ export default {
       if (row.time) return row.time
       const d = this.dataAt(row, 1)
       if (d) return d
-      const h = row.playhour, m = row.playminute, s = row.playsecond
+      const h = row.playhour
+      const m = row.playminute
+      const s = row.playsecond
       if (h === undefined && m === undefined && s === undefined) return '-'
       return `${String(h || 0).padStart(2, '0')}:${String(m || 0).padStart(2, '0')}:${String(s || 0).padStart(2, '0')}`
     },
@@ -718,3 +727,4 @@ export default {
   }
 }
 </style>
+
