@@ -1,0 +1,23 @@
+﻿# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+
+# Frontend
+web/node_modules/
+web/dist/
+
+# Runtime data
+backend/data/.history/
+output/
+
+# Models
+models/
+
+# Local/debug files
+login.txt
+loginsucess.txt
+
+# IDE
+.vscode/
+.idea/
