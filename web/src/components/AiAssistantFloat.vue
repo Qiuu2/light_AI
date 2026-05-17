@@ -454,6 +454,22 @@
                                   </div>
                                 </template>
                                 <el-select
+                                  v-else-if="seg.slotType === 'zonePower'"
+                                  :value="getZonePowerArray(item, seg.key)"
+                                  multiple
+                                  collapse-tags
+                                  size="small"
+                                  :placeholder="getSlotPlaceholder(item, seg)"
+                                  @input="setZonePowerArray(item, seg.key, $event)"
+                                >
+                                  <el-option
+                                    v-for="opt in zonePowerOptions"
+                                    :key="opt.value"
+                                    :label="opt.label"
+                                    :value="opt.value"
+                                  />
+                                </el-select>
+                                <el-select
                                   v-else-if="usesSelectableOptions(seg)"
                                   :value="getSlotValue(item, seg.key)"
                                   filterable
@@ -757,6 +773,18 @@ export default {
       },
       taskOptionsBySchedule: {},
       taskLoadingBySchedule: {},
+      // 打开分区/电源 多选选项 — 分区槽位固定 6 个 (area0~5)，
+      // 功放=area6、外控=area7，与 TaskDialog/InstantPlay 的硬件约定保持一致。
+      zonePowerOptions: [
+        { label: '1 号分区', value: 'z1' },
+        { label: '2 号分区', value: 'z2' },
+        { label: '3 号分区', value: 'z3' },
+        { label: '4 号分区', value: 'z4' },
+        { label: '5 号分区', value: 'z5' },
+        { label: '6 号分区', value: 'z6' },
+        { label: '功放电源', value: 'amp' },
+        { label: '外控电源', value: 'ext' }
+      ],
       manualVariantState: {},
       slotPopoverVisible: {},
       structuredTimeSelections: {},
@@ -817,7 +845,7 @@ export default {
                 '打开 1 号分区和功放'
               ],
               required: ['分区或电源'],
-              slotMap: { '分区或电源': { type: 'text', display: '分区编号或功放/外控' } }
+              slotMap: { '分区或电源': { type: 'zonePower', display: '分区或电源' } }
             },
             {
               id: 'stop-temp',
@@ -1562,6 +1590,7 @@ export default {
       if (seg?.slotType === 'calendarDateWithMode') return '请选择单日或多日'
       if (seg?.slotType === 'structuredTimeRange') return '先选今天/明天/周一，再补时间'
       if (seg?.slotType === 'textChoice') return '请选择动作'
+      if (seg?.slotType === 'zonePower') return '勾选分区 / 功放 / 外控'
       if (this.usesSelectableOptions(seg)) return '选择或输入'
       return '请输入'
     },
@@ -1594,9 +1623,73 @@ export default {
         this.ensureTaskOptionsForItem(item)
         return
       }
-      if (seg?.slotType && !['text', 'structuredTimeRange', 'calendarDate', 'calendarDateRange', 'calendarDateWithMode', 'textChoice'].includes(seg.slotType)) {
-        this.ensureSlotOptions(seg.slotType)
+      if (seg?.slotType && !['text', 'structuredTimeRange', 'calendarDate', 'calendarDateRange', 'calendarDateWithMode', 'textChoice', 'zonePower'].includes(seg.slotType)) {
+        // 临时播放媒体：每次打开槽位都强制拉最新媒体 & 分区，
+        // 避免在指令大全里看到的还是几天前的旧媒体列表。
+        const itemId = this.normalizeManualItemId(item)
+        const force = itemId === 'temp-play-media' && (seg.slotType === 'playMedia' || seg.slotType === 'zone')
+        this.ensureSlotOptions(seg.slotType, { force })
       }
+    },
+    getZonePowerArray(item, key) {
+      return this.parseZonePower(this.getSlotValue(item, key))
+    },
+    setZonePowerArray(item, key, arr) {
+      this.setSlotValue(item, key, this.formatZonePower(Array.isArray(arr) ? arr : []))
+    },
+    formatZonePower(values) {
+      const zones = []
+      let amp = false
+      let ext = false
+      values.forEach((v) => {
+        if (v === 'amp') amp = true
+        else if (v === 'ext') ext = true
+        else {
+          const m = /^z([1-6])$/.exec(v)
+          if (m) zones.push(Number(m[1]))
+        }
+      })
+      zones.sort((a, b) => a - b)
+      const parts = []
+      if (zones.length === 6) parts.push('全部分区')
+      else if (zones.length) parts.push(`${zones.join('、')} 号分区`)
+      if (amp) parts.push('功放电源')
+      if (ext) parts.push('外控电源')
+      return parts.join('、')
+    },
+    parseZonePower(str) {
+      const text = String(str || '').trim()
+      if (!text) return []
+      const set = new Set()
+      if (/全部.*分区|全部分区/.test(text)) {
+        ['z1', 'z2', 'z3', 'z4', 'z5', 'z6'].forEach((z) => set.add(z))
+      } else {
+        // 匹配形如 "1、3、5 号分区" 或 "1 到 6 号分区"
+        const rangeMatch = text.match(/(\d+)\s*[到~-]\s*(\d+)\s*号分区/)
+        if (rangeMatch) {
+          const a = Number(rangeMatch[1])
+          const b = Number(rangeMatch[2])
+          const lo = Math.max(1, Math.min(a, b))
+          const hi = Math.min(6, Math.max(a, b))
+          for (let i = lo; i <= hi; i += 1) set.add(`z${i}`)
+        }
+        const listMatch = text.match(/([\d、,，\s]+)号分区/)
+        if (listMatch) {
+          listMatch[1].split(/[、,，\s]+/).forEach((n) => {
+            const num = parseInt(n, 10)
+            if (num >= 1 && num <= 6) set.add(`z${num}`)
+          })
+        }
+        // 兜底：单个 "N 号分区"
+        const singles = text.matchAll(/(\d+)\s*号分区/g)
+        for (const m of singles) {
+          const num = parseInt(m[1], 10)
+          if (num >= 1 && num <= 6) set.add(`z${num}`)
+        }
+      }
+      if (/功放/.test(text)) set.add('amp')
+      if (/外控/.test(text)) set.add('ext')
+      return Array.from(set)
     },
     getScheduleSlotKey(item) {
       const manualItem = this.resolveManualItem(item)
