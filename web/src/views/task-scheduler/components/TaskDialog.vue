@@ -152,6 +152,10 @@
         <el-col :span="24">
           <el-form-item label="星期">
             <div class="lt-day-chips">
+              <el-select v-model="form.workmode" size="mini" class="lt-workmode-select">
+                <el-option label="每日 (0)" value="0" />
+                <el-option label="手动 (1)" value="1" />
+              </el-select>
               <span
                 v-for="(d, i) in dayOptions"
                 :key="d.key"
@@ -215,23 +219,14 @@
           </el-form-item>
         </el-col>
 
-        <!-- 随机 + workmode -->
-        <el-col :span="12">
+        <!-- 随机播放 -->
+        <el-col :span="24">
           <el-form-item label="随机播放">
             <el-switch
               :value="form.random === '1'"
               @change="(v) => form.random = v ? '1' : '0'"
             />
             <span class="lt-form-hint">乱序循环媒体列表</span>
-          </el-form-item>
-        </el-col>
-        <el-col :span="12">
-          <el-form-item label="工作模式">
-            <el-select v-model="form.workmode" class="lt-full">
-              <el-option label="0 — 默认" value="0" />
-              <el-option label="1" value="1" />
-              <el-option label="2" value="2" />
-            </el-select>
           </el-form-item>
         </el-col>
       </el-row>
@@ -343,10 +338,24 @@ export default {
     },
     initial() {
       if (this.visible) this.applyInitial()
+    },
+    // workmode 软联动：切到 0(每日) 自动全选周一~周日；切到 1(手动) 清空。
+    // 用户之后仍可手动 toggle 单个 day chip 微调（如只保留工作日）。
+    // applyInitial 期间不联动，避免覆盖编辑时拉回的真实星期。
+    'form.workmode'(val, oldVal) {
+      if (this._applyingInitial) return
+      if (oldVal === undefined) return
+      if (val === '0') {
+        this.checkedDays = DAY_OPTIONS.map((d) => d.key)
+      } else if (val === '1') {
+        this.checkedDays = []
+      }
     }
   },
   methods: {
     applyInitial() {
+      // _applyingInitial 锁：避免 form.workmode 赋值触发 watcher 把 checkedDays 覆盖掉
+      this._applyingInitial = true
       const init = this.initial || {}
       this.form = Object.assign(defaultForm(), init.form || {})
       this.localMedia = Array.isArray(init.selectedMedia) ? init.selectedMedia.slice() : []
@@ -354,6 +363,7 @@ export default {
       this.checkedDays = Array.isArray(init.checkedDays) && init.checkedDays.length
         ? init.checkedDays.slice()
         : DAY_OPTIONS.map((d) => d.key)
+      this.$nextTick(() => { this._applyingInitial = false })
     },
     toggleDay(key) {
       const idx = this.checkedDays.indexOf(key)
@@ -460,6 +470,10 @@ export default {
   gap: 6px;
   flex-wrap: wrap;
   align-items: center;
+}
+.lt-workmode-select {
+  width: 110px;
+  margin-right: 4px;
 }
 .lt-day-link {
   color: var(--lt-p) !important;
