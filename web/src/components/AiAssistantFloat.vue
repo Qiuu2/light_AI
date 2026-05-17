@@ -480,9 +480,12 @@
                                   :placeholder="getSlotPlaceholder(item, seg)"
                                   @input="setZoneMixedArray(item, seg.key, $event)"
                                 >
-                                  <el-option-group label="终端分组">
+                                  <el-option-group
+                                    v-if="zoneMixedGroupOptions.length"
+                                    label="终端分组"
+                                  >
                                     <el-option
-                                      v-for="opt in getZoneMixedGroupOptions()"
+                                      v-for="opt in zoneMixedGroupOptions"
                                       :key="opt.value"
                                       :label="opt.label"
                                       :value="opt.value"
@@ -891,6 +894,13 @@ export default {
   computed: {
     isMobileLayout() {
       return this.$store?.state?.app?.device === 'mobile'
+    },
+    // zoneMixed 下拉中"终端分组"段的选项。提成 computed 避免每次模板渲染都 .map() 生成新数组。
+    zoneMixedGroupOptions() {
+      return (this.slotOptions.zone || []).map((opt) => ({
+        label: opt.label || opt.value,
+        value: `g:${opt.value}`
+      }))
     },
     panelStyle() {
       if (this.isMobileLayout) return null
@@ -1696,13 +1706,8 @@ export default {
       return parts.join('、')
     },
     // ───── zoneMixed: 终端分组 + 硬件分区 + 功放/外控 三合一多选 ─────
-    getZoneMixedGroupOptions() {
-      // 用 g: 前缀避免和硬件分区 value (z1..z6/amp/ext) 冲突
-      return (this.slotOptions.zone || []).map((opt) => ({
-        label: opt.label || opt.value,
-        value: `g:${opt.value}`
-      }))
-    },
+    // 注：分组选项的 value 用 g:<name> 前缀，避免与硬件分区 value (z1..z6/amp/ext) 冲突。
+    // 选项列表见 computed.zoneMixedGroupOptions。
     getZoneMixedArray(item, key) {
       return this.parseZoneMixed(this.getSlotValue(item, key))
     },
@@ -1741,9 +1746,10 @@ export default {
       if (!text) return []
       const set = new Set()
       // 1) 先匹配已知终端分组名（最长优先，避免短名嵌套）
+      // 跳过纯数字命名的分组（如 "1"），它们会和 "N 号分区" 里的数字混淆
       const names = (this.slotOptions.zone || [])
         .map((o) => String(o.value || '').trim())
-        .filter(Boolean)
+        .filter((name) => name && !/^\d+$/.test(name))
         .sort((a, b) => b.length - a.length)
       let remaining = text
       names.forEach((name) => {
@@ -3214,6 +3220,15 @@ export default {
   color: #8c5a00;
   cursor: pointer;
   font-size: 12px;
+  max-width: 220px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  vertical-align: middle;
+}
+.slot-chip > span {
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .slot-chip.active {
