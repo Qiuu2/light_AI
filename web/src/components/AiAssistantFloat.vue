@@ -470,6 +470,34 @@
                                   />
                                 </el-select>
                                 <el-select
+                                  v-else-if="seg.slotType === 'zoneMixed'"
+                                  :value="getZoneMixedArray(item, seg.key)"
+                                  multiple
+                                  collapse-tags
+                                  filterable
+                                  size="small"
+                                  :loading="isSlotLoading(item, seg)"
+                                  :placeholder="getSlotPlaceholder(item, seg)"
+                                  @input="setZoneMixedArray(item, seg.key, $event)"
+                                >
+                                  <el-option-group label="终端分组">
+                                    <el-option
+                                      v-for="opt in getZoneMixedGroupOptions()"
+                                      :key="opt.value"
+                                      :label="opt.label"
+                                      :value="opt.value"
+                                    />
+                                  </el-option-group>
+                                  <el-option-group label="硬件分区 / 电源">
+                                    <el-option
+                                      v-for="opt in zonePowerOptions"
+                                      :key="opt.value"
+                                      :label="opt.label"
+                                      :value="opt.value"
+                                    />
+                                  </el-option-group>
+                                </el-select>
+                                <el-select
                                   v-else-if="usesSelectableOptions(seg)"
                                   :value="getSlotValue(item, seg.key)"
                                   filterable
@@ -827,7 +855,7 @@ export default {
               examples: ['给操场播放国歌', '在 1 号分区播放眼保健操', '所有分区播放上课铃'],
               required: ['区域', '媒体'],
               slotMap: {
-                区域: { type: 'zone', display: '区域' },
+                区域: { type: 'zoneMixed', display: '区域' },
                 媒体: { type: 'playMedia', display: '媒体' }
               }
             },
@@ -1591,6 +1619,7 @@ export default {
       if (seg?.slotType === 'structuredTimeRange') return '先选今天/明天/周一，再补时间'
       if (seg?.slotType === 'textChoice') return '请选择动作'
       if (seg?.slotType === 'zonePower') return '勾选分区 / 功放 / 外控'
+      if (seg?.slotType === 'zoneMixed') return '选分组 / 硬件分区 / 电源'
       if (this.usesSelectableOptions(seg)) return '选择或输入'
       return '请输入'
     },
@@ -1607,6 +1636,9 @@ export default {
       }
       if (seg?.slotType === 'broadcastTask') {
         return Boolean(this.slotLoading.broadcastTask)
+      }
+      if (seg?.slotType === 'zoneMixed') {
+        return Boolean(this.slotLoading.zone)
       }
       return false
     },
@@ -1627,7 +1659,13 @@ export default {
         // 临时播放媒体：每次打开槽位都强制拉最新媒体 & 分区，
         // 避免在指令大全里看到的还是几天前的旧媒体列表。
         const itemId = this.normalizeManualItemId(item)
-        const force = itemId === 'temp-play-media' && (seg.slotType === 'playMedia' || seg.slotType === 'zone')
+        const isTemp = itemId === 'temp-play-media'
+        if (seg.slotType === 'zoneMixed') {
+          // zoneMixed 借用 'zone' 接口拉 terminal-groups，硬件分区/电源是本地常量。
+          this.ensureSlotOptions('zone', { force: isTemp })
+          return
+        }
+        const force = isTemp && (seg.slotType === 'playMedia' || seg.slotType === 'zone')
         this.ensureSlotOptions(seg.slotType, { force })
       }
     },
@@ -1657,11 +1695,93 @@ export default {
       if (ext) parts.push('外控电源')
       return parts.join('、')
     },
+    // ───── zoneMixed: 终端分组 + 硬件分区 + 功放/外控 三合一多选 ─────
+    getZoneMixedGroupOptions() {
+      // 用 g: 前缀避免和硬件分区 value (z1..z6/amp/ext) 冲突
+      return (this.slotOptions.zone || []).map((opt) => ({
+        label: opt.label || opt.value,
+        value: `g:${opt.value}`
+      }))
+    },
+    getZoneMixedArray(item, key) {
+      return this.parseZoneMixed(this.getSlotValue(item, key))
+    },
+    setZoneMixedArray(item, key, arr) {
+      this.setSlotValue(item, key, this.formatZoneMixed(Array.isArray(arr) ? arr : []))
+    },
+    formatZoneMixed(values) {
+      const groups = []
+      const zones = []
+      let amp = false
+      let ext = false
+      values.forEach((v) => {
+        if (v === 'amp') amp = true
+        else if (v === 'ext') ext = true
+        else {
+          const m = /^z([1-6])$/.exec(v)
+          if (m) zones.push(Number(m[1]))
+          else if (typeof v === 'string' && v.startsWith('g:')) {
+            const name = v.slice(2).trim()
+            if (name) groups.push(name)
+          }
+        }
+      })
+      zones.sort((a, b) => a - b)
+      const parts = []
+      // 终端分组放最前，便于后端 NLU 命名实体识别；硬件分区紧随
+      groups.forEach((g) => parts.push(g))
+      if (zones.length === 6) parts.push('全部分区')
+      else zones.forEach((n) => parts.push(`${n} 号分区`))
+      if (amp) parts.push('功放电源')
+      if (ext) parts.push('外控电源')
+      return parts.join('、')
+    },
+    parseZoneMixed(str) {
+      const text = String(str || '').trim()
+      if (!text) return []
+      const set = new Set()
+      // 1) 先匹配已知终端分组名（最长优先，避免短名嵌套）
+      const names = (this.slotOptions.zone || [])
+        .map((o) => String(o.value || '').trim())
+        .filter(Boolean)
+        .sort((a, b) => b.length - a.length)
+      let remaining = text
+      names.forEach((name) => {
+        const escaped = name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+        const re = new RegExp(escaped, 'g')
+        if (re.test(remaining)) {
+          set.add(`g:${name}`)
+          remaining = remaining.replace(new RegExp(escaped, 'g'), ' ')
+        }
+      })
+      // 2) 解析硬件分区（含"全部分区" / "1 到 6 号分区" / "1、3、5 号分区"）
+      if (/全部分区|全部.*分区|所有分区|所有.*分区/.test(remaining)) {
+        ['z1', 'z2', 'z3', 'z4', 'z5', 'z6'].forEach((z) => set.add(z))
+      } else {
+        const range = remaining.match(/(\d+)\s*[到~-]\s*(\d+)\s*号分区/)
+        if (range) {
+          const a = Number(range[1])
+          const b = Number(range[2])
+          const lo = Math.max(1, Math.min(a, b))
+          const hi = Math.min(6, Math.max(a, b))
+          for (let i = lo; i <= hi; i += 1) set.add(`z${i}`)
+        }
+        const singles = remaining.matchAll(/(\d+)\s*号分区/g)
+        for (const m of singles) {
+          const num = parseInt(m[1], 10)
+          if (num >= 1 && num <= 6) set.add(`z${num}`)
+        }
+      }
+      // 3) 电源
+      if (/功放/.test(remaining)) set.add('amp')
+      if (/外控/.test(remaining)) set.add('ext')
+      return Array.from(set)
+    },
     parseZonePower(str) {
       const text = String(str || '').trim()
       if (!text) return []
       const set = new Set()
-      if (/全部.*分区|全部分区/.test(text)) {
+      if (/全部分区|全部.*分区|所有分区|所有.*分区/.test(text)) {
         ['z1', 'z2', 'z3', 'z4', 'z5', 'z6'].forEach((z) => set.add(z))
       } else {
         // 匹配形如 "1、3、5 号分区" 或 "1 到 6 号分区"
