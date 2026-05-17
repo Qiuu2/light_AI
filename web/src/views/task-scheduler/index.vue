@@ -80,7 +80,9 @@
           :activating="activatingProgramId === String(selectedScheme.id)"
           :sync-message="scheduleSyncMessage"
           :can-activate="selectedTaskRows.length > 0"
+          :renaming="renamingProgramId === String(selectedScheme.id)"
           @activate="activateScheme(selectedScheme)"
+          @rename="renameScheme(selectedScheme)"
         />
 
         <div class="lt-detail-card__body">
@@ -88,6 +90,9 @@
             :tasks="selectedTaskRows"
             :loading="schedulesLoading"
             :error="selectedSchemeTaskError"
+            :busy-id="busyId"
+            @execute="executeTask"
+            @stop="stopTask"
             @edit="openEdit"
             @delete="confirmDelete"
           />
@@ -114,10 +119,13 @@ import {
   activateLightSchedule,
   createLightScheduleTask,
   deleteLightTask,
+  executeLightTask,
   fetchCurrentLightScheduleTasks,
   fetchLightTaskDetails,
   fetchLightResources,
   fetchLightSchedules,
+  stopLightTask,
+  renameLightSchedule,
   updateLightTask
 } from '@/api/lightService'
 
@@ -178,6 +186,41 @@ function treeLeafOptions(payload, valuePrefix = '') {
   return options
 }
 
+// Local cache: 远端 modifytask 当前固件不接受 1_ 前缀的分组写入，导致下次打开看不到。
+// 用 localStorage 在客户端"记住"每个任务的分组选择，仅 1_ 前缀的项参与缓存合并。
+const TASK_GROUP_CACHE_KEY = 'lt:task_group_selections'
+
+function loadTaskGroupCache() {
+  try {
+    const raw = window.localStorage.getItem(TASK_GROUP_CACHE_KEY)
+    const obj = raw ? JSON.parse(raw) : {}
+    return obj && typeof obj === 'object' ? obj : {}
+  } catch (err) {
+    return {}
+  }
+}
+
+function saveTaskGroupCacheEntry(taskId, selections) {
+  if (!taskId) return
+  try {
+    const cache = loadTaskGroupCache()
+    const groups = (selections || []).filter((v) => String(v).startsWith('1_'))
+    if (groups.length) {
+      cache[String(taskId)] = groups
+    } else {
+      delete cache[String(taskId)]
+    }
+    window.localStorage.setItem(TASK_GROUP_CACHE_KEY, JSON.stringify(cache))
+  } catch (err) { /* storage unavailable */ }
+}
+
+function readTaskGroupCacheEntry(taskId) {
+  if (!taskId) return []
+  const cache = loadTaskGroupCache()
+  const list = cache[String(taskId)]
+  return Array.isArray(list) ? list.filter((v) => String(v).startsWith('1_')) : []
+}
+
 function defaultForm() {
   return {
     programId: '1',
@@ -202,9 +245,29 @@ function defaultForm() {
     area4: '1',
     area5: '1',
     area6: '1',
-    area7: '0'
+    area7: '0',
+    // day0-6 必须显式定义，否则 applyTaskDetails 的 merge 会跳过这些 key，
+    // 导致编辑窗口的星期永远 fallback 到"全选"。
+    day0: '1',
+    day1: '1',
+    day2: '1',
+    day3: '1',
+    day4: '1',
+    day5: '1',
+    day6: '1'
   }
 }
+
+// schedules / opensech 返回的星期字段是 mon/tue/.../sun；前端 form 用 day0-6。
+const DAY_REMOTE_TO_LOCAL = [
+  ['mon', 'day0'],
+  ['tue', 'day1'],
+  ['wed', 'day2'],
+  ['thu', 'day3'],
+  ['fri', 'day4'],
+  ['sat', 'day5'],
+  ['sun', 'day6']
+]
 
 export default {
   name: 'TaskScheduler',
@@ -238,7 +301,9 @@ export default {
       // selection / activation
       selectedSchemeId: '',
       activatingProgramId: '',
+      renamingProgramId: '',
       scheduleSyncMessage: '',
+      busyId: '',
 
       // dialog
       dialog: { visible: false, mode: 'create' },
@@ -377,16 +442,18 @@ export default {
         this.currentTasksLoading = false
       }
     },
-    async loadResourcesData() {
+    async loadResourcesData({ silent = false } = {}) {
       this.resourcesLoading = true
-      this.currentSchemeError = ''
+      if (!silent) this.currentSchemeError = ''
       try {
         const r = await fetchLightResources()
         this.resources = (r && r.data) || {}
         const basicPart = r && r.parts && r.parts.basic
         if (
-          (basicPart && basicPart.success === false) ||
-          (!this.resources.basic && r && r.success === false)
+          !silent && (
+            (basicPart && basicPart.success === false) ||
+            (!this.resources.basic && r && r.success === false)
+          )
         ) {
           this.currentSchemeError =
             (basicPart && basicPart.message) ||
@@ -395,7 +462,7 @@ export default {
         }
       } catch (err) {
         this.resources = {}
-        this.currentSchemeError = this.errorText(err, '当前方案状态暂不可用')
+        if (!silent) this.currentSchemeError = this.errorText(err, '当前方案状态暂不可用')
       } finally {
         this.resourcesLoading = false
       }
@@ -412,16 +479,23 @@ export default {
         String(scheme.id) === this.currentSchemeId
       )
     },
-    async waitForSchemeActivation(programId, maxAttempts = 10, intervalMs = 500) {
-      for (let attempt = 0; attempt < maxAttempts; attempt += 1) {
-        await this.loadResourcesData()
+    async waitForSchemeActivation(programId, { totalMs = 30000 } = {}) {
+      const start = Date.now()
+      let attempt = 0
+      while (Date.now() - start < totalMs) {
+        attempt += 1
+        await this.loadResourcesData({ silent: true })
         if (this.currentSchemeId === programId) {
           await this.loadCurrentTasksData()
           return true
         }
-        if (attempt < maxAttempts - 1) {
-          await new Promise((resolve) => setTimeout(resolve, intervalMs))
-        }
+        const elapsed = Date.now() - start
+        const interval = elapsed < 3000 ? 500 : (elapsed < 10000 ? 1500 : 2500)
+        const remaining = Math.max(60, totalMs - (Date.now() - start))
+        this.scheduleSyncMessage = elapsed < 2500
+          ? '正在向设备发送切换指令…'
+          : `设备正在重启以应用新方案，预计还需 ${Math.ceil(remaining / 1000)} 秒…`
+        await new Promise((resolve) => setTimeout(resolve, Math.min(interval, remaining)))
       }
       return false
     },
@@ -430,7 +504,8 @@ export default {
       if (!programId) return this.$message.warning('鏈壘鍒板彲鍚敤鐨勪綔鎭?ID')
       if (this.isCurrentScheme(scheme)) return
       this.activatingProgramId = programId
-      this.scheduleSyncMessage = '当前作息切换请求已提交，正在同步远端状态…'
+      this.currentSchemeError = ''
+      this.scheduleSyncMessage = '正在向设备发送切换指令…'
       try {
         const resp = await activateLightSchedule(programId)
         if (resp && resp.success === false) {
@@ -438,15 +513,51 @@ export default {
           this.handleResult(resp, '当前作息切换失败')
           return
         }
-        this.handleResult(resp, '当前作息切换请求已提交')
         this.selectedSchemeId = programId
+        this.scheduleSyncMessage = '设备已收到指令，正在重启以应用新方案（约 15-20 秒）…'
         const activated = await this.waitForSchemeActivation(programId)
-        this.scheduleSyncMessage = activated ? '' : '切换请求已提交，远端状态同步中…'
+        this.currentSchemeError = ''
+        if (activated) {
+          this.scheduleSyncMessage = ''
+          this.$message.success('方案切换完成，设备已应用新作息')
+        } else {
+          this.scheduleSyncMessage = '设备重启耗时超出预期，请稍后手动刷新确认状态'
+        }
       } catch (err) {
         this.scheduleSyncMessage = ''
         this.$message.error(this.errorText(err, '切换当前作息失败'))
       } finally {
         this.activatingProgramId = ''
+      }
+    },
+    async renameScheme(scheme) {
+      const programId = String((scheme && scheme.id) || '').trim()
+      if (!programId) return this.$message.warning('未找到方案 ID')
+      const currentName = (scheme && scheme.name) ? String(scheme.name) : ''
+      let nextName
+      try {
+        const result = await this.$prompt('请输入新的方案名称', '重命名方案', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          inputValue: currentName,
+          inputValidator: (val) => (val && String(val).trim() ? true : '名称不能为空')
+        })
+        nextName = String(result.value || '').trim()
+      } catch (err) {
+        return
+      }
+      if (!nextName || nextName === currentName) return
+      this.renamingProgramId = programId
+      try {
+        const resp = await renameLightSchedule(programId, nextName)
+        this.handleResult(resp, '方案重命名已提交')
+        if (!resp || resp.success !== false) {
+          await this.loadSchedulesData()
+        }
+      } catch (err) {
+        this.$message.error(this.errorText(err, '方案重命名失败'))
+      } finally {
+        this.renamingProgramId = ''
       }
     },
 
@@ -479,13 +590,28 @@ export default {
         delaytime: String(row.delaytime || this.dataAt(row, 14) || '10')
       })
       // area / day 瀛楁灏介噺浠?row 澶嶅埗
+      // 把 row 里所有 defaultForm 涉及的字段尽可能拷过来（覆盖默认值）。
+      // 之前只拷了 area* / day*，导致 timehour/timeminute/timesecond/times/playmode
+      // 等字段每次打开都是默认值，看不到上一次保存的真实值。
       Object.keys(form).forEach((k) => {
-        if (/^area\d$/.test(k) || /^day\d$/.test(k)) {
-          if (row[k] !== undefined && row[k] !== null) form[k] = String(row[k])
+        if (k === 'programId' || k === 'taskId' || k === 'time') return
+        const v = row[k]
+        if (v !== undefined && v !== null && v !== '') {
+          form[k] = String(v)
+        }
+      })
+      // schedules / opensech 返回的星期字段名是 mon/tue/.../sun，而 form 用 day0-6。
+      // 上面的通用拷贝看不到这种字段名差异，单独做一次映射。
+      DAY_REMOTE_TO_LOCAL.forEach(([remoteKey, localKey]) => {
+        const v = row[remoteKey]
+        if (v !== undefined && v !== null && v !== '') {
+          form[localKey] = String(v)
         }
       })
       const selectedMedia = String(row.media || row.mediaid || '').split(',').filter(Boolean)
-      const selectedTerminal = String(row.terminal || row.terminalid || '').split(',').filter(Boolean)
+      const remoteTerminal = String(row.terminal || row.terminalid || '').split(',').filter(Boolean)
+      const cachedGroups = readTaskGroupCacheEntry(form.taskId)
+      const selectedTerminal = Array.from(new Set([...remoteTerminal, ...cachedGroups]))
       const checkedDays = DAY_OPTIONS
         .filter((d) => String(form[d.key] !== undefined ? form[d.key] : (row[d.key] || '1')) !== '0')
         .map((d) => d.key)
@@ -503,6 +629,9 @@ export default {
       this.detailLoading = true
       try {
         const resp = await fetchLightTaskDetails(taskId)
+        if (resp && resp.data) {
+          this.applyTaskDetails(resp.data)
+        }
         if (!resp || resp.success === false) {
           this.detailWarning =
             (resp && resp.message) || '浠诲姟璇︽儏鏈畬鏁村姞杞斤紝璇锋牳瀵瑰獟浣撱€佺粓绔拰鍒嗗尯鍚庡啀鎻愪氦'
@@ -526,7 +655,9 @@ export default {
       const media = this.extractIds(details.media, ['mediaid', 'media_id', 'id', 'value'])
       const terminal = this.extractIds(details.terminal, ['terminalid', 'terminal_id', 'id', 'value'])
       if (media.length) next.selectedMedia = media
-      if (terminal.length) next.selectedTerminal = terminal
+      // 远端 terminal 是权威的 2_ 前缀终端；分组（1_）固件丢字段，只能从本地缓存恢复
+      const cachedGroups = readTaskGroupCacheEntry(next.form && next.form.taskId)
+      next.selectedTerminal = Array.from(new Set([...terminal, ...cachedGroups]))
 
       const mergeFields = (payload) => {
         listFromPayload(payload).forEach((row) => {
@@ -540,6 +671,22 @@ export default {
       }
       mergeFields(details.area)
       mergeFields(details.prepower)
+
+      // 把 /action/gettaskinfo 规范化后的 taskinfo.detail 字段合并进 form。
+      // 包含 taskname / volume / pretime / delaytime / time / playhour / playminute /
+      // playsecond / timehour / timeminute / timesecond / day0..day6 / random / enableordis
+      // 之前漏了这一段，导致编辑成功后再打开看到的还是 row 里的旧字段或者默认值。
+      const taskinfoDetail = details.taskinfo && details.taskinfo.detail
+      if (taskinfoDetail && typeof taskinfoDetail === 'object') {
+        const formKeys = defaultForm()
+        Object.keys(taskinfoDetail).forEach((k) => {
+          const v = taskinfoDetail[k]
+          if (v === undefined || v === null || v === '') return
+          if (k === 'time' || Object.prototype.hasOwnProperty.call(formKeys, k)) {
+            next.form[k] = String(v)
+          }
+        })
+      }
 
       // 閲嶇畻 checkedDays
       next.checkedDays = DAY_OPTIONS
@@ -601,6 +748,13 @@ export default {
           resp,
           this.dialog.mode === 'create' ? '新增任务已提交' : '编辑任务已提交'
         )
+        // Persist user's group selections client-side (固件不接受 1_ 写入，靠本地缓存记忆)
+        const taskIdForCache = form.taskId
+          || (resp && resp.data && (resp.data.taskid || resp.data.task_id || resp.data.id))
+          || ''
+        if (taskIdForCache) {
+          saveTaskGroupCacheEntry(taskIdForCache, selectedTerminal)
+        }
         this.dialog.visible = false
         await this.loadAll()
       } catch (err) {
@@ -654,7 +808,36 @@ export default {
       }
       const resp = await deleteLightTask(id)
       this.handleResult(resp, '删除任务已提交')
+      // Drop the cached group selection so it doesn't leak to a future task with the same id
+      saveTaskGroupCacheEntry(id, [])
       await this.loadAll()
+    },
+
+    async executeTask(row) {
+      const id = String(this.taskId(row) || '')
+      if (!id) return this.$message.warning('鏈壘鍒颁换鍔?ID')
+      this.busyId = `run-${id}`
+      try {
+        const resp = await executeLightTask(id)
+        this.handleResult(resp, '鎵ц璇锋眰宸叉彁浜?')
+      } catch (err) {
+        this.$message.error(this.errorText(err, '鎵ц澶辫触'))
+      } finally {
+        this.busyId = ''
+      }
+    },
+    async stopTask(row) {
+      const id = String(this.taskId(row) || '')
+      if (!id) return this.$message.warning('鏈壘鍒颁换鍔?ID')
+      this.busyId = `stop-${id}`
+      try {
+        const resp = await stopLightTask(id)
+        this.handleResult(resp, '鍋滄璇锋眰宸叉彁浜?')
+      } catch (err) {
+        this.$message.error(this.errorText(err, '鍋滄澶辫触'))
+      } finally {
+        this.busyId = ''
+      }
     },
 
     // ====== Helpers ======

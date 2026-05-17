@@ -44,26 +44,9 @@
 
     <el-form ref="form" :model="form" size="small" label-width="92px" v-loading="detailLoading">
       <!-- 基础信息 ─────────────────── -->
+      <!-- 方案 ID / 任务 ID 不展示给用户：programId 在 openCreate 时由父组件自动赋值
+           （来自当前选中的方案），taskId 在 openEdit 时由父组件填好，新增时由后端生成。 -->
       <el-row :gutter="14">
-        <el-col :span="12">
-          <el-form-item label="方案 ID" required>
-            <el-input
-              v-model="form.programId"
-              :disabled="mode === 'edit'"
-              placeholder="例如 1"
-            />
-          </el-form-item>
-        </el-col>
-        <el-col :span="12">
-          <el-form-item label="任务 ID">
-            <el-input
-              v-model="form.taskId"
-              :disabled="mode === 'create'"
-              :placeholder="mode === 'create' ? '由后端生成' : ''"
-            />
-          </el-form-item>
-        </el-col>
-
         <el-col :span="12">
           <el-form-item label="任务名称" required>
             <el-input v-model="form.taskname" placeholder="例如：起床铃" />
@@ -133,16 +116,19 @@
         </el-col>
         <el-col :span="10">
           <el-form-item label="时长">
-            <div class="lt-triple">
-              <el-input v-model="form.timehour" placeholder="时" />
-              <el-input v-model="form.timeminute" placeholder="分" />
-              <el-input v-model="form.timesecond" placeholder="秒" />
+            <div class="lt-time-with-unit">
+              <el-input v-model="form.timehour" :disabled="isByCount" />
+              <span class="lt-unit">时</span>
+              <el-input v-model="form.timeminute" :disabled="isByCount" />
+              <span class="lt-unit">分</span>
+              <el-input v-model="form.timesecond" :disabled="isByCount" />
+              <span class="lt-unit">秒</span>
             </div>
           </el-form-item>
         </el-col>
         <el-col :span="6">
           <el-form-item label="次数">
-            <el-input v-model="form.times" />
+            <el-input v-model="form.times" :disabled="!isByCount" />
           </el-form-item>
         </el-col>
 
@@ -151,7 +137,14 @@
           <el-form-item label="音量">
             <div class="lt-volume-row">
               <el-slider v-model="volumeNum" :min="0" :max="100" class="lt-volume-slider" />
-              <span class="lt-volume-num lt-mono">{{ form.volume }}</span>
+              <el-input-number
+                v-model="volumeNum"
+                :min="0"
+                :max="100"
+                size="small"
+                controls-position="right"
+                class="lt-volume-input"
+              />
             </div>
           </el-form-item>
         </el-col>
@@ -322,6 +315,10 @@ export default {
     dialogTitle() {
       return this.mode === 'create' ? '新增任务' : '编辑任务'
     },
+    // 播放模式：'0'=按时长（time* 可用，times 灰）；'1'=按次数（反之）
+    isByCount() {
+      return String(this.form.playmode) === '1'
+    },
     volumeNum: {
       get() {
         const n = Number(this.form.volume)
@@ -343,6 +340,9 @@ export default {
   watch: {
     visible(val) {
       if (val) this.applyInitial()
+    },
+    initial() {
+      if (this.visible) this.applyInitial()
     }
   },
   methods: {
@@ -382,12 +382,12 @@ export default {
       this.$emit('update:visible', false)
     },
     onSubmit() {
-      // 简单校验
+      // 简单校验 — programId/taskId 不展示给用户，但内部必须有值
       if (this.mode === 'create' && !String(this.form.programId || '').trim()) {
-        return this.$message.warning('请填写方案 ID')
+        return this.$message.warning('未选定方案，请回到作息管理选择左侧方案后再新增任务')
       }
       if (this.mode === 'edit' && !String(this.form.taskId || '').trim()) {
-        return this.$message.warning('请填写任务 ID')
+        return this.$message.warning('任务 ID 缺失，请关闭弹窗刷新后重试')
       }
       if (!String(this.form.taskname || '').trim()) {
         return this.$message.warning('请填写任务名称')
@@ -481,6 +481,29 @@ export default {
   text-align: right;
   font-size: 13px;
   color: var(--lt-t1);
+}
+.lt-volume-input {
+  width: 110px;
+  flex-shrink: 0;
+}
+
+/* 时长「时 分 秒」三段带单位 */
+.lt-time-with-unit {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.lt-time-with-unit ::v-deep .el-input {
+  width: 56px;
+}
+.lt-time-with-unit ::v-deep .el-input__inner {
+  padding: 0 6px;
+  text-align: center;
+}
+.lt-time-with-unit .lt-unit {
+  font-size: 12px;
+  color: var(--lt-t3);
+  flex-shrink: 0;
 }
 
 .lt-form-hint {

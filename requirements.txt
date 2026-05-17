@@ -1,6 +1,6 @@
 # Core model + training
 torch>=2.0
-transformers>=4.30,<5.0
+transformers>=4.30,<4.46  # 4.46+ 引入 CVE-2025-32434 检查，强制要求 torch>=2.6；我们用 torch 2.2 + safetensors 才能升
 datasets>=2.14,<4.0
 pytorch-crf==0.7.2
 tqdm>=4.66,<5.0

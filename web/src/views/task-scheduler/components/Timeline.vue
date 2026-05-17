@@ -48,22 +48,23 @@
       <!-- mini: 只画一条 -->
       <div
         v-if="mode === 'mini'"
-        :key="'m-' + (t.id || idx)"
+        :key="'m-' + (taskId(t) || idx)"
         class="lt-timeline__bar"
         :style="{ left: percent(hours(t)) }"
-        :title="(t.time || '') + ' ' + (t.name || '')"
+        :title="eventTitle(t)"
       />
 
       <!-- full: 一条 + 名签 -->
       <div
         v-else
-        :key="'f-' + (t.id || idx)"
+        :key="'f-' + (taskId(t) || idx)"
         class="lt-timeline__event"
-        :style="{ left: percent(hours(t)) }"
+        :style="eventStyle(t)"
+        :title="eventTitle(t)"
       >
         <span class="lt-timeline__line" />
         <span class="lt-timeline__label">
-          {{ shortTime(t.time) }} {{ t.name || '' }}
+          {{ shortTime(taskTime(t)) }} {{ taskName(t) }}
         </span>
       </div>
     </template>
@@ -89,8 +90,34 @@ export default {
     }
   },
   methods: {
+    dataAt(row, idx) {
+      return row && Array.isArray(row.data) ? row.data[idx] : ''
+    },
+    taskId(t) {
+      return t && (t.taskid || t.task_id || t.id || '')
+    },
+    taskName(t) {
+      return (t && (t.taskname || t.name || t.title || this.dataAt(t, 0))) || ''
+    },
+    taskTime(t) {
+      if (!t) return '00:00:00'
+      if (t.playtime) return t.playtime
+      if (t.time) return t.time
+      const dataTime = this.dataAt(t, 1)
+      if (dataTime) return dataTime
+      const h = t.playhour
+      const m = t.playminute
+      const s = t.playsecond
+      if (h === undefined && m === undefined && s === undefined) return '00:00:00'
+      return `${String(h || 0).padStart(2, '0')}:${String(m || 0).padStart(2, '0')}:${String(s || 0).padStart(2, '0')}`
+    },
+    eventTitle(t) {
+      const time = this.taskTime(t)
+      const name = this.taskName(t)
+      return name ? `${time} ${name}` : time
+    },
     hours(t) {
-      const time = String((t && t.time) || '00:00:00')
+      const time = String(this.taskTime(t) || '00:00:00')
       const parts = time.split(':')
       const h = Number(parts[0]) || 0
       const m = Number(parts[1]) || 0
@@ -100,6 +127,16 @@ export default {
     percent(h) {
       const ratio = Math.max(0, Math.min(24, h)) / 24
       return (ratio * 100).toFixed(2) + '%'
+    },
+    eventStyle(t) {
+      // 根据事件的左偏百分比智能选择 transform，避免最左/最右的 label 溢出容器
+      const ratio = Math.max(0, Math.min(24, this.hours(t))) / 24
+      const pct = ratio * 100
+      let transform
+      if (pct < 8) transform = 'translateX(0)'           // 最左：左对齐展开
+      else if (pct > 92) transform = 'translateX(-100%)'  // 最右：右对齐展开
+      else transform = 'translateX(-50%)'                 // 中间：居中
+      return { left: pct.toFixed(2) + '%', transform }
     },
     pad(n) {
       return String(n).padStart(2, '0')
@@ -169,14 +206,14 @@ export default {
     transform: translateX(-50%);
   }
 
-  /* full 模式事件 */
+  /* full 模式事件 — transform 由 eventStyle 根据位置百分比智能给出，
+     避免最左/最右的 label 溢出容器，所以这里不写死 translateX(-50%) */
   &__event {
     position: absolute;
     top: 22px;
-    transform: translateX(-50%);
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: flex-start;
     gap: 2px;
     pointer-events: none;
   }
@@ -194,6 +231,9 @@ export default {
     white-space: nowrap;
     line-height: 1.4;
     font-family: var(--lt-font);
+    max-width: 120px;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 }
 </style>

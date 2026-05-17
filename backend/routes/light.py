@@ -828,8 +828,24 @@ def action_request(
             "raw": detail,
             "diagnostics": diagnostics,
         }
-    except URLError as exc:
-        raise HTTPException(status_code=502, detail=f"Remote request failed: {exc}") from exc
+    except (URLError, TimeoutError) as exc:
+        # TimeoutError covers socket-level read timeouts (Python 3.10+ alias of
+        # socket.timeout), which urllib's URLError does NOT subclass — without
+        # this branch every remote read timeout would bubble up as a 500.
+        diagnostics.append({
+            "phase": phase,
+            "method": method,
+            "path": path,
+            "url": url,
+            "error": f"{type(exc).__name__}: {exc}",
+        })
+        return {
+            "success": False,
+            "message": f"Remote connection failed: {exc}",
+            "data": None,
+            "raw": str(exc),
+            "diagnostics": diagnostics,
+        }
 
 
 def light_login(
@@ -1165,15 +1181,57 @@ def create_router() -> APIRouter:
 
     @router.post("/schedules/{program_id}/tasks")
     def add_task(program_id: str, payload: dict[str, Any] = Body(default_factory=dict)):
-        return action_request("POST", "/action/addtask", params={"id": program_id}, form=payload, body_mode="multipart")
+        return action_request("POST", "/action/addtask", params={"id": program_id}, form=payload, body_mode="urlencoded")
 
     @router.post("/schedules/{program_id}/activate")
     def activate_schedule(program_id: str):
-        return action_request("POST", "/action/activeprogram", form={"id": program_id}, body_mode="multipart")
+        return action_request("POST", "/action/activeprogram", form={"id": program_id}, body_mode="urlencoded")
+
+    @router.put("/schedules/{program_id}/name")
+    def rename_schedule(program_id: str, payload: dict[str, Any] = Body(default_factory=dict)):
+        name = str(payload.get("name") or "").strip()
+        if not name:
+            raise HTTPException(status_code=400, detail="name is required")
+        return action_request(
+            "POST",
+            "/action/saveprogramname",
+            form={"id": program_id, "name": name},
+            body_mode="urlencoded",
+        )
+
+    # Field order matches the swagger curl sample for modifytask/addtask exactly.
+    # Some old embedded webservers parse positional / buffered fields and silently
+    # drop fields that arrive after a certain point, so we always reorder.
+    _MODIFYTASK_FIELD_ORDER = (
+        "media", "terminal", "taskname",
+        "playhour", "playminute", "playsecond", "playmode",
+        "timehour", "timeminute", "timesecond", "times",
+        "volume", "enableordis",
+        "area0", "area1", "area2", "area3", "area4", "area5", "area6", "area7",
+        "workmode",
+        "day0", "day1", "day2", "day3", "day4", "day5", "day6",
+        "pretime", "delaytime", "random",
+    )
+
+    def _order_modifytask_payload(payload: dict[str, Any]) -> dict[str, Any]:
+        if not isinstance(payload, dict):
+            return {}
+        ordered: dict[str, Any] = {}
+        for key in _MODIFYTASK_FIELD_ORDER:
+            if key in payload:
+                ordered[key] = payload[key]
+        for key, value in payload.items():
+            if key not in ordered:
+                ordered[key] = value
+        return ordered
 
     @router.put("/tasks/{task_id}")
     def update_task(task_id: str, payload: dict[str, Any] = Body(default_factory=dict)):
-        return action_request("POST", "/action/modifytask", params={"taskid": task_id}, form=payload, body_mode="multipart")
+        ordered = _order_modifytask_payload(payload)
+        return action_request(
+            "POST", "/action/modifytask",
+            params={"taskid": task_id}, form=ordered, body_mode="urlencoded",
+        )
 
     @router.delete("/tasks/{task_id}")
     def delete_task(task_id: str):
@@ -1188,28 +1246,70 @@ def create_router() -> APIRouter:
         media = action_request("POST", "/action/gettaskmedia", form={"taskid": task_id}, body_mode="urlencoded")
         terminal = action_request("POST", "/action/gettaskterminal", form={"taskid": task_id}, body_mode="urlencoded")
         area = action_request("GET", "/action/gettaskarea", params={"taskid": task_id}, body_mode="none")
+
+        # Fast path: gettaskinfo 只返回"当前启用方案"的任务。
         taskinfo = action_request("POST", "/action/gettaskinfo", body_mode="none")
         taskinfo_row = _task_info_row_from_payload(taskinfo.get("data"), task_id) if taskinfo.get("success") is not False else None
+
+        # Fallback: 如果当前启用方案里没匹配，遍历所有方案用 opensech 找。
+        # 这覆盖了"用户编辑的不是当前启用方案的任务"这种常见场景。
+        if taskinfo_row is None:
+            try:
+                schemes_resp = action_request("POST", "/action/getallsech", body_mode="none")
+                if schemes_resp.get("success") is not False:
+                    for scheme in _rows_from_payload(schemes_resp.get("data")):
+                        if not isinstance(scheme, dict):
+                            continue
+                        scheme_id = str(scheme.get("id") or scheme.get("secheid") or "").strip()
+                        if not scheme_id:
+                            continue
+                        tasks_resp = action_request(
+                            "POST", "/action/opensech",
+                            params={"id": scheme_id}, body_mode="none",
+                        )
+                        if tasks_resp.get("success") is False:
+                            continue
+                        hit = _task_info_row_from_payload(tasks_resp.get("data"), task_id)
+                        if hit:
+                            taskinfo_row = hit
+                            break
+            except Exception:
+                pass
+
         taskinfo_detail = _normalized_taskinfo_detail(taskinfo_row)
         taskinfo_payload = {
             "detail": taskinfo_detail,
             "row": taskinfo_row,
         }
+        # taskinfo is optional: /action/gettaskinfo only returns rows for the
+        # currently-activated schedule, so editing a task in another schedule
+        # will legitimately produce an empty match. Never count it as failure.
         detail_map = {
             "media": media,
             "terminal": terminal,
             "area": area,
             "taskinfo": taskinfo,
         }
-        failed = [name for name, resp in detail_map.items() if resp.get("success") is False]
-        if taskinfo.get("success") is not False and not taskinfo_detail:
-            failed.append("taskinfo")
+        required = ("media", "terminal", "area")
+        failed = [name for name in required if detail_map[name].get("success") is False]
+        def _csv_ids(resp: dict[str, Any]) -> list[str]:
+            data = resp.get("data")
+            if isinstance(data, list):
+                return [str(item).strip() for item in data if str(item).strip()]
+            raw_text = str(resp.get("raw") or "").strip()
+            if not raw_text:
+                return []
+            return [part.strip() for part in raw_text.split(",") if part.strip()]
+
+        media_ids = _csv_ids(media)
+        terminal_ids = _csv_ids(terminal)
+
         return {
             "success": not failed,
             "message": "ok" if not failed else f"Failed to load task detail: {', '.join(failed)}",
             "data": {
-                "media": media.get("data"),
-                "terminal": terminal.get("data"),
+                "media": media_ids,
+                "terminal": terminal_ids,
                 "area": area.get("data"),
                 "taskinfo": taskinfo_payload,
             },

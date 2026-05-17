@@ -1,6 +1,8 @@
 """FastAPI application entry point."""
 from __future__ import annotations
 
+import os
+
 from fastapi import FastAPI
 import backend.api_public as api_public
 from backend.routes.admin import AdminHandlers, create_router as create_admin_router
@@ -58,12 +60,15 @@ def build_app() -> FastAPI:
             chat_handler=api_public.chat_api,
         )
     )
-    app.include_router(
-        create_debug_router(
-            test_phase1_handler=api_public.debug_test_phase1_intent,
-            apply_action_handler=api_public.debug_apply_action,
+    # /debug/* 路由仅在 AI_SPEAKER_EXPOSE_DEBUG=1 时注册，避免在 Windows 安装包
+    # 的生产环境里暴露内部 intent / action 验证端点。
+    if os.getenv("AI_SPEAKER_EXPOSE_DEBUG", "").strip() == "1":
+        app.include_router(
+            create_debug_router(
+                test_phase1_handler=api_public.debug_test_phase1_intent,
+                apply_action_handler=api_public.debug_apply_action,
+            )
         )
-    )
     app.include_router(create_data_router(_build_data_handlers()))
     app.include_router(create_light_router())
     app.include_router(create_admin_router(_build_admin_handlers()))

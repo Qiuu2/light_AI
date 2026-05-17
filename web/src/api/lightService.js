@@ -40,6 +40,11 @@ export async function activateLightSchedule(programId) {
   return data
 }
 
+export async function renameLightSchedule(programId, name) {
+  const { data } = await api.put(`/api/light/schedules/${encodeURIComponent(programId)}/name`, { name })
+  return data
+}
+
 export async function updateLightTask(taskId, payload) {
   const { data } = await api.put(`/api/light/tasks/${encodeURIComponent(taskId)}`, payload)
   return data

@@ -8,6 +8,7 @@ Slot names are used directly from the training data without aliasing.
 from __future__ import annotations
 
 import json
+import os
 import shutil
 from dataclasses import dataclass
 from pathlib import Path
@@ -22,7 +23,16 @@ except ImportError:  # pragma: no cover - fallback for script usage
     from corpus_tools import DATA_CORPUS_PATH, SRC_CORPUS_PATH, build_audit_report, sync_corpus_copy
 
 BASE_DIR = Path(__file__).resolve().parent.parent
-DATA_DIR = BASE_DIR / "data"
+
+
+def _path_from_env(name: str, default: Path) -> Path:
+    value = str(os.getenv(name, "") or "").strip()
+    if not value:
+        return default
+    return Path(value).expanduser()
+
+
+DATA_DIR = _path_from_env("AI_SPEAKER_NLU_DATA_DIR", BASE_DIR / "data")
 SRC_DIR = Path(__file__).resolve().parent
 DEFAULT_JSON = SRC_CORPUS_PATH
 CACHE_DIR = DATA_DIR / "hf_cache"

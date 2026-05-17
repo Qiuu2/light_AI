@@ -21,17 +21,6 @@
       <el-button size="small" icon="el-icon-refresh" :loading="loading" @click="loadResources">
         刷新资源
       </el-button>
-      <el-button
-        size="small"
-        type="danger"
-        plain
-        icon="el-icon-video-pause"
-        :loading="stopping"
-        :disabled="!playing"
-        @click="stopNow"
-      >
-        停止即时播放
-      </el-button>
     </page-header>
 
     <div class="lt-instant-layout">
@@ -87,16 +76,19 @@
             </el-col>
             <el-col :span="10">
               <el-form-item label="时长">
-                <div class="lt-triple">
-                  <el-input v-model="form.timehour" placeholder="时" />
-                  <el-input v-model="form.timeminute" placeholder="分" />
-                  <el-input v-model="form.timesecond" placeholder="秒" />
+                <div class="lt-time-with-unit">
+                  <el-input v-model="form.timehour" :disabled="isByCount" />
+                  <span class="lt-unit">时</span>
+                  <el-input v-model="form.timeminute" :disabled="isByCount" />
+                  <span class="lt-unit">分</span>
+                  <el-input v-model="form.timesecond" :disabled="isByCount" />
+                  <span class="lt-unit">秒</span>
                 </div>
               </el-form-item>
             </el-col>
             <el-col :span="6">
               <el-form-item label="次数">
-                <el-input v-model="form.times" />
+                <el-input v-model="form.times" :disabled="!isByCount" />
               </el-form-item>
             </el-col>
 
@@ -104,7 +96,14 @@
               <el-form-item label="音量">
                 <div class="lt-volume-row">
                   <el-slider v-model="volumeNum" :min="0" :max="100" class="lt-volume-slider" />
-                  <span class="lt-mono lt-volume-num">{{ form.volume }}</span>
+                  <el-input-number
+                    v-model="volumeNum"
+                    :min="0"
+                    :max="100"
+                    size="small"
+                    controls-position="right"
+                    class="lt-volume-input"
+                  />
                 </div>
               </el-form-item>
             </el-col>
@@ -150,6 +149,17 @@
             @click="submit"
           >
             执行即时播放
+          </el-button>
+          <el-button
+            size="small"
+            type="danger"
+            plain
+            icon="el-icon-video-pause"
+            :loading="stopping"
+            :disabled="!playing"
+            @click="stopNow"
+          >
+            停止即时播放
           </el-button>
           <el-button size="small" @click="resetForm">重置</el-button>
         </div>
@@ -246,6 +256,10 @@ export default {
         return Number.isFinite(n) ? n : 80
       },
       set(v) { this.form.volume = String(v) }
+    },
+    // 播放模式：'0'=按时长（time* 可用，times 灰）；'1'=按次数（反之）
+    isByCount() {
+      return String(this.form.playmode) === '1'
     },
     mediaOptions() {
       const normalized = listFromPayload(this.resources.media_options)
@@ -436,6 +450,29 @@ export default {
   text-align: right;
   font-size: 13px;
   color: var(--lt-t1);
+}
+.lt-volume-input {
+  width: 110px;
+  flex-shrink: 0;
+}
+
+/* 时长「时 分 秒」三段带单位 */
+.lt-time-with-unit {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.lt-time-with-unit ::v-deep .el-input {
+  width: 56px;
+}
+.lt-time-with-unit ::v-deep .el-input__inner {
+  padding: 0 6px;
+  text-align: center;
+}
+.lt-time-with-unit .lt-unit {
+  font-size: 12px;
+  color: var(--lt-t3);
+  flex-shrink: 0;
 }
 
 .lt-raw-card {

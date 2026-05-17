@@ -46,7 +46,9 @@
       >
         <div class="lt-scheme-item__row">
           <div class="lt-scheme-item__name">
-            <span class="lt-scheme-item__title-text">{{ schemeTitle(s) }}</span>
+            <el-tooltip :content="schemeTitle(s)" placement="top" :disabled="!schemeTitle(s)">
+              <span class="lt-scheme-item__title-text">{{ schemeTitle(s) }}</span>
+            </el-tooltip>
             <el-tag v-if="isCurrent(s)" size="mini" type="success">启用中</el-tag>
           </div>
           <span class="lt-scheme-item__count lt-mono">{{ taskCount(s) }} 项</span>
@@ -185,6 +187,9 @@ export default {
     flex: 1;
   }
   &__title-text {
+    display: inline-block;
+    min-width: 0;
+    flex: 1;
     font-size: 13px;
     font-weight: 600;
     color: var(--lt-t1);

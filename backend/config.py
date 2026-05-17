@@ -9,7 +9,16 @@ from pathlib import Path
 from typing import Optional
 
 BASE_DIR = Path(__file__).resolve().parent
-DATA_DIR = BASE_DIR / "data"
+
+
+def _path_from_env(name: str, default: Path) -> Path:
+    value = str(os.getenv(name, "") or "").strip()
+    if not value:
+        return default
+    return Path(value).expanduser()
+
+
+DATA_DIR = _path_from_env("AI_SPEAKER_DATA_DIR", BASE_DIR / "data")
 HISTORY_DIR = DATA_DIR / ".history"
 ALL_AUDIO_PATH = DATA_DIR / "all_audio.json"
 ALL_LOC_PATH = DATA_DIR / "all_loc.json"

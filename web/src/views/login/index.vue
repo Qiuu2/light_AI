@@ -40,14 +40,14 @@
               v-model="form.remoteBaseUrl"
               :readonly="remoteBaseUrlLocked"
               :clearable="!remoteBaseUrlLocked"
-              placeholder="请输入远端地址"
+              placeholder="请输入设备 IP，例如 192.168.1.88"
             />
             <el-button class="remote-edit-button" @click="toggleRemoteBaseUrlEdit">
               {{ remoteBaseUrlLocked ? '修改地址' : '取消修改' }}
             </el-button>
           </div>
           <p class="remote-hint">
-            默认建议格式为 `http://本机IP:99`，如现场端口不同可手工修改。
+            只需填设备 IP（如 192.168.1.88）；端口不是 80 时可写 192.168.1.88:99 这种形式。
           </p>
 
           <label class="field-label field-gap" for="login-username">账号</label>
@@ -200,11 +200,21 @@ export default {
       this.form.remoteBaseUrl = this.savedRemoteBaseUrl
       this.remoteBaseUrlLocked = Boolean(this.savedRemoteBaseUrl)
     },
+    normalizeRemoteBaseUrl(raw) {
+      // 用户只填 IP（如 192.168.1.88 或 192.168.1.88:99）时自动补 http:// 前缀。
+      // 已有 http:// / https:// 的保持不动。末尾的 / 去掉。
+      const trimmed = String(raw || '').trim().replace(/\/+$/, '')
+      if (!trimmed) return ''
+      if (/^https?:\/\//i.test(trimmed)) return trimmed
+      return `http://${trimmed}`
+    },
     async handleLogin() {
-      if (!this.form.remoteBaseUrl) {
-        this.errorMessage = '请输入远端地址'
+      const normalizedRemote = this.normalizeRemoteBaseUrl(this.form.remoteBaseUrl)
+      if (!normalizedRemote) {
+        this.errorMessage = '请输入设备 IP'
         return
       }
+      this.form.remoteBaseUrl = normalizedRemote
       if (!this.form.username || !this.form.password) {
         this.errorMessage = '请输入完整的账号和密码'
         return

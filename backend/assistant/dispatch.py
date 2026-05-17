@@ -18,10 +18,13 @@ Phase1ActionHandler = Callable[[str, str, dict], Optional[ActionResult]]
 
 PHASE1_INTENT_DISPATCH: Dict[str, ActionHandler] = {
     "play_task": apply_play_task_intent,
-    "broadcast_emergency": apply_play_task_intent,
     "stop_task": apply_stop_task_intent,
     "play_media": apply_play_media_intent,
     "stop_media": apply_stop_media_intent,
+    # "打开 X 分区"/"打开功放" 等口语被模型高置信度识别成 enable_terminal,
+    # 而不是 play_media。复用 play_media handler 走 zone-only 临时任务分支。
+    "enable_terminal": apply_play_media_intent,
+    "disable_terminal": apply_stop_media_intent,
 }
 
 ASSISTANT_PHASE1_INTENT_DISPATCH: Dict[str, ActionHandler] = dict(PHASE1_INTENT_DISPATCH)

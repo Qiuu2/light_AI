@@ -1,0 +1,29 @@
+<service>
+  <id>ai-speaker</id>
+  <name>AI Speaker</name>
+  <description>AI Speaker FastAPI backend and web UI on port 5018.</description>
+  <executable>%BASE%\..\python\python.exe</executable>
+  <arguments>-m uvicorn backend.api_public:app --host 0.0.0.0 --port 5018</arguments>
+  <workingdirectory>%BASE%\..</workingdirectory>
+  <priority>Normal</priority>
+  <stoptimeout>30 sec</stoptimeout>
+  <startmode>Automatic</startmode>
+  <env name="PYTHONPATH" value="%BASE%\..\app" />
+  <env name="AI_SPEAKER_DATA_DIR" value="%ProgramData%\AI Speaker\data" />
+  <env name="AI_SPEAKER_NLU_DATA_DIR" value="%BASE%\..\data" />
+  <env name="AI_SPEAKER_WEB_DIST" value="%BASE%\..\web-dist" />
+  <env name="AI_SPEAKER_MODEL_DIR" value="%BASE%\..\models" />
+  <env name="REMOTE_BASE_URL" value="" />
+  <env name="REMOTE_USERNAME" value="admin" />
+  <env name="REMOTE_PASSWORD" value="123456" />
+  <env name="REMOTE_TIMEOUT" value="15" />
+  <env name="CORS_ALLOW_ORIGINS" value="" />
+  <logpath>%ProgramData%\AI Speaker\logs</logpath>
+  <log mode="roll-by-size">
+    <sizeThreshold>10485760</sizeThreshold>
+    <keepFiles>10</keepFiles>
+  </log>
+  <onfailure action="restart" delay="10 sec" />
+  <onfailure action="restart" delay="30 sec" />
+  <onfailure action="none" />
+</service>

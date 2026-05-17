@@ -40,7 +40,7 @@
         </template>
       </el-table-column>
 
-      <el-table-column label="任务名称" min-width="140">
+      <el-table-column label="任务名称" min-width="110" show-overflow-tooltip>
         <template slot-scope="{ row }">{{ taskName(row) }}</template>
       </el-table-column>
 
@@ -52,7 +52,7 @@
 
       <el-table-column label="时长" width="86">
         <template slot-scope="{ row }">
-          <span class="lt-mono lt-muted">{{ durationText(row) }}</span>
+          <span class="lt-mono">{{ durationText(row) }}</span>
         </template>
       </el-table-column>
 
@@ -117,14 +117,52 @@
         </template>
       </el-table-column>
 
-      <el-table-column label="操作" width="100" fixed="right">
+      <el-table-column label="操作" width="186" fixed="right">
         <template slot-scope="{ row }">
-          <el-button type="text" size="mini" @click="$emit('edit', row)">
-            <i class="el-icon-edit" />
-          </el-button>
-          <el-button type="text" size="mini" class="lt-danger-link" @click="$emit('delete', row)">
-            <i class="el-icon-delete" />
-          </el-button>
+          <div class="lt-action-group">
+            <el-tooltip content="执行" placement="top">
+              <el-button
+                circle
+                plain
+                type="success"
+                size="mini"
+                icon="el-icon-video-play"
+                :loading="busyId === ('run-' + taskId(row))"
+                @click="$emit('execute', row)"
+              />
+            </el-tooltip>
+            <el-tooltip content="停止" placement="top">
+              <el-button
+                circle
+                plain
+                type="warning"
+                size="mini"
+                icon="el-icon-video-pause"
+                :loading="busyId === ('stop-' + taskId(row))"
+                @click="$emit('stop', row)"
+              />
+            </el-tooltip>
+            <el-tooltip content="编辑" placement="top">
+              <el-button
+                circle
+                plain
+                type="primary"
+                size="mini"
+                icon="el-icon-edit"
+                @click="$emit('edit', row)"
+              />
+            </el-tooltip>
+            <el-tooltip content="删除" placement="top">
+              <el-button
+                circle
+                plain
+                type="danger"
+                size="mini"
+                icon="el-icon-delete"
+                @click="$emit('delete', row)"
+              />
+            </el-tooltip>
+          </div>
         </template>
       </el-table-column>
     </el-table>
@@ -137,7 +175,8 @@ export default {
   props: {
     tasks: { type: Array, default: () => [] },
     loading: { type: Boolean, default: false },
-    error: { type: String, default: '' }
+    error: { type: String, default: '' },
+    busyId: { type: String, default: '' }
   },
   data() {
     return {
@@ -190,14 +229,31 @@ export default {
     isOn(row, key) {
       if (!row) return false
       const v = row[key]
-      if (v === undefined || v === null || v === '') return false
-      return String(v) === '1'
+      if (v !== undefined && v !== null && v !== '') {
+        return String(v) === '1'
+      }
+      // 兼容 schedules / opensech 返回的格式：
+      // - 没有 area0..area7 单独字段，只有 area="11111110" 这种 8 位字符串
+      const areaMatch = /^area([0-7])$/.exec(String(key || ''))
+      if (areaMatch) {
+        const idx = Number(areaMatch[1])
+        const areaStr = String(row.area || '')
+        if (areaStr.length >= idx + 1) {
+          return areaStr.charAt(idx) === '1'
+        }
+      }
+      return false
     },
     isDayOn(row, idx) {
-      return this.isOn(row, 'day' + idx)
+      // 兼容两种字段格式：远端归一化后 day0-6，远端原始 mon/tue/.../sun
+      if (this.isOn(row, 'day' + idx)) return true
+      const remoteKeys = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun']
+      const key = remoteKeys[idx]
+      return key ? this.isOn(row, key) : false
     },
     randomOn(row) {
-      return this.isOn(row, 'random')
+      // 远端原始字段叫 rand，归一化后可能叫 random
+      return this.isOn(row, 'random') || this.isOn(row, 'rand')
     }
   }
 }
@@ -216,25 +272,28 @@ export default {
   gap: 2px;
 }
 .lt-dot-cell {
-  width: 14px;
-  height: 14px;
-  border-radius: 2px;
-  font-size: 9px;
-  line-height: 12px;
+  width: 18px;
+  height: 18px;
+  border-radius: 3px;
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 16px;
   text-align: center;
-  background: var(--lt-surface-hover);
-  border: 1px solid var(--lt-line);
-  color: var(--lt-t4);
+  background: #f5f7fa;
+  border: 1px solid #c0c4cc;
+  color: #909399;
   user-select: none;
 
+  /* !important 防止被 element-ui 表格的 cell 样式覆盖 */
   &.is-on {
-    background: var(--lt-p);
-    border-color: var(--lt-p);
-    color: #fff;
+    background: #409eff !important;
+    border-color: #409eff !important;
+    color: #fff !important;
+    box-shadow: 0 0 0 1px rgba(64, 158, 255, 0.18);
   }
   &.lt-dot-cell--day.is-on {
-    background: var(--lt-t2);
-    border-color: var(--lt-t2);
+    background: #67c23a !important;
+    border-color: #67c23a !important;
   }
 }
 
@@ -247,6 +306,32 @@ export default {
 }
 .lt-danger-link {
   color: var(--lt-danger) !important;
+}
+
+/* 操作列 — 4 个圆形 icon 按钮 */
+.lt-action-group {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+
+  ::v-deep .el-button.is-circle {
+    width: 28px;
+    height: 28px;
+    padding: 0;
+    font-size: 13px;
+  }
+  ::v-deep .el-button + .el-button {
+    margin-left: 0;
+  }
+
+  &__sep {
+    display: inline-block;
+    width: 1px;
+    height: 12px;
+    background: var(--lt-line-strong);
+    margin: 0 6px;
+  }
 }
 .lt-muted {
   color: var(--lt-t4);

@@ -160,7 +160,16 @@ REQUIRED_SLOTS = {
 OTHERS_MESSAGE = "您好！我是校园广播小助手小电。我目前主要负责设置播放任务、取消广播记录以及调节音量。暂时还不会陪您聊天或处理其他事务哦。您可以试着对我说:‘明天早上八点播放国歌’。"
 
 BASE_DIR = Path(__file__).resolve().parent
-DATA_DIR = BASE_DIR / "data"
+
+
+def _path_from_env(name: str, default: Path) -> Path:
+    value = str(os.getenv(name, "") or "").strip()
+    if not value:
+        return default
+    return Path(value).expanduser()
+
+
+DATA_DIR = _path_from_env("AI_SPEAKER_DATA_DIR", BASE_DIR / "data")
 DEFAULT_DATA_DIR = BASE_DIR / "default_data"
 LEGACY_ROOT_DATA_DIR = BASE_DIR.parent / "data"
 HISTORY_DIR = DATA_DIR / ".history"
@@ -2688,6 +2697,147 @@ def _remote_set_task_state(task_id: str, state: int) -> None:
     resp = _light_action_request("POST", path, form={"taskid": str(task_id_value)}, body_mode="urlencoded")
     if not resp.get("success"):
         raise HTTPException(status_code=502, detail=f"Remote task state change failed: {resp.get('message', '')}")
+
+
+def _remote_find_task_id_by_name(task_name: str) -> Optional[Tuple[str, str, float]]:
+    """Live fallback when local broadcast_schedules cache misses.
+
+    Only the currently-activated schedule's tasks are visible via /action/gettaskinfo,
+    which matches the business rule "play/stop named task" — users address tasks in
+    the running schedule. Single HTTP call keeps latency bounded (one LIGHT_REMOTE_TIMEOUT).
+
+    Returns (task_id, matched_task_name, score) where score is:
+      - 1.0   for exact / normalized matches (always safe to execute)
+      - 0.7-0.95 for fuzzy match (caller should require confirmation, NOT auto-execute)
+      - ≥ 0.95 for high-confidence fuzzy match (treated as exact-equivalent)
+    Returns None when there is no acceptable candidate.
+
+    Filters out disabled (enable=0) tasks so we never start a deactivated entry.
+    """
+    name_text = str(task_name or "").strip()
+    if not name_text or not _remote_enabled():
+        return None
+    from backend.routes.light import action_request as _light_action_request
+
+    try:
+        resp = _light_action_request("POST", "/action/gettaskinfo", body_mode="none")
+    except Exception as exc:
+        LOGGER.warning("remote task fallback: gettaskinfo raised %s", exc)
+        return None
+    if resp.get("success") is False:
+        LOGGER.warning(
+            "remote task fallback: gettaskinfo returned success=False (msg=%s, raw=%s)",
+            resp.get("message"), str(resp.get("raw") or "")[:200],
+        )
+        return None
+
+    data = resp.get("data")
+    rows: List[dict] = []
+    if isinstance(data, dict):
+        for key in ("rows", "item", "items", "list"):
+            value = data.get(key)
+            if isinstance(value, list):
+                rows = [row for row in value if isinstance(row, dict)]
+                break
+    elif isinstance(data, list):
+        rows = [row for row in data if isinstance(row, dict)]
+
+    candidates: List[Tuple[str, str]] = []
+    for task in rows:
+        # R2: skip tasks that are disabled on the device
+        enable = str(task.get("enable") or "1").strip()
+        if enable == "0":
+            continue
+        tid = str(task.get("id") or task.get("taskid") or task.get("task_id") or "").strip()
+        tname = str(task.get("taskname") or task.get("name") or task.get("title") or "").strip()
+        if tid and tname:
+            candidates.append((tid, tname))
+
+    if not candidates:
+        LOGGER.warning(
+            "remote task fallback: no enabled candidates in active schedule (raw=%s)",
+            str(resp.get("raw") or "")[:200],
+        )
+        return None
+
+    # 1. exact
+    for tid, tname in candidates:
+        if tname == name_text:
+            return (tid, tname, 1.0)
+    # 2. normalized (whitespace/punctuation-insensitive)
+    compact_query = _compact_text(name_text)
+    if compact_query:
+        for tid, tname in candidates:
+            if _compact_text(tname) == compact_query:
+                return (tid, tname, 1.0)
+
+    # 3. strip 口语噪声词 (任务/广播/播放/执行 等) 后重新尝试 exact + substring
+    # 例：用户说"起床铃声任务"，实际任务名"起床铃声"，应直接命中
+    stripped = _strip_task_noise(name_text)
+    if stripped and stripped != name_text:
+        for tid, tname in candidates:
+            if tname == stripped:
+                return (tid, tname, 1.0)
+        compact_stripped = _compact_text(stripped)
+        if compact_stripped:
+            for tid, tname in candidates:
+                if _compact_text(tname) == compact_stripped:
+                    return (tid, tname, 1.0)
+
+    # 4. substring 关系（任一方向）— 用 strip 后版本，避免噪声词干扰
+    sub_query = stripped or name_text
+    if sub_query:
+        for tid, tname in candidates:
+            if not tname:
+                continue
+            if sub_query in tname or tname in sub_query:
+                return (tid, tname, 1.0)
+
+    # 5. fuzzy（用 strip 后的版本算 ratio，更准）
+    fuzzy_query = stripped or name_text
+    best_score = 0.0
+    best: Optional[Tuple[str, str, float]] = None
+    for tid, tname in candidates:
+        score = difflib.SequenceMatcher(None, fuzzy_query, tname).ratio()
+        if score >= 0.7 and score > best_score:
+            best_score = score
+            best = (tid, tname, score)
+    return best
+
+
+_TASK_NOISE_SUFFIXES = ("铃声广播", "广播任务", "任务", "广播")
+_TASK_NOISE_PREFIXES = ("马上", "立刻", "现在", "请", "帮我", "把", "播放", "执行", "启动", "停止", "结束", "关闭", "暂停", "中止")
+
+
+def _strip_task_noise(text: str) -> str:
+    """剥掉用户口语里的"任务/广播/播放"等噪声词，使模糊匹配更稳。
+
+    例：「播放起床铃声任务」→ 「起床铃声」
+        「停止午休任务」    →  「午休」
+    剥掉后跟远端实际 taskname 做 exact / substring 匹配概率大幅提升。
+    """
+    s = str(text or "").strip()
+    if not s:
+        return s
+    # 反复剥后缀
+    changed = True
+    while changed and s:
+        changed = False
+        for suffix in _TASK_NOISE_SUFFIXES:
+            if s.endswith(suffix) and len(s) > len(suffix):
+                s = s[: -len(suffix)].strip()
+                changed = True
+                break
+    # 反复剥前缀
+    changed = True
+    while changed and s:
+        changed = False
+        for prefix in _TASK_NOISE_PREFIXES:
+            if s.startswith(prefix) and len(s) > len(prefix):
+                s = s[len(prefix):].strip()
+                changed = True
+                break
+    return s
 
 
 def _remote_add_temp_task(
@@ -18863,6 +19013,48 @@ def _apply_runtime_task_state_change(
     if pending_reply:
         return pending_reply
     if not matched_rows:
+        # Fallback: 本地 broadcast_schedules 缓存可能跟远端不同步（前端"作息管理"页面
+        # 走 routes/light.py 的 CRUD，不会回写到 broadcast_schedules.json）。
+        # 找不到 task 时，对当前启用方案的任务做一次实时模糊匹配（gettaskinfo）。
+        if task_name and _remote_enabled() and not resolved_schedule_name:
+            remote_hit = _remote_find_task_id_by_name(task_name)
+            if remote_hit:
+                fallback_task_id, fallback_task_name, fallback_score = remote_hit
+                # R1: score < 0.95 视为低置信度，不自动执行，而是返回明确提示，
+                # 让用户用完整名字再说一次，避免误开/误停任务。
+                if fallback_score < 0.95:
+                    return (
+                        f'未在当前启用方案里找到任务"{task_name}"。'
+                        f'可能您指的是"{fallback_task_name}"？请用完整任务名称再说一次。',
+                        {"missing_slots": []},
+                        [],
+                    )
+                try:
+                    _remote_set_task_state(fallback_task_id, state_value)
+                except HTTPException as exc:
+                    return (
+                        f'尝试{action_text}任务"{fallback_task_name}"时远端返回错误：{exc.detail}',
+                        {"missing_slots": []},
+                        [],
+                    )
+                fallback_log = _build_action_log(
+                    action_name, "", [],
+                    mode="runtime",
+                    details={
+                        "runtime_scope": "remote_fallback",
+                        "task_id": fallback_task_id,
+                        "task_name": fallback_task_name,
+                        "match_score": round(fallback_score, 3),
+                        "state": state_value,
+                        "matched_query": task_name,
+                        "created_at": _now_str(),
+                    },
+                )
+                return (
+                    f'已{action_text}任务"{fallback_task_name}"。',
+                    {"missing_slots": []},
+                    [fallback_log],
+                )
         if resolved_schedule_name:
             return (f'在方案"{resolved_schedule_name}"中未找到任务"{task_name}"。', {"missing_slots": []}, [])
         return (f'未找到文件广播任务"{task_name or task_id}"。', {"missing_slots": []}, [])
@@ -19324,11 +19516,202 @@ def _build_area_params_from_slots(slots: dict) -> dict:
     return {f"area{i}": str(value) for i, value in areas.items()}
 
 
+def _overlay_power_keywords_on_areas(text: str, area_params: Dict[str, str]) -> Dict[str, str]:
+    """Slot extractor doesn't reliably tag 功放/外控; scan raw text as a fallback."""
+    raw = str(text or "")
+    out = dict(area_params)
+    if "功放" in raw:
+        out["area6"] = "1"
+    if "外控" in raw:
+        out["area7"] = "1"
+    return out
+
+
+_CN_DIGIT_MAP = {"一": 1, "二": 2, "三": 3, "四": 4, "五": 5, "六": 6}
+
+
+def _resolve_zone_index(zone_name: str) -> Optional[int]:
+    """Map a zone slot value to area0-area5 index.
+    Accepts full names from _AREA_NAME_TO_INDEX, plain digits "1"-"6",
+    and Chinese digits 一-六. The NLU emits a variety of forms depending on
+    the user's wording, so we try multiple normalizations.
+    """
+    if not zone_name:
+        return None
+    name = str(zone_name).strip()
+    idx = _AREA_NAME_TO_INDEX.get(name)
+    if idx is not None:
+        return idx
+    if name.isdigit():
+        n = int(name)
+        if 1 <= n <= 6:
+            return n - 1
+    # Strip common surrounding tokens: "分区", "号", "区"
+    stripped = name.replace("分区", "").replace("号", "").replace("区", "").strip()
+    if stripped and stripped != name:
+        return _resolve_zone_index(stripped)
+    # Chinese digit single char
+    if name in _CN_DIGIT_MAP:
+        return _CN_DIGIT_MAP[name] - 1
+    return None
+
+
+def _expand_zone_range_in_text(text: str) -> List[int]:
+    """Detect range expressions like "1到6", "1-6", "一到六", "1～6"
+    and return the list of 1-based zone numbers in the range (clamped to 1-6).
+    """
+    if not text:
+        return []
+    raw = str(text)
+    # Normalize Chinese digits to Arabic for range detection
+    for cn, ar in _CN_DIGIT_MAP.items():
+        raw = raw.replace(cn, str(ar))
+    match = re.search(r"([1-6])\s*(?:到|至|-|~|～)\s*([1-6])", raw)
+    if not match:
+        return []
+    a, b = int(match.group(1)), int(match.group(2))
+    lo, hi = (a, b) if a <= b else (b, a)
+    return list(range(lo, hi + 1))
+
+
+def _overlay_all_zones_keywords(text: str, areas: Dict[int, int]) -> Dict[int, int]:
+    """If the user says "全部" / "所有" / "全场" / "全开" near "分区", flip area0-5 all on.
+    Also honors explicit ranges like "1到6" / "一到六" via _expand_zone_range_in_text,
+    and enumerations like "1、3、5 号分区" / "1 号和 3 号分区".
+    """
+    raw = str(text or "")
+    out = dict(areas)
+    has_all_keyword = any(kw in raw for kw in ("全部分区", "所有分区", "全场", "全开", "全部打开"))
+    # "全部" alone is too ambiguous, only trigger if 分区 is in the sentence
+    if not has_all_keyword and "全部" in raw and "分区" in raw:
+        has_all_keyword = True
+    if not has_all_keyword and "所有" in raw and "分区" in raw:
+        has_all_keyword = True
+    if has_all_keyword:
+        for i in range(6):
+            out[i] = 1
+    for n in _expand_zone_range_in_text(raw):
+        if 1 <= n <= 6:
+            out[n - 1] = 1
+    # 枚举兜底：「1、3、5 号分区」「1 号和 3 号分区」「一、二、三号分区」
+    # 仅当语境里出现 "分区" 或 "号" 时触发，避免一般陈述句里的数字被误抓。
+    # 负向断言阻止抓 "13" / "100" 里的子数字。
+    if "分区" in raw or "号" in raw:
+        for match in re.finditer(r"(?<![0-9])([1-6]|[一二三四五六])(?![0-9])", raw):
+            token = match.group(1)
+            n = _CN_DIGIT_MAP.get(token) if token in _CN_DIGIT_MAP else int(token)
+            if 1 <= n <= 6:
+                out[n - 1] = 1
+    return out
+
+
+def _build_zone_only_area_params(text: str, slots: dict) -> Dict[str, str]:
+    """When no media is selected, build area params for a power/zone-only temp task.
+    Differs from the media path: do NOT auto-fill all six zones if user said nothing —
+    only honor what the user actually mentioned (zones via slots, power via keywords).
+    Amplifier power (area6) defaults to 1 per device convention.
+    """
+    zone_names = _slot_values(slots, "zone_name", "SCOPE", "LOC")
+    named = [str(name).strip() for name in zone_names if str(name).strip()]
+    areas = {i: 0 for i in range(8)}
+    areas[6] = 1  # 功放电源默认开
+    for zone_name in named:
+        idx = _resolve_zone_index(zone_name)
+        if idx is not None:
+            areas[idx] = 1
+    # Honor "全部分区" / "所有分区" / "1到6" / "一到六" in the raw text — slot
+    # extractor often gives a partial or empty zone_name for these phrasings.
+    areas = _overlay_all_zones_keywords(text, areas)
+    base = {f"area{i}": str(value) for i, value in areas.items()}
+    return _overlay_power_keywords_on_areas(text, base)
+
+
+def _label_area_key(key: str) -> str:
+    """Translate raw area0-area7 keys into user-readable Chinese names."""
+    if key.startswith("area") and key[4:].isdigit():
+        idx = int(key[4:])
+        if 0 <= idx <= 5:
+            return f"分区{idx + 1}"
+        if idx == 6:
+            return "功放电源"
+        if idx == 7:
+            return "外控电源"
+    return key
+
+
+def _apply_zone_only_temp_task(text: str, slots: dict) -> Tuple[str, Dict[str, Any], List[dict]]:
+    """No-media variant of /action/executetmptask: open zones / power only."""
+    if not _remote_enabled():
+        return ("远端设备未启用，无法下发临时任务。", {"missing_slots": []}, [])
+
+    area_params = _build_zone_only_area_params(text, slots)
+    active = [k for k, v in area_params.items() if v == "1"]
+    if not active:
+        return (
+            "没有识别到要打开的分区或电源，请说明具体的分区编号或电源名称。",
+            {"missing_slots": ["zone_name"]},
+            [],
+        )
+
+    form: Dict[str, Any] = {
+        # no "media" key — this is the zone/power-only branch
+        # no "terminal" key — 本地分区/电源不需要终端
+        "playmode": "0",
+        "timehour": "0",
+        "timeminute": "2",
+        "timesecond": "0",
+        "times": "1",
+        "volume": "80",
+        "random": "0",
+        **area_params,
+    }
+
+    from backend.routes.light import action_request as _light_action_request
+    resp = _light_action_request("POST", "/action/executetmptask", form=form, body_mode="urlencoded")
+    if resp.get("success"):
+        # 区分用户主动点到的项和系统默认带上的功放电源。
+        # 用户原文里没说"功放"但 area6=1，是默认逻辑加的，单独括号说明。
+        raw_text = str(text or "")
+        amp_was_default = "area6" in active and "功放" not in raw_text
+        primary_keys = [k for k in sorted(active) if not (k == "area6" and amp_was_default)]
+        primary_labels = [_label_area_key(k) for k in primary_keys]
+        if primary_labels:
+            reply = "已开启 " + "、".join(primary_labels)
+            if amp_was_default:
+                reply += "（功放电源已默认同时开启）"
+            reply += "。"
+        else:
+            # 极端情况：用户没点任何东西，只剩默认 area6（理论上 active 不会只有 area6
+            # 因为前面 if not active 已经过滤，但保留兜底）
+            reply = "已开启 功放电源（默认）。"
+        status = "ok"
+    else:
+        reply = f"下发失败：{resp.get('message', '未知错误')}"
+        status = "error"
+    action_log = _build_action_log(
+        "play_media",
+        "",
+        [],
+        mode="runtime",
+        details={
+            "runtime_scope": "temp_task_zone_only",
+            "media_id": None,
+            "media_name": None,
+            "terminal_ids": [],
+            "area_params": area_params,
+            "status": status,
+            "created_at": _now_str(),
+        },
+    )
+    return (reply, {"missing_slots": []}, [action_log])
+
+
 def _apply_play_media_intent(text: str, slots: dict) -> Tuple[str, Dict[str, Any], List[dict]]:
     effective_slots = _sanitize_play_media_slots(text, slots)
     media_text = _slot_text(effective_slots, "media_name", "CONTENT", "TASK", "audio", "medianame")
     if not media_text:
-        return ("???????????(media_name)?", {"missing_slots": ["media_name"]}, [])
+        # 无媒体 = "只开分区/电源" 模式：复用 /action/executetmptask 但不传 media 字段
+        return _apply_zone_only_temp_task(text, effective_slots)
     if not _remote_enabled():
         return ("???????????????????", {"missing_slots": []}, [])
 

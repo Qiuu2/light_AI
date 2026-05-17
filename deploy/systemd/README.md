@@ -62,7 +62,6 @@ sudo journalctl -u ai-speaker -f
 ## Verification
 
 ```bash
-python scripts/verify_rc_candidate.py
 sudo systemctl status ai-speaker
 curl http://127.0.0.1:5018/license/status
 curl http://127.0.0.1:5018/healthz
@@ -101,19 +100,14 @@ set a comma-separated allowlist such as
 `http://127.0.0.1:5018,http://DEVICE_IP:5018` when a separate browser origin
 must call the API.
 
-`python scripts/verify_rc_candidate.py` now verifies repository delivery assets.
-`python scripts/verify_rc_candidate.py --base-url http://127.0.0.1:5018`
-verifies runtime endpoints. Treat these as separate checks during handoff.
-
-Use [`RC_CANDIDATE_BASELINE.md`](../RC_CANDIDATE_BASELINE.md) as the frozen
-test baseline and [`LOCAL_RELEASE_REHEARSAL.md`](../LOCAL_RELEASE_REHEARSAL.md)
-as the pre-handoff checklist.
+Run the repository test suite before handoff, then use the commands above to
+verify the deployed service on the target machine.
 
 ## Access Model
 
 The default deployment serves the application directly from `uvicorn` on port
 `5018`. A reverse proxy such as `nginx` is optional and is not required by the
-offline bundle or the `systemd` unit in this directory.
+`systemd` unit in this directory.
 
 If an existing production server still exposes the app through `nginx` on a
 different external port such as `170`, use

@@ -46,53 +46,7 @@
       </div>
 
       <div v-show="isMobileLayout || !collapsed" class="ai-body">
-        <p class="desc">在任意页面输入指令，调用后端 /assistant/chat 接口解析意图并返回回复。</p>
-        <div v-if="!hasScheduleTemplateSelection" class="assistant-settings-card">
-          <div class="assistant-settings-row">
-            <span class="assistant-settings-label">学校类型</span>
-            <el-select
-              :value="defaultScheduleKind"
-              class="assistant-settings-select"
-              size="mini"
-              clearable
-              filterable
-              placeholder="请先设置"
-              :loading="assistantSettingsLoading || assistantSettingsSaving"
-              @change="handleScheduleKindChange"
-            >
-              <el-option
-                v-for="kind in allowedScheduleKinds"
-                :key="kind"
-                :label="kind"
-                :value="kind"
-              />
-            </el-select>
-          </div>
-          <div class="assistant-settings-row">
-            <span class="assistant-settings-label">作息季节</span>
-            <el-select
-              :value="defaultScheduleSeason"
-              class="assistant-settings-select"
-              size="mini"
-              clearable
-              filterable
-              placeholder="请先设置"
-              :loading="assistantSettingsLoading || assistantSettingsSaving"
-              @change="handleScheduleSeasonChange"
-            >
-              <el-option
-                v-for="season in allowedScheduleSeasons"
-                :key="season"
-                :label="season"
-                :value="season"
-              />
-            </el-select>
-          </div>
-          <div class="assistant-settings-hint">新建作息只会使用这里设置的学校类型和季节，不再从聊天内容里提取。</div>
-          <div v-if="!hasScheduleTemplateSelection" class="assistant-settings-warning">
-            请先同时设置学校类型和作息季节，否则“新建一个暑假作息”不会执行。
-          </div>
-        </div>
+        <p class="desc">输入语音指令，支持：播放/停止任务，打开分区或功放/外控电源。</p>
 
         <div ref="chatBox" class="chat-box">
           <div v-for="msg in conversation" :key="msg.id" :class="['chat-line', msg.role]">
@@ -182,7 +136,7 @@
             </div>
           </div>
           <div v-if="!conversation.length" class="placeholder">
-            试着说：“明早8点在教学楼一层播放校园铃声，音量40，循环2次”
+            试着说：「播放大课间任务」「停止午休铃任务」「给操场播放国歌」「打开 1 号分区」「打开功放电源」
           </div>
         </div>
 
@@ -775,7 +729,7 @@ export default {
       allowedScheduleKinds: DEFAULT_ALLOWED_SCHEDULE_KINDS.slice(),
       allowedScheduleSeasons: DEFAULT_ALLOWED_SCHEDULE_SEASONS.slice(),
       manualSearch: '',
-      manualActiveTab: 'terminal',
+      manualActiveTab: 'broadcast',
       manualOpenMap: {},
       manualTipIndex: 0,
       manualTipTimer: null,
@@ -817,414 +771,61 @@ export default {
       },
       manualModules: [
         {
-          id: 'terminal',
-          tabLabel: '终端',
-          title: '模块 1：终端和设备',
-          desc: '查终端状态，查看设备信息，终端控制能力按当前协议开放情况展示。',
+          id: 'broadcast',
+          tabLabel: '广播控制',
+          title: '广播控制 — 当前 AI 助手支持的全部能力',
+          desc: '当前只识别以下 4 类指令；新增/编辑任务、修改作息请到「作息管理」页面操作。',
           items: [
             {
-              id: 'terminal-status',
-              title: '查看终端状态',
-              template: '帮我看看[终端]的状态',
-              examples: ['帮我看看高三1班终端的状态'],
-              required: ['终端名称'],
-              slotMap: { 终端: { type: 'terminal', display: '终端' }}
+              id: 'play-task',
+              title: '播放任务',
+              template: '播放[任务名称]任务',
+              examples: ['播放大课间任务', '执行升旗仪式任务', '马上播午休铃'],
+              required: ['任务名称'],
+              slotMap: { 任务名称: { type: 'text', display: '任务名称' } }
             },
             {
-              id: 'terminal-control',
-              title: '调系统全局音量',
-              template: '把系统音量设为[动作/数值]',
-              examples: ['系统音量调到30', '把设备音量调小一点'],
-              required: ['音量值或动作'],
+              id: 'stop-task',
+              title: '停止任务',
+              template: '停止[任务名称]任务',
+              examples: ['停止午休铃任务', '终止升旗任务', '把眼保健操任务停掉'],
+              required: ['任务名称'],
+              slotMap: { 任务名称: { type: 'text', display: '任务名称' } }
+            },
+            {
+              id: 'temp-play-media',
+              title: '临时播放媒体',
+              template: '给[区域]播放[媒体]',
+              examples: ['给操场播放国歌', '在 1 号分区播放眼保健操', '所有分区播放上课铃'],
+              required: ['区域', '媒体'],
               slotMap: {
-                '动作/数值': { type: 'text', display: '动作/数值' }
+                区域: { type: 'zone', display: '区域' },
+                媒体: { type: 'playMedia', display: '媒体' }
               }
             },
             {
-              id: 'terminal-append-task',
-              title: '给任务加终端',
-              template: '将[终端]加入到[任务]里',
-              examples: ['将终端01加入到升旗仪式任务里'],
-              required: ['终端', '任务名'],
-              slotMap: {
-                终端: { type: 'terminal', display: '终端' },
-                任务: { type: 'text', display: '任务名' }
-              }
+              id: 'open-zone-power',
+              title: '打开分区 / 电源',
+              template: '打开[分区或电源]',
+              examples: [
+                '打开 1 号分区',
+                '打开 1 到 6 号分区',
+                '打开 1、3、5 号分区',
+                '打开全部分区',
+                '打开功放电源',
+                '打开外控电源',
+                '打开 1 号分区和功放'
+              ],
+              required: ['分区或电源'],
+              slotMap: { '分区或电源': { type: 'text', display: '分区编号或功放/外控' } }
             },
             {
-              id: 'terminal-enable',
-              title: '开关终端',
-              template: '[启用/停用][终端]',
-              examples: ['停用故障的音箱'],
-              required: ['终端名称'],
-              slotMap: {
-                '启用/停用': {
-                  type: 'textChoice',
-                  display: '启用/停用',
-                  options: ['启用', '停用']
-                },
-                终端: { type: 'terminal', display: '终端' }
-              }
-            },
-            {
-              id: 'terminal-time-sync',
-              title: '给终端校时',
-              template: '对[终端/区域]进行校时',
-              examples: ['对全校终端进行校时'],
-              required: ['终端或区域'],
-              slotMap: {
-                '终端/区域': { type: 'target', display: '终端/区域' }
-              }
-            },
-            {
-              id: 'terminal-self-check',
-              title: '检查终端网络',
-              template: '进行一次终端网络自检',
-              examples: ['进行一次终端网络自检'],
+              id: 'stop-temp',
+              title: '停止临时播放',
+              template: '停止临时播放',
+              examples: ['停止所有临时播放', '关闭临时广播', '停止刚刚的播放'],
               required: [],
               slotMap: {}
-            }
-          ]
-        },
-        {
-          id: 'zone',
-          tabLabel: '分区',
-          title: '模块 2：分区',
-          desc: '新建分区，或把终端加进去、移出来。',
-          items: [
-            {
-              id: 'zone-create',
-              title: '新建分区',
-              template: '新建一个名为[分区名称]的分区',
-              examples: ['新建一个名为英语角的分区'],
-              required: ['新分区名称'],
-              slotMap: { 分区名称: { type: 'text', display: '分区名称' }}
-            },
-            {
-              id: 'zone-delete',
-              title: '删除分区',
-              template: '删除[分区名称]这个分区',
-              examples: ['删除旧操场这个分区'],
-              required: ['分区名称'],
-              slotMap: { 分区名称: { type: 'zone', display: '分区名称' }}
-            },
-            {
-              id: 'zone-add-terminal',
-              title: '把终端加入分区',
-              template: '把[终端]添加到[分区]分区',
-              examples: ['把三年级1班添加到三年级分区'],
-              required: ['终端', '目标分区'],
-              slotMap: {
-                终端: { type: 'terminal', display: '终端' },
-                分区: { type: 'zone', display: '分区' }
-              }
-            },
-            {
-              id: 'zone-remove-terminal',
-              title: '把终端移出分区',
-              template: '把[终端]从[分区]分区移除',
-              examples: ['把三年级1班从三年级分区移除'],
-              required: ['终端', '来源分区'],
-              slotMap: {
-                终端: { type: 'terminal', display: '终端' },
-                分区: { type: 'zone', display: '分区' }
-              }
-            }
-          ]
-        },
-        {
-          id: 'media',
-          tabLabel: '媒体',
-          title: '模块 3：媒体',
-          desc: '更换铃声、背景音乐等播放内容。',
-          items: [
-            {
-              id: 'media-replace-global',
-              title: '全局换媒体',
-              template: '用[新媒体]替换掉[旧媒体]',
-              examples: ['用运动员进行曲替换掉国歌'],
-              required: ['旧媒体', '新媒体'],
-              slotMap: {
-                新媒体: { type: 'media', display: '新媒体' },
-                旧媒体: { type: 'media', display: '旧媒体' }
-              }
-            },
-            {
-              id: 'media-replace-schedule',
-              title: '换方案里的媒体',
-              template: '把[方案]里的[旧媒体]换成[新媒体]',
-              examples: ['把夏季作息里的上课铃换成铃声2'],
-              required: ['方案', '旧媒体', '新媒体'],
-              slotMap: {
-                方案: { type: 'schedule', display: '方案' },
-                新媒体: { type: 'media', display: '新媒体' },
-                旧媒体: { type: 'media', display: '旧媒体' }
-              }
-            }
-          ]
-        },
-        {
-          id: 'schedule',
-          tabLabel: '方案',
-          title: '模块 4：作息方案',
-          desc: '新建、复制、启停，或调整作息时间。',
-          items: [
-            {
-              id: 'schedule-create',
-              title: '新建方案',
-              template: '新建一个[方案名称]',
-              examples: ['新建一个暑假作息', '新建一个军训作息'],
-              required: ['方案名称（可选）'],
-              slotMap: { 方案名称: { type: 'text', display: '方案名称' }}
-            },
-            {
-              id: 'schedule-clone',
-              title: '复制方案并改时间',
-              template: '复制[源方案]，整体向后推迟[分钟]分钟，存为[新名称]',
-              examples: ['复制春季作息，整体向后推迟30分钟，存为冬季作息'],
-              required: ['源方案', '改多少分钟', '新名称'],
-              slotMap: {
-                源方案: { type: 'schedule', display: '源方案' },
-                分钟: { type: 'text', display: '分钟' },
-                新名称: { type: 'text', display: '新名称' }
-              },
-              formType: 'cloneSchedule'
-            },
-            {
-              id: 'schedule-delete',
-              title: '删除方案',
-              template: '删除[方案名称]方案',
-              examples: ['删除2024测试版方案'],
-              required: ['方案名称'],
-              slotMap: { 方案名称: { type: 'schedule', display: '方案名称' }}
-            },
-            {
-              id: 'schedule-swap',
-              title: '任务对调',
-              template: '把[方案]里[原日期]和[目标日期]的任务对调',
-              examples: ['把春季作息里2026-03-24和2026-03-25的任务对调', '把夏季作息里2026-04-01和2026-04-03的任务对调'],
-              required: ['方案', '原日期', '目标日期'],
-              slotMap: {
-                方案: { type: 'schedule', display: '方案' },
-                '原日期': { type: 'calendarDate', display: '原日期' },
-                '目标日期': { type: 'calendarDate', display: '目标日期' }
-              }
-            },
-            {
-              id: 'schedule-enable',
-              title: '启用/停用方案',
-              template: '[启用/停用][方案名称]',
-              examples: ['启用2025春季作息方案'],
-              required: ['方案名称'],
-              slotMap: {
-                '启用/停用': {
-                  type: 'textChoice',
-                  display: '启用/停用',
-                  options: ['启用', '停用']
-                },
-                方案名称: { type: 'schedule', display: '方案名称' }
-              }
-            },
-            {
-              id: 'schedule-task-migrate',
-              title: '任务迁移',
-              defaultVariant: 'task',
-              variantOptions: [
-                { label: '任务', value: 'task' },
-                { label: '日期', value: 'date' }
-              ],
-              variants: {
-                task: {
-                  template: '把[方案]里[原日期]的[任务]任务改到[目标日期]',
-                  examples: ['把夏季作息里2026-03-28的眼保健操任务改到2026-03-30', '把春季作息里2026-04-02的升旗任务改到2026-04-05'],
-                  required: ['方案', '原日期', '任务', '目标日期'],
-                  slotMap: {
-                    方案: { type: 'schedule', display: '方案' },
-                    '原日期': { type: 'calendarDate', display: '原日期' },
-                    任务: { type: 'task', display: '任务', dependsOn: '方案' },
-                    目标日期: { type: 'calendarDate', display: '目标日期' }
-                  }
-                },
-                date: {
-                  template: '把[方案]里[原日期]的任务改到[目标日期]',
-                  examples: ['把夏季作息里2026-03-24的任务改到2026-03-25', '把春季作息里2026-04-01的任务改到2026-04-02'],
-                  required: ['方案', '原日期', '目标日期'],
-                  slotMap: {
-                    方案: { type: 'schedule', display: '方案' },
-                    '原日期': { type: 'calendarDate', display: '原日期' },
-                    '目标日期': { type: 'calendarDate', display: '目标日期' }
-                  }
-                }
-              }
-            },
-            {
-              id: 'schedule-task-cancel',
-              title: '任务取消',
-              defaultVariant: 'task',
-              variantOptions: [
-                { label: '任务', value: 'task' },
-                { label: '日期', value: 'date' }
-              ],
-              variants: {
-                task: {
-                  template: '取消[方案]里[日期]的[任务]任务',
-                  examples: ['取消春季作息里2026-03-24的眼保健操', '取消春季作息里2026-03-24到2026-03-28的眼保健操'],
-                  required: ['方案', '日期', '任务'],
-                  slotMap: {
-                    方案: { type: 'schedule', display: '方案' },
-                    日期: { type: 'calendarDateWithMode', display: '日期' },
-                    任务: { type: 'task', display: '任务', dependsOn: '方案' }
-                  }
-                },
-                date: {
-                  template: '取消[方案]里[日期]的任务',
-                  examples: ['取消春季作息里2026-03-24的任务', '取消春季作息里2026-03-24到2026-03-28的任务'],
-                  required: ['方案', '日期'],
-                  slotMap: {
-                    方案: { type: 'schedule', display: '方案' },
-                    日期: { type: 'calendarDateWithMode', display: '日期' }
-                  }
-                }
-              }
-            }
-          ]
-        },
-        {
-          id: 'playback',
-          tabLabel: '播放',
-          title: '模块 5：播放',
-          desc: '马上播放、暂停、停播和调音量。',
-          items: [
-            {
-              id: 'playback-media',
-              title: '马上播放媒体',
-              defaultVariant: 'duration',
-              variantOptions: [
-                { label: '按时长', value: 'duration' },
-                { label: '按次数', value: 'loop' }
-              ],
-              variants: {
-                duration: {
-                  template: '给[区域]播放[媒体]，播放[秒数]秒，音量[数值]',
-                  examples: ['给高一楼播放眼保健操，播放30秒，音量40'],
-                  required: ['区域', '媒体', '秒数', '数值'],
-                  slotMap: {
-                    区域: { type: 'zone', display: '区域' },
-                    媒体: { type: 'playMedia', display: '媒体' },
-                    秒数: { type: 'text', display: '秒数' },
-                    数值: { type: 'text', display: '数值' }
-                  }
-                },
-                loop: {
-                  template: '给[区域]播放[媒体]，播放[次数]次，音量[数值]',
-                  examples: ['给高一楼播放上课铃，播放3次，音量40'],
-                  required: ['区域', '媒体', '次数', '数值'],
-                  slotMap: {
-                    区域: { type: 'zone', display: '区域' },
-                    媒体: { type: 'playMedia', display: '媒体' },
-                    次数: { type: 'text', display: '次数' },
-                    数值: { type: 'text', display: '数值' }
-                  }
-                }
-              }
-            },
-            {
-              id: 'playback-task',
-              title: '马上播放任务',
-              template: '播放[任务名称]任务',
-              examples: ['播放大课间任务'],
-              required: ['任务名称'],
-              slotMap: { 任务名称: { type: 'text', display: '任务名称' }}
-            },
-            {
-              id: 'playback-control',
-              title: '文件广播控制',
-              defaultVariant: 'stop',
-              variantOptions: [
-                { label: '停止', value: 'stop' },
-                { label: '暂停', value: 'pause' },
-                { label: '恢复', value: 'resume' }
-              ],
-              variants: {
-                stop: {
-                  template: '停止[文件广播]任务',
-                  examples: ['停止大课间任务', '停止午休音乐任务'],
-                  required: ['文件广播任务'],
-                  slotMap: {
-                    文件广播: { type: 'broadcastTask', display: '文件广播' }
-                  }
-                },
-                pause: {
-                  template: '暂停[文件广播]任务',
-                  examples: ['暂停大课间任务', '暂停午休音乐任务'],
-                  required: ['文件广播任务'],
-                  slotMap: {
-                    文件广播: { type: 'broadcastTask', display: '文件广播' }
-                  }
-                },
-                resume: {
-                  template: '恢复[文件广播]任务',
-                  examples: ['恢复升旗仪式任务', '恢复午休音乐任务'],
-                  required: ['文件广播任务'],
-                  slotMap: {
-                    文件广播: { type: 'broadcastTask', display: '文件广播' }
-                  }
-                }
-              }
-            },
-            {
-              id: 'playback-volume',
-              title: '音量控制',
-              template: '系统音量调为[数值]',
-              examples: ['系统音量调大一点'],
-              required: ['数值'],
-              slotMap: {
-                数值: { type: 'text', display: '数值' }
-              }
-            },
-            {
-              id: 'playback-emergency',
-              title: '全校紧急广播',
-              template: '全校播放[紧急内容]',
-              examples: ['全校播放消防警报'],
-              required: ['紧急内容'],
-              slotMap: { 紧急内容: { type: 'text', display: '紧急内容' }}
-            }
-          ]
-        },
-        {
-          id: 'query',
-          tabLabel: '查询',
-          title: '模块 6：查询',
-          desc: '查任务，或播放前先检查设备。',
-          items: [
-            {
-              id: 'query-tasks',
-              title: '查看任务',
-              template: '看看[时间点/时间段]有什么任务',
-              examples: ['看看今天下午2点有什么任务'],
-              required: ['时间点/时间段'],
-              slotMap: { '时间点/时间段': { type: 'text', display: '时间点/时间段' }}
-            },
-            {
-              id: 'query-playcheck',
-              title: '播放前先检查',
-              template: '播放[任务名称]前检查一下设备',
-              examples: ['播放升旗仪式前检查一下设备'],
-              required: ['任务名称'],
-              slotMap: { 任务名称: { type: 'text', display: '任务名称' }}
-            },
-            {
-              id: 'query-task-terminal',
-              title: '给任务加终端/删终端',
-              template: '把[终端]从[任务]里[移除/加入]',
-              examples: ['把小操场从大课间任务里去掉'],
-              required: ['终端', '任务', '加入或移除'],
-              slotMap: {
-                终端: { type: 'terminal', display: '终端' },
-                任务: { type: 'text', display: '任务' },
-                '移除/加入': { type: 'text', display: '移除/加入' }
-              }
             }
           ]
         }
@@ -1301,7 +902,7 @@ export default {
   created() {
     this.initManualOpenMap()
     this.initManualVariantState()
-    this.fetchAssistantSettings({ silent: true })
+    // Removed fetchAssistantSettings — schedule template settings are no longer in scope.
     onAssistantRefresh(this.handleAssistantRefresh)
   },
   mounted() {
@@ -1523,24 +1124,8 @@ export default {
       this.$set(this.manualOpenMap, moduleId, value)
     },
     setManualTabFromContext() {
-      const path = this.$route?.path || ''
-      if (path.includes('device-status')) {
-        this.manualActiveTab = 'terminal'
-        return
-      }
-      if (path.includes('scheduler') || path.includes('plans')) {
-        this.manualActiveTab = 'schedule'
-        return
-      }
-      if (path.includes('file-broadcast') || path.includes('live-cast')) {
-        this.manualActiveTab = 'playback'
-        return
-      }
-      if (path.includes('tasks')) {
-        this.manualActiveTab = 'query'
-        return
-      }
-      this.manualActiveTab = 'terminal'
+      // 精简后只有一个广播控制 tab，无需根据路径切换
+      this.manualActiveTab = 'broadcast'
     },
     startTipTimer() {
       if (this.manualTipTimer) return

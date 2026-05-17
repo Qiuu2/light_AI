@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import importlib
 import json
+import os
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Dict, Iterable, List, Tuple
@@ -40,7 +41,10 @@ def _load_crf_class():
 CRF = _load_crf_class()  # type: ignore
 
 BASE_DIR = Path(__file__).resolve().parent.parent
-MODELS_DIR = BASE_DIR / "models"
+# Windows 安装包里 models 跟 app/ 同级（不在 app/models 下），用环境变量覆盖默认路径。
+# 开发时不设这个变量，会 fallback 到 BASE_DIR/models。
+_env_model_dir = os.environ.get("AI_SPEAKER_MODEL_DIR")
+MODELS_DIR = Path(_env_model_dir) if _env_model_dir else (BASE_DIR / "models")
 
 @dataclass
 class TrainConfig:

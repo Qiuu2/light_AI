@@ -17,15 +17,16 @@
 
   Events:
     activate       点击"设为当前作息"
-    copy           点击"复制" (暂时无后端接口，禁用)
-    rename         点击"重命名" (暂时无后端接口，禁用)
+    rename         点击"重命名"
 -->
 <template>
   <div v-if="scheme" class="lt-task-detail-header">
     <div class="lt-task-detail-header__row">
       <div class="lt-task-detail-header__text">
         <div class="lt-task-detail-header__title">
-          <span class="lt-task-detail-header__name">{{ schemeName }}</span>
+          <el-tooltip :content="schemeName" placement="top" :disabled="!schemeName">
+            <span class="lt-task-detail-header__name">{{ schemeName }}</span>
+          </el-tooltip>
           <el-tag v-if="isCurrent" size="mini" type="success">当前启用</el-tag>
         </div>
         <div class="lt-task-detail-header__meta">
@@ -39,20 +40,14 @@
       </div>
 
       <div class="lt-task-detail-header__actions">
-        <el-tooltip content="复制方案（即将支持）" placement="top">
-          <span>
-            <el-button size="mini" icon="el-icon-document-copy" disabled @click="$emit('copy')">
-              复制
-            </el-button>
-          </span>
-        </el-tooltip>
-        <el-tooltip content="重命名（即将支持）" placement="top">
-          <span>
-            <el-button size="mini" icon="el-icon-edit-outline" disabled @click="$emit('rename')">
-              重命名
-            </el-button>
-          </span>
-        </el-tooltip>
+        <el-button
+          size="mini"
+          icon="el-icon-edit-outline"
+          :loading="renaming"
+          @click="$emit('rename')"
+        >
+          重命名
+        </el-button>
         <el-button
           v-if="!isCurrent"
           size="mini"
@@ -67,14 +62,15 @@
       </div>
     </div>
 
-    <el-alert
+    <div
       v-if="syncMessage"
-      :title="syncMessage"
-      type="info"
-      show-icon
-      :closable="false"
-      class="lt-task-detail-header__alert"
-    />
+      class="lt-task-detail-header__sync"
+      :class="{ 'is-activating': activating }"
+    >
+      <i v-if="activating" class="el-icon-loading lt-task-detail-header__sync-icon" />
+      <i v-else class="el-icon-info lt-task-detail-header__sync-icon" />
+      <span class="lt-task-detail-header__sync-text">{{ syncMessage }}</span>
+    </div>
 
     <!-- 时间轴预览 -->
     <div v-if="tasks.length" class="lt-task-detail-header__timeline-block">
@@ -96,7 +92,8 @@ export default {
     tasks: { type: Array, default: () => [] },
     activating: { type: Boolean, default: false },
     syncMessage: { type: String, default: '' },
-    canActivate: { type: Boolean, default: true }
+    canActivate: { type: Boolean, default: true },
+    renaming: { type: Boolean, default: false }
   },
   computed: {
     schemeName() {
@@ -138,12 +135,18 @@ export default {
     display: flex;
     align-items: center;
     gap: 8px;
-    flex-wrap: wrap;
+    min-width: 0;
   }
   &__name {
+    display: inline-block;
+    max-width: 520px;
+    min-width: 0;
     font-size: 15px;
     font-weight: 600;
     color: var(--lt-t1);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
   &__meta {
     margin-top: 3px;
@@ -161,9 +164,38 @@ export default {
     display: flex;
     gap: 6px;
     flex-shrink: 0;
+    white-space: nowrap;
   }
   &__alert {
     margin-top: 8px;
+  }
+
+  &__sync {
+    margin-top: 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px;
+    border-radius: var(--lt-r);
+    background: var(--lt-p-soft, #ecf5ff);
+    color: var(--lt-p, #409eff);
+    border: 1px solid var(--lt-p-line, #b3d8ff);
+    font-size: 13px;
+
+    &.is-activating {
+      background: linear-gradient(90deg, #ecf5ff, #fff5e6, #ecf5ff);
+      background-size: 200% 100%;
+      animation: lt-sync-shimmer 2s linear infinite;
+      border-color: var(--lt-p, #409eff);
+    }
+  }
+  &__sync-icon {
+    font-size: 16px;
+    flex-shrink: 0;
+  }
+  &__sync-text {
+    flex: 1;
+    line-height: 1.4;
   }
 
   &__timeline-block {
@@ -175,5 +207,10 @@ export default {
     font-weight: 500;
     margin-bottom: 6px;
   }
+}
+
+@keyframes lt-sync-shimmer {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
 }
 </style>

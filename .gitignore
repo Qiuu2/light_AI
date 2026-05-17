@@ -10,6 +10,7 @@ web/dist/
 # Runtime data
 backend/data/.history/
 output/
+deploy/out/
 
 # Models
 models/
@@ -21,3 +22,4 @@ loginsucess.txt
 # IDE
 .vscode/
 .idea/
+.claude/
