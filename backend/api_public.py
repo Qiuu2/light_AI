@@ -16213,23 +16213,104 @@ def _text_has_explicit_terminal_reference(text: str, terminal_id: object) -> boo
     return any(re.search(pattern, raw_text, flags=re.IGNORECASE) for pattern in patterns)
 
 
+_POWER_KW_AS_TERMINAL = frozenset({
+    "功放", "功放电源",
+    "外控", "外控电源",
+    "外接", "外接电源",
+})
+
+
+def _overlay_terminal_names_from_text(text: str, slots: dict) -> dict:
+    """Phase-1 兜底 overlay：NLU 经常把多字符终端名只抽到首字（"123" 只剩 "1"），
+    还会把"功放电源"误打成 terminal_name 然后 fuzzy 解析到错的终端上。
+    这里用远端终端/分组名表做最长优先的精确子串匹配补救。"""
+    out = dict(slots or {})
+
+    # 1. 把电源关键字从 terminal_name 里挑掉；它们对应 area6/area7 不是终端。
+    existing = _slot_values(out, "terminal_name")
+    cleaned = [n for n in existing if str(n).strip() not in _POWER_KW_AS_TERMINAL]
+    stripped_power = (len(cleaned) != len(existing))
+    if stripped_power:
+        if cleaned:
+            out["terminal_name"] = cleaned
+        else:
+            out.pop("terminal_name", None)
+        # 基于刚被剔除的 terminal_name 跑出来的 fuzzy 结果也作废（避免低分错配落到 form 里）
+        out.pop("terminal_matched_id", None)
+        out.pop("terminal_name_matched", None)
+        out.pop("terminal_name_score", None)
+
+    raw = str(text or "")
+    if not raw:
+        return out
+    try:
+        tmap = _remote_terminal_map() if _remote_enabled() else {}
+    except HTTPException:
+        return out
+    if not tmap:
+        return out
+
+    # 2. 在原文里精确匹配已知终端/分组名（最长优先，避免 "123" 被 "1" 抢先）。
+    candidates = sorted(
+        (str(k).strip() for k in tmap.keys() if str(k).strip()),
+        key=lambda s: -len(s),
+    )
+    # 先把 NLU 抽到的 media_name 从原文里挖掉，避免媒体名里出现的字串被误当终端名
+    # （如媒体叫"追光者.mp3"、刚好有个终端叫"追光者" 时的误伤）
+    remaining = raw
+    media_text = _slot_text(out, "media_name", "CONTENT", "TASK", "audio", "medianame")
+    if media_text:
+        remaining = remaining.replace(media_text, " " * len(media_text))
+    found: List[str] = []
+    for name in candidates:
+        # 1 字符的名字噪声太大（"1"/"a"），跟分区号/标点都易冲突 → 跳过
+        if len(name) <= 1:
+            continue
+        if name in remaining:
+            found.append(name)
+            # 用同长度空格替换避免短名再去匹配长名的残片（"123" 命中后还留 "23"）
+            remaining = remaining.replace(name, " " * len(name))
+
+    if not found:
+        return out
+
+    seen = set(cleaned)
+    for n in found:
+        if n not in seen:
+            cleaned.append(n)
+            seen.add(n)
+    out["terminal_name"] = cleaned
+
+    # NLU 抽到的 terminal_id 如果其实是某个长终端名的子串，多半是部分抽取脏数据 → 删
+    existing_term_ids = _slot_values(out, "terminal_id")
+    keep_ids = [tid for tid in existing_term_ids
+                if not any(str(tid).strip() and str(tid).strip() in fn for fn in found)]
+    if keep_ids != existing_term_ids:
+        if keep_ids:
+            out["terminal_id"] = keep_ids
+        else:
+            out.pop("terminal_id", None)
+
+    return out
+
+
 def _sanitize_play_media_slots(text: str, slots: dict) -> dict:
     sanitized = dict(slots or {})
     volume_raw = _slot_text(sanitized, "volume", "VOLUME")
     volume_value = _first_int_from_text(volume_raw)
-    if volume_value is None:
-        return sanitized
-
-    for key in ("terminal_id", "scope_id"):
-        values = _slot_values(sanitized, key)
-        if not values:
-            continue
-        numeric_values = [_first_int_from_text(value) for value in values]
-        if not numeric_values or any(value != volume_value for value in numeric_values):
-            continue
-        if any(_text_has_explicit_terminal_reference(text, value) for value in values):
-            continue
-        sanitized.pop(key, None)
+    if volume_value is not None:
+        for key in ("terminal_id", "scope_id"):
+            values = _slot_values(sanitized, key)
+            if not values:
+                continue
+            numeric_values = [_first_int_from_text(value) for value in values]
+            if not numeric_values or any(value != volume_value for value in numeric_values):
+                continue
+            if any(_text_has_explicit_terminal_reference(text, value) for value in values):
+                continue
+            sanitized.pop(key, None)
+    # 跑 overlay 修 NLU 抽取错误（漏字、把功放当终端、把功放 fuzzy 到错的物理终端）
+    sanitized = _overlay_terminal_names_from_text(text, sanitized)
     return sanitized
 
 

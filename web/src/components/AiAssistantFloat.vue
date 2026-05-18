@@ -895,7 +895,8 @@ export default {
               id: 'temp-play-media',
               title: '临时播放媒体',
               // 终端 = 分组+单独终端，区域 = 硬件分区+功放/外控，两者都可选填（至少填一个用户自己把握）。
-              template: '给[终端][区域]播放[媒体]，音量[音量]',
+              // 用"和"明确分隔，避免拼出 "操场1 号分区" 这种 NLU 难拆的串；空槽会触发 fillFromTemplate 的 connector skip。
+              template: '给[终端]和[区域]播放[媒体]，音量[音量]',
               examples: ['给操场播放国歌，音量80', '在 1 号分区播放眼保健操，音量60', '所有分区播放上课铃，音量100'],
               required: ['媒体'],
               slotMap: {
@@ -2249,17 +2250,30 @@ export default {
       const segments = this.parseTemplate(item)
       const manualItem = this.resolveManualItem(item)
       const requiredKeys = Array.isArray(manualItem.required) ? manualItem.required : []
-      const text = segments.map((seg) => {
-        if (seg.type === 'text') return seg.text
+      // 第一遍：每个 seg 标记成 text / filled / empty
+      const parts = segments.map((seg) => {
+        if (seg.type === 'text') return { kind: 'text', text: seg.text }
         const value = this.getSlotValue(item, seg.key)
-        if (value) return value
-        // 可选槽位为空就别塞 seg.display（"区域"/"音量" 这种占位词会污染送给 NLU 的句子）。
-        if (!requiredKeys.includes(seg.key)) return ''
-        return seg.display
-      }).join('')
-      // 兜底清理：可选槽空着时遗留的 "，音量" 之类末尾散文字
-      const cleaned = text.replace(/[，,]\s*音量\s*$/u, '').trim()
-      this.fillCommand(cleaned)
+        if (value) return { kind: 'filled', text: value }
+        if (!requiredKeys.includes(seg.key)) return { kind: 'empty', text: '' }
+        // 必填但空 → 仍塞 display 占位（保留原视觉提示，提交时后端会报缺）
+        return { kind: 'filled', text: seg.display }
+      })
+      // 第二遍：把"纯连接词"的 text 段（紧贴 empty 槽的）也干掉，避免出现孤立的"和"/"、"。
+      const connectorOnly = /^[\s、,，和]+$/
+      for (let i = 0; i < parts.length; i += 1) {
+        if (parts[i].kind !== 'empty') continue
+        if (i > 0 && parts[i - 1].kind === 'text' && connectorOnly.test(parts[i - 1].text)) {
+          parts[i - 1] = { kind: 'empty', text: '' }
+        }
+        if (i < parts.length - 1 && parts[i + 1].kind === 'text' && connectorOnly.test(parts[i + 1].text)) {
+          parts[i + 1] = { kind: 'empty', text: '' }
+        }
+      }
+      let text = parts.map((p) => p.text).join('')
+      // 兜底清理：可选槽空着时遗留的 "，音量" / "音量XX" 之类末尾散文字
+      text = text.replace(/[，,]\s*音量\s*$/u, '').trim()
+      this.fillCommand(text)
     },
     formatRequired(item) {
       const manualItem = this.resolveManualItem(item)
