@@ -16262,24 +16262,39 @@ def _overlay_terminal_names_from_text(text: str, slots: dict) -> dict:
     raw_term_ids = _slot_values(out, "terminal_id")
     raw_term_names = _slot_values(out, "terminal_name")
     probe_targets = sorted(set(raw_term_ids + raw_term_names))
+    # 拿 zone_items 用于 probe（已经在下面会再用一次，多调一次也 cheap，结果会被 ttl cache）
+    try:
+        zone_items_for_probe = _remote_zone_items()
+    except HTTPException:
+        zone_items_for_probe = []
     probe_results = {
         target: {
-            "as_key": tmap.get(target),
-            "endswith_terminal_stripped": tmap.get(target[:-2]) if target.endswith("终端") else None,
-            "endswith_group_stripped": tmap.get(target[:-2]) if target.endswith("分组") else None,
+            "as_terminal_key": tmap.get(target),
+            "stripped_anchor_terminal": tmap.get(_strip_terminal_anchor(target)),
+            "as_group_name": _lookup_group_id_by_name(zone_items_for_probe, target),
         }
         for target in probe_targets if target
     }
     LOGGER.info(
-        "overlay_terminal_names map_state | size=%d | sample_keys=%s | probe=%s",
-        len(tmap), sample_keys, probe_results,
+        "overlay_terminal_names map_state | size=%d | zones=%d | sample_keys=%s | probe=%s",
+        len(tmap), len(zone_items_for_probe), sample_keys, probe_results,
     )
 
     # 2. 在原文里精确匹配已知终端/分组名（最长优先，避免 "123" 被 "1" 抢先）。
-    candidates = sorted(
-        (str(k).strip() for k in tmap.keys() if str(k).strip()),
-        key=lambda s: -len(s),
-    )
+    # 分组名走 /terminal/terzone 拿，跟 terminal_map (走 /terminal/terminalinfo) 是两个数据源。
+    group_names: List[str] = []
+    try:
+        for item in _remote_zone_items():
+            if not isinstance(item, dict):
+                continue
+            zname = str(item.get("zonename") or item.get("name") or "").strip()
+            if zname:
+                group_names.append(zname)
+    except HTTPException:
+        pass
+    candidate_set = {str(k).strip() for k in tmap.keys() if str(k).strip()}
+    candidate_set.update(group_names)
+    candidates = sorted(candidate_set, key=lambda s: -len(s))
     # 先把 NLU 抽到的 media_name 从原文里挖掉，避免媒体名里出现的字串被误当终端名
     # （如媒体叫"追光者.mp3"、刚好有个终端叫"追光者" 时的误伤）
     remaining = raw
@@ -16621,6 +16636,43 @@ def _verify_zone_membership(zone_ids: List[str], terminal_ids: List[str], *, sho
 _TERMINAL_NAME_ANCHOR_SUFFIXES = ("终端", "分组", "组")
 
 
+def _strip_terminal_anchor(name: str) -> str:
+    raw = str(name or "")
+    for suffix in _TERMINAL_NAME_ANCHOR_SUFFIXES:
+        if raw.endswith(suffix):
+            stripped = raw[: -len(suffix)].strip()
+            if stripped:
+                return stripped
+    return raw
+
+
+def _lookup_group_id_by_name(zone_items: list, name: str) -> Optional[str]:
+    """在 zone_items（远端 /terminal/terzone 返回的分组列表）里按名字精确/紧凑匹配。"""
+    target = _strip_terminal_anchor(name)
+    if not target:
+        return None
+    compact_target = _compact_text(target)
+    for item in zone_items:
+        if not isinstance(item, dict):
+            continue
+        zid = item.get("id") or item.get("zoneid")
+        if zid is None:
+            continue
+        zname = str(item.get("zonename") or item.get("name") or "").strip()
+        if not zname:
+            continue
+        if zname == target:
+            return str(zid)
+        compact_zname = _compact_text(zname)
+        if compact_target and compact_zname and (
+            compact_target == compact_zname
+            or compact_target in compact_zname
+            or compact_zname in compact_target
+        ):
+            return str(zid)
+    return None
+
+
 def _lookup_terminal_with_variants(terminal_map: dict, name: str) -> Optional[str]:
     """查 terminal_map 时尝试多种变体：
     1. 原名 / compact 形式
@@ -16640,12 +16692,8 @@ def _lookup_terminal_with_variants(terminal_map: dict, name: str) -> Optional[st
         candidate = terminal_map.get(compact)
         if candidate is not None:
             return candidate
-    for suffix in _TERMINAL_NAME_ANCHOR_SUFFIXES:
-        if not raw.endswith(suffix):
-            continue
-        stripped = raw[: -len(suffix)].strip()
-        if not stripped or stripped == raw:
-            continue
+    stripped = _strip_terminal_anchor(raw)
+    if stripped and stripped != raw:
         candidate = terminal_map.get(stripped)
         if candidate is not None:
             return candidate
@@ -16664,6 +16712,40 @@ def _resolve_terminal_ids_for_play_media(slots: dict, *, expand_zones: bool = Tr
 
     # 提前拿 map，因为 terminal_id 路径下面也要先用 map 查名字
     terminal_map = _remote_terminal_map()
+    # zone_items 用 lazy 取 —— 只有 terminal_map 没命中时才需要去查分组
+    _zone_items_cache: List[dict] = []
+    _zone_items_fetched = [False]
+
+    def _zones() -> list:
+        if not _zone_items_fetched[0]:
+            try:
+                _zone_items_cache.extend(_remote_zone_items())
+            except HTTPException:
+                pass
+            _zone_items_fetched[0] = True
+        return _zone_items_cache
+
+    def _resolve_name(name: str) -> Optional[List[str]]:
+        """先查终端 map，再查分组。命中分组就展开成成员终端 ID 列表。
+        返回 None 表示哪里都没查到。"""
+        candidate = _lookup_terminal_with_variants(terminal_map, name)
+        if candidate is not None:
+            return [str(candidate)]
+        group_id = _lookup_group_id_by_name(_zones(), name)
+        if group_id is not None:
+            try:
+                members = _zone_terminal_ids(group_id)
+            except HTTPException:
+                members = []
+            if members:
+                LOGGER.info(
+                    "resolver name=%r matched group_id=%s -> members=%s",
+                    name, group_id, members,
+                )
+                return [str(m) for m in members]
+            LOGGER.warning("resolver name=%r matched group_id=%s but no members", name, group_id)
+            return []
+        return None
 
     for term_id_text in _slot_values(slots, "terminal_matched_id"):
         if term_id_text.isdigit():
@@ -16673,11 +16755,11 @@ def _resolve_terminal_ids_for_play_media(slots: dict, *, expand_zones: bool = Tr
             unresolved["terminal_id"].append(term_id_text)
 
     for term_id_text in _slot_values(slots, "terminal_id", "scope_id"):
-        # NLU 经常把名字叫数字的终端 (如 "123") 误标成 terminal_id；
-        # 先看看这个值是不是某个终端的 name，是的话当 name 解析到真实 ID。
-        candidate = _lookup_terminal_with_variants(terminal_map, term_id_text)
-        if candidate is not None:
-            resolved_ids.append(str(candidate))
+        # NLU 经常把名字叫数字的终端/分组 (如 "123") 误标成 terminal_id；
+        # 先看看这个值是不是某个终端 / 分组的 name，是的话当 name 解析到真实 ID。
+        resolved = _resolve_name(term_id_text)
+        if resolved is not None:
+            resolved_ids.extend(resolved)
             continue
         if term_id_text.isdigit():
             resolved_ids.append(term_id_text)
@@ -16689,12 +16771,12 @@ def _resolve_terminal_ids_for_play_media(slots: dict, *, expand_zones: bool = Tr
             # 先查 map，再决定要不要把它当 ID。原本 isdigit 短路会把
             # 名字叫 "123" 的终端当成 ID=123 直接发给远端，结果远端找不到这个 ID，
             # 设备静默 success 但没声音。
-            candidate = _lookup_terminal_with_variants(terminal_map, terminal_name)
-            if candidate is not None:
-                resolved_ids.append(str(candidate))
+            resolved = _resolve_name(terminal_name)
+            if resolved is not None:
+                resolved_ids.extend(resolved)
                 continue
             if terminal_name.isdigit():
-                # map 里没找到这个名字，但是是纯数字 → 兼容旧行为，当成 ID
+                # 全都没找到这个名字但是是纯数字 → 兼容旧行为，当成 ID
                 resolved_ids.append(terminal_name)
                 continue
             unresolved["terminal_name"].append(terminal_name)
