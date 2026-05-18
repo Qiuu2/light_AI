@@ -40,7 +40,7 @@
         </template>
       </el-table-column>
 
-      <el-table-column label="任务名称" min-width="110" show-overflow-tooltip>
+      <el-table-column label="任务名称" min-width="90" show-overflow-tooltip>
         <template slot-scope="{ row }">{{ taskName(row) }}</template>
       </el-table-column>
 
@@ -62,7 +62,7 @@
         </template>
       </el-table-column>
 
-      <el-table-column label="分区" width="124">
+      <el-table-column label="分区" width="146">
         <template slot-scope="{ row }">
           <div class="lt-cell-dots">
             <span
@@ -95,7 +95,7 @@
         </template>
       </el-table-column>
 
-      <el-table-column label="星期" width="138">
+      <el-table-column label="星期" width="166">
         <template slot-scope="{ row }">
           <div class="lt-cell-dots">
             <span

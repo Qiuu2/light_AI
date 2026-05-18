@@ -1044,6 +1044,39 @@ def create_router() -> APIRouter:
             },
         }
 
+    @router.get("/playable-targets")
+    def get_playable_targets():
+        # 给 AI 助手「终端」槽位用：返回终端分组（1_前缀）+ 单独物理终端（2_前缀）。
+        # 比 /resources 轻，只调 2 个远端接口。
+        terminals = action_request("POST", "/action/getterminal", body_mode="none")
+        groups = action_request("POST", "/action/getextgroup", body_mode="none")
+        group_options = _group_options_from_payload(groups.get("data"))
+        terminal_options = _tree_leaf_options(terminals.get("data"), value_prefix="2_")
+        failed = []
+        if terminals.get("success") is False:
+            failed.append("terminals")
+        if groups.get("success") is False:
+            failed.append("groups")
+        return {
+            "success": not failed,
+            "message": "ok" if not failed else f"Failed to load playable targets: {', '.join(failed)}",
+            "groups": group_options,
+            "terminals": terminal_options,
+        }
+
+    @router.get("/media")
+    def get_media():
+        # 薄端点：只调远端 /action/getmedia，给 AI 助手的媒体下拉用。
+        # 比 /resources 轻得多（后者还会拉 terminal + groups + basic）。
+        response = action_request("POST", "/action/getmedia")
+        return {
+            "success": response.get("success"),
+            "message": response.get("message"),
+            "data": response.get("data"),
+            "raw": response.get("raw"),
+            "options": _tree_leaf_options(response.get("data")),
+        }
+
     @router.get("/terminals")
     def get_terminals():
         return action_request("POST", "/action/getterminal", body_mode="none")

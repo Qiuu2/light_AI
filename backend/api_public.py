@@ -19506,10 +19506,17 @@ def _build_area_params_from_slots(slots: dict) -> dict:
     areas = {i: 0 for i in range(8)}
     areas[6] = 1
     if named:
+        # _resolve_zone_index 处理 0-5 的多种写法（"分区1"/"1号分区"/"一"/纯数字 等）；
+        # 功放/外控（area6/area7）这里单独识别关键词。
         for zone_name in named:
-            idx = _AREA_NAME_TO_INDEX.get(zone_name)
+            idx = _resolve_zone_index(zone_name)
             if idx is not None:
                 areas[idx] = 1
+                continue
+            if "功放" in zone_name:
+                areas[6] = 1
+            elif "外控" in zone_name or "外接" in zone_name:
+                areas[7] = 1
     else:
         for i in range(6):
             areas[i] = 1
@@ -19713,19 +19720,19 @@ def _apply_play_media_intent(text: str, slots: dict) -> Tuple[str, Dict[str, Any
         # 无媒体 = "只开分区/电源" 模式：复用 /action/executetmptask 但不传 media 字段
         return _apply_zone_only_temp_task(text, effective_slots)
     if not _remote_enabled():
-        return ("???????????????????", {"missing_slots": []}, [])
+        return ("远端服务尚未连接，无法执行即时播放。", {"missing_slots": []}, [])
 
     try:
         media_match = _play_media_folder_exact_match(effective_slots, media_text, slot_key="media_name")
     except HTTPException:
-        return ("???????????????????", {"missing_slots": []}, [])
+        return ("查询媒体库失败，请稍后再试。", {"missing_slots": []}, [])
     if not media_match:
-        return (f'??????????????{media_text}??', {"missing_slots": []}, [])
+        return (f'媒体库中没有找到"{media_text}"。', {"missing_slots": []}, [])
     media_id, media_name = str(media_match[0]), str(media_match[1])
     terminal_ids, unresolved = _resolve_terminal_ids_for_play_media(effective_slots)
     if not terminal_ids:
         return (
-            "?????????????????????????",
+            "请指定要播放的分区、终端或终端分组。",
             {"missing_slots": ["zone_name/terminal_id/terminal_name"], "unresolved": unresolved},
             [],
         )
@@ -19748,10 +19755,10 @@ def _apply_play_media_intent(text: str, slots: dict) -> Tuple[str, Dict[str, Any
     from backend.routes.light import action_request as _light_action_request
     resp = _light_action_request("POST", "/action/executetmptask", form=form, body_mode="urlencoded")
     if resp.get("success"):
-        reply = f'??????{media_name}??'
+        reply = f'已开始播放"{media_name}"。'
         status = "ok"
     else:
-        reply = f'???{media_text}????{resp.get("message", "????")}'
+        reply = f'播放"{media_text}"失败：{resp.get("message", "未知错误")}'
         status = "error"
     action_log = _build_action_log(
         "play_media",

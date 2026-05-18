@@ -792,7 +792,11 @@ export default {
         media: [],
         broadcastTask: [],
         playMedia: [],
-        target: []
+        currentTask: [],
+        target: [],
+        // 「终端」槽位的原始数据：terminal 分组 + 单独物理终端，分别保留。
+        // 在 template 用 computed terminalGroupOptions 转成两个 el-option-group。
+        terminalGroupRaw: { groups: [], terminals: [] }
       },
       slotLoading: {
         terminal: false,
@@ -800,7 +804,9 @@ export default {
         schedule: false,
         media: false,
         broadcastTask: false,
-        playMedia: false
+        playMedia: false,
+        currentTask: false,
+        terminalGroup: false
       },
       taskOptionsBySchedule: {},
       taskLoadingBySchedule: {},
@@ -841,7 +847,7 @@ export default {
               template: '播放[任务名称]任务',
               examples: ['播放大课间任务', '执行升旗仪式任务', '马上播午休铃'],
               required: ['任务名称'],
-              slotMap: { 任务名称: { type: 'text', display: '任务名称' } }
+              slotMap: { 任务名称: { type: 'currentTask', display: '任务名称' } }
             },
             {
               id: 'stop-task',
@@ -849,17 +855,18 @@ export default {
               template: '停止[任务名称]任务',
               examples: ['停止午休铃任务', '终止升旗任务', '把眼保健操任务停掉'],
               required: ['任务名称'],
-              slotMap: { 任务名称: { type: 'text', display: '任务名称' } }
+              slotMap: { 任务名称: { type: 'currentTask', display: '任务名称' } }
             },
             {
               id: 'temp-play-media',
               title: '临时播放媒体',
-              template: '给[区域]播放[媒体]',
-              examples: ['给操场播放国歌', '在 1 号分区播放眼保健操', '所有分区播放上课铃'],
+              template: '给[区域]播放[媒体]，音量[音量]',
+              examples: ['给操场播放国歌，音量80', '在 1 号分区播放眼保健操，音量60', '所有分区播放上课铃，音量100'],
               required: ['区域', '媒体'],
               slotMap: {
                 区域: { type: 'zoneMixed', display: '区域' },
-                媒体: { type: 'playMedia', display: '媒体' }
+                媒体: { type: 'playMedia', display: '媒体' },
+                音量: { type: 'text', display: '音量(0-100, 留空为80)' }
               }
             },
             {
@@ -901,6 +908,24 @@ export default {
         label: opt.label || opt.value,
         value: `g:${opt.value}`
       }))
+    },
+    // terminalGroup 槽位：终端分组（g:）+ 单独物理终端（t:）。
+    // value 前缀让 parse/format 能区分两类来源。
+    terminalGroupGroupOptions() {
+      return (this.slotOptions.terminalGroupRaw?.groups || [])
+        .map((opt) => ({
+          label: String(opt.label || opt.value || '').trim(),
+          value: `g:${String(opt.label || opt.value || '').trim()}`
+        }))
+        .filter((opt) => opt.label)
+    },
+    terminalGroupTerminalOptions() {
+      return (this.slotOptions.terminalGroupRaw?.terminals || [])
+        .map((opt) => ({
+          label: String(opt.label || opt.value || '').trim(),
+          value: `t:${String(opt.label || opt.value || '').trim()}`
+        }))
+        .filter((opt) => opt.label)
     },
     panelStyle() {
       if (this.isMobileLayout) return null
@@ -1594,8 +1619,9 @@ export default {
       this.setSlotPopoverVisible(itemOrId, key, false)
     },
     usesSelectableOptions(seg) {
-      return ['terminal', 'zone', 'schedule', 'media', 'playMedia', 'target', 'task', 'broadcastTask', 'textChoice'].includes(seg?.slotType)
+      return ['terminal', 'zone', 'schedule', 'media', 'playMedia', 'target', 'task', 'broadcastTask', 'currentTask', 'textChoice'].includes(seg?.slotType)
     },
+    // terminalGroup 不走通用 usesSelectableOptions 渲染（它有自己的双 option-group 模板分支）。
     isScheduleSlot(seg) {
       return seg?.slotType === 'schedule'
     },
@@ -1608,6 +1634,9 @@ export default {
       }
       if (type === 'broadcastTask') {
         return this.slotOptions.broadcastTask || []
+      }
+      if (type === 'currentTask') {
+        return this.slotOptions.currentTask || []
       }
       if (type === 'textChoice') {
         return (Array.isArray(seg?.options) ? seg.options : []).map((value) => ({
@@ -1622,6 +1651,8 @@ export default {
         return '先选方案'
       }
       if (seg?.slotType === 'broadcastTask') return '选择文件广播任务'
+      if (seg?.slotType === 'currentTask') return '选择当前作息下的任务'
+      if (seg?.slotType === 'terminalGroup') return '选终端分组 / 单独终端'
       if (seg?.slotType === 'schedule') return '选择方案'
       if (seg?.slotType === 'calendarDate') return '请选择日期'
       if (seg?.slotType === 'calendarDateRange') return '请选择日期范围'
@@ -1646,6 +1677,12 @@ export default {
       }
       if (seg?.slotType === 'broadcastTask') {
         return Boolean(this.slotLoading.broadcastTask)
+      }
+      if (seg?.slotType === 'currentTask') {
+        return Boolean(this.slotLoading.currentTask)
+      }
+      if (seg?.slotType === 'terminalGroup') {
+        return Boolean(this.slotLoading.terminalGroup)
       }
       if (seg?.slotType === 'zoneMixed') {
         return Boolean(this.slotLoading.zone)
@@ -1675,7 +1712,8 @@ export default {
           this.ensureSlotOptions('zone', { force: isTemp })
           return
         }
-        const force = isTemp && (seg.slotType === 'playMedia' || seg.slotType === 'zone')
+        const force = (isTemp && (seg.slotType === 'playMedia' || seg.slotType === 'zone'))
+          || seg.slotType === 'currentTask'
         this.ensureSlotOptions(seg.slotType, { force })
       }
     },
@@ -1927,9 +1965,17 @@ export default {
         this.ensureSlotOptions('zone', options)
         return
       }
-      const existing = this.slotOptions[type]
-      if (!force && Array.isArray(existing) && existing.length) return
-      if (this.slotLoading[type]) return
+      if (type === 'terminalGroup') {
+        // terminalGroupRaw 是 {groups, terminals} 结构，不能走通用 array check
+        const raw = this.slotOptions.terminalGroupRaw || { groups: [], terminals: [] }
+        const has = (raw.groups || []).length || (raw.terminals || []).length
+        if (!force && has) return
+        if (this.slotLoading.terminalGroup) return
+      } else {
+        const existing = this.slotOptions[type]
+        if (!force && Array.isArray(existing) && existing.length) return
+        if (this.slotLoading[type]) return
+      }
       const base = process.env.VUE_APP_BASE_API || ''
       const params = this.buildSlotRequestParams(type, force)
       if (type === 'terminal') {
@@ -1968,14 +2014,37 @@ export default {
           })
       }
       if (type === 'media' || type === 'playMedia') {
+        // 远端 /action/getmedia 才是真实的媒体库；本地 all_audio.json 是历史快照。
         this.slotLoading[type] = true
-        api.get(`${base}/data/all_audio`, { params })
+        api.get(`${base}/api/light/media`, { params })
           .then(({ data }) => {
-            const list = this.normalizeList(data, ['name', 'medianame', 'audio'])
-            this.slotOptions[type] = this.uniqueOptions(list)
+            const options = Array.isArray(data?.options) ? data.options : []
+            this.slotOptions[type] = options
+              .map((opt) => ({
+                label: String(opt.label || opt.value || '').trim(),
+                value: String(opt.label || opt.value || '').trim()
+              }))
+              .filter((opt) => opt.value)
           })
           .finally(() => {
             this.slotLoading[type] = false
+          })
+      }
+      if (type === 'currentTask') {
+        // 拉当前启用作息方案下的任务（gettaskinfo），用于"播放任务/停止任务"下拉。
+        this.slotLoading.currentTask = true
+        api.get(`${base}/api/light/current-schedule-tasks`, { params })
+          .then(({ data }) => {
+            const tasks = Array.isArray(data?.data?.tasks)
+              ? data.data.tasks
+              : (Array.isArray(data?.tasks) ? data.tasks : [])
+            const names = tasks
+              .map((t) => String(t?.taskname || t?.name || '').trim())
+              .filter(Boolean)
+            this.slotOptions.currentTask = this.uniqueOptions(names)
+          })
+          .finally(() => {
+            this.slotLoading.currentTask = false
           })
       }
       if (type === 'broadcastTask') {
