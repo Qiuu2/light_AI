@@ -16224,6 +16224,7 @@ def _overlay_terminal_names_from_text(text: str, slots: dict) -> dict:
     """Phase-1 兜底 overlay：NLU 经常把多字符终端名只抽到首字（"123" 只剩 "1"），
     还会把"功放电源"误打成 terminal_name 然后 fuzzy 解析到错的终端上。
     这里用远端终端/分组名表做最长优先的精确子串匹配补救。"""
+    LOGGER.info("overlay_terminal_names ENTRY | text=%r | input_slots=%s", text, slots)
     out = dict(slots or {})
 
     # 1. 把电源关键字从 terminal_name 里挑掉；它们对应 area6/area7 不是终端。
@@ -16291,6 +16292,10 @@ def _overlay_terminal_names_from_text(text: str, slots: dict) -> dict:
         else:
             out.pop("terminal_id", None)
 
+    LOGGER.info(
+        "overlay_terminal_names EXIT | stripped_power=%s | found_in_text=%s | output_slots=%s",
+        stripped_power, found, out,
+    )
     return out
 
 
@@ -16610,18 +16615,22 @@ def _resolve_terminal_ids_for_play_media(slots: dict, *, expand_zones: bool = Tr
     terminal_map = _remote_terminal_map()
     if not has_pre_resolved_terminal:
         for terminal_name in _slot_values(slots, "terminal_name", "SCOPE", "LOC"):
-            if terminal_name.isdigit():
-                resolved_ids.append(terminal_name)
-                continue
+            # 先查 map，再决定要不要把它当 ID。原本 isdigit 短路会把
+            # 名字叫 "123" 的终端当成 ID=123 直接发给远端，结果远端找不到这个 ID，
+            # 设备静默 success 但没声音。
             candidate = terminal_map.get(terminal_name)
             if candidate is None:
                 compact = _compact_text(terminal_name)
                 if compact:
                     candidate = terminal_map.get(compact)
-            if candidate is None:
-                unresolved["terminal_name"].append(terminal_name)
+            if candidate is not None:
+                resolved_ids.append(str(candidate))
                 continue
-            resolved_ids.append(str(candidate))
+            if terminal_name.isdigit():
+                # map 里没找到这个名字，但是是纯数字 → 兼容旧行为，当成 ID
+                resolved_ids.append(terminal_name)
+                continue
+            unresolved["terminal_name"].append(terminal_name)
 
     if expand_zones:
         zone_names = _slot_values(slots, "zone_name")
@@ -19810,6 +19819,7 @@ def _apply_zone_only_temp_task(text: str, slots: dict) -> Tuple[str, Dict[str, A
 
 
 def _apply_play_media_intent(text: str, slots: dict) -> Tuple[str, Dict[str, Any], List[dict]]:
+    raw_slots_snapshot = {k: v for k, v in (slots or {}).items()}
     effective_slots = _sanitize_play_media_slots(text, slots)
     media_text = _slot_text(effective_slots, "media_name", "CONTENT", "TASK", "audio", "medianame")
     if not media_text:
@@ -19848,8 +19858,23 @@ def _apply_play_media_intent(text: str, slots: dict) -> Tuple[str, Dict[str, Any
         **area_params,
     }
 
+    LOGGER.info(
+        "play_media -> executetmptask | text=%r | raw_slots=%s | effective_slots=%s | terminal_ids=%s | form=%s",
+        text,
+        raw_slots_snapshot,
+        {k: v for k, v in effective_slots.items() if not k.startswith("_")},
+        terminal_ids,
+        form,
+    )
+
     from backend.routes.light import action_request as _light_action_request
     resp = _light_action_request("POST", "/action/executetmptask", form=form, body_mode="urlencoded")
+    LOGGER.info(
+        "play_media <- executetmptask | success=%s | message=%r | raw=%r",
+        resp.get("success"),
+        resp.get("message"),
+        str(resp.get("raw") or resp.get("data") or "")[:400],
+    )
     if resp.get("success"):
         reply = f'已开始播放"{media_name}"。'
         status = "ok"
@@ -19870,6 +19895,16 @@ def _apply_play_media_intent(text: str, slots: dict) -> Tuple[str, Dict[str, Any
             "volume": volume,
             "status": status,
             "created_at": _now_str(),
+            # ── DEBUG block：让前端 chat response 也能直接看到真发给远端的 payload + raw 响应 ──
+            "debug": {
+                "raw_slots": raw_slots_snapshot,
+                "effective_slots": {k: v for k, v in effective_slots.items() if not k.startswith("_")},
+                "form_sent": form,
+                "remote_success": resp.get("success"),
+                "remote_message": resp.get("message"),
+                "remote_raw": str(resp.get("raw") or resp.get("data") or "")[:400],
+                "unresolved": unresolved,
+            },
         },
     )
     return (reply, {"missing_slots": []}, [action_log])
