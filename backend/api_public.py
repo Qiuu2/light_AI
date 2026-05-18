@@ -16243,12 +16243,18 @@ def _overlay_terminal_names_from_text(text: str, slots: dict) -> dict:
 
     raw = str(text or "")
     if not raw:
+        LOGGER.info("overlay_terminal_names EXIT early | reason=empty_text | output_slots=%s", out)
         return out
     try:
         tmap = _remote_terminal_map() if _remote_enabled() else {}
-    except HTTPException:
+    except HTTPException as exc:
+        LOGGER.warning("overlay_terminal_names EXIT early | reason=remote_map_http_exc | detail=%r", exc.detail)
         return out
     if not tmap:
+        LOGGER.warning(
+            "overlay_terminal_names EXIT early | reason=empty_terminal_map | remote_enabled=%s",
+            _remote_enabled(),
+        )
         return out
 
     # 2. 在原文里精确匹配已知终端/分组名（最长优先，避免 "123" 被 "1" 抢先）。
@@ -16638,6 +16644,9 @@ def _resolve_terminal_ids_for_play_media(slots: dict, *, expand_zones: bool = Tr
     resolved_ids: List[str] = []
     has_pre_resolved_terminal = False
 
+    # 提前拿 map，因为 terminal_id 路径下面也要先用 map 查名字
+    terminal_map = _remote_terminal_map()
+
     for term_id_text in _slot_values(slots, "terminal_matched_id"):
         if term_id_text.isdigit():
             resolved_ids.append(term_id_text)
@@ -16646,12 +16655,17 @@ def _resolve_terminal_ids_for_play_media(slots: dict, *, expand_zones: bool = Tr
             unresolved["terminal_id"].append(term_id_text)
 
     for term_id_text in _slot_values(slots, "terminal_id", "scope_id"):
+        # NLU 经常把名字叫数字的终端 (如 "123") 误标成 terminal_id；
+        # 先看看这个值是不是某个终端的 name，是的话当 name 解析到真实 ID。
+        candidate = _lookup_terminal_with_variants(terminal_map, term_id_text)
+        if candidate is not None:
+            resolved_ids.append(str(candidate))
+            continue
         if term_id_text.isdigit():
             resolved_ids.append(term_id_text)
         else:
             unresolved["terminal_id"].append(term_id_text)
 
-    terminal_map = _remote_terminal_map()
     if not has_pre_resolved_terminal:
         for terminal_name in _slot_values(slots, "terminal_name", "SCOPE", "LOC"):
             # 先查 map，再决定要不要把它当 ID。原本 isdigit 短路会把
@@ -19880,9 +19894,16 @@ def _apply_play_media_intent(text: str, slots: dict) -> Tuple[str, Dict[str, Any
 
     volume = _parse_volume_slot(effective_slots)
     area_params = _build_area_params_from_slots(effective_slots, text)
+    # 远端 /action/executetmptask 要求 terminal 字段带 1_/2_ 前缀区分分组/单独终端，
+    # 即时播放页用的就是 "2_447" 这种格式。我们 resolver 输出的是裸 ID，需要前缀化。
+    # 已有前缀的（用户在 extra channel 直接传 prefixed ID）就不重复加。
+    prefixed_terminal = ",".join(
+        str(t) if str(t).startswith(("1_", "2_")) else f"2_{t}"
+        for t in terminal_ids
+    )
     form: Dict[str, Any] = {
         "media": media_id,
-        "terminal": ",".join(str(item) for item in terminal_ids),
+        "terminal": prefixed_terminal,
         "playmode": "0",
         "timehour": "0",
         "timeminute": "2",
@@ -19894,11 +19915,12 @@ def _apply_play_media_intent(text: str, slots: dict) -> Tuple[str, Dict[str, Any
     }
 
     LOGGER.info(
-        "play_media -> executetmptask | text=%r | raw_slots=%s | effective_slots=%s | terminal_ids=%s | form=%s",
+        "play_media -> executetmptask | text=%r | raw_slots=%s | effective_slots=%s | resolver_terminal_ids=%s | prefixed_terminal=%s | form=%s",
         text,
         raw_slots_snapshot,
         {k: v for k, v in effective_slots.items() if not k.startswith("_")},
         terminal_ids,
+        prefixed_terminal,
         form,
     )
 
@@ -19934,6 +19956,8 @@ def _apply_play_media_intent(text: str, slots: dict) -> Tuple[str, Dict[str, Any
             "debug": {
                 "raw_slots": raw_slots_snapshot,
                 "effective_slots": {k: v for k, v in effective_slots.items() if not k.startswith("_")},
+                "resolver_terminal_ids": [str(item) for item in terminal_ids],
+                "prefixed_terminal_field": prefixed_terminal,
                 "form_sent": form,
                 "remote_success": resp.get("success"),
                 "remote_message": resp.get("message"),
