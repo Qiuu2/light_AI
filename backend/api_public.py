@@ -19499,12 +19499,15 @@ _AREA_NAME_TO_INDEX: Dict[str, int] = {
 }
 
 
-def _build_area_params_from_slots(slots: dict) -> dict:
+def _build_area_params_from_slots(slots: dict, text: str = "") -> dict:
     # Map zone_name slots to area0-area7 params.
+    # text 用于 overlay 兜底：NLU 把"全部分区"/"1、2、3 号分区"这种复合短语
+    # 抽成一个单 zone_name 时 _resolve_zone_index 解不出来，必须靠原文兜底。
     zone_names = _slot_values(slots, "zone_name", "SCOPE", "LOC")
     named = [str(name).strip() for name in zone_names if str(name).strip()]
     areas = {i: 0 for i in range(8)}
     areas[6] = 1
+    fallback_all_zones = not named
     if named:
         # _resolve_zone_index 处理 0-5 的多种写法（"分区1"/"1号分区"/"一"/纯数字 等）；
         # 功放/外控（area6/area7）这里单独识别关键词。
@@ -19517,10 +19520,22 @@ def _build_area_params_from_slots(slots: dict) -> dict:
                 areas[6] = 1
             elif "外控" in zone_name or "外接" in zone_name:
                 areas[7] = 1
-    else:
+    # 原文兜底：处理"全部分区"/"所有分区"/range/枚举形式（参考 _build_zone_only_area_params）。
+    # 必须在 named 检查之后，避免覆盖单个分区的精确选择；但仍要补上 NLU 抽不到的复合形式。
+    if text:
+        areas = _overlay_all_zones_keywords(text, areas)
+    # 走完上述后如果 area0..5 全 0（NLU 抽到了 zone_name 但全没解析出来），
+    # 退回"全开"行为，跟即时播放页一致，避免静音播放。
+    if not fallback_all_zones and all(areas[i] == 0 for i in range(6)):
         for i in range(6):
             areas[i] = 1
-    return {f"area{i}": str(value) for i, value in areas.items()}
+    elif fallback_all_zones:
+        for i in range(6):
+            areas[i] = 1
+    base = {f"area{i}": str(value) for i, value in areas.items()}
+    if text:
+        base = _overlay_power_keywords_on_areas(text, base)
+    return base
 
 
 def _overlay_power_keywords_on_areas(text: str, area_params: Dict[str, str]) -> Dict[str, str]:
@@ -19738,7 +19753,7 @@ def _apply_play_media_intent(text: str, slots: dict) -> Tuple[str, Dict[str, Any
         )
 
     volume = _parse_volume_slot(effective_slots)
-    area_params = _build_area_params_from_slots(effective_slots)
+    area_params = _build_area_params_from_slots(effective_slots, text)
     form: Dict[str, Any] = {
         "media": media_id,
         "terminal": ",".join(str(item) for item in terminal_ids),
