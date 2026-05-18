@@ -16257,6 +16257,24 @@ def _overlay_terminal_names_from_text(text: str, slots: dict) -> dict:
         )
         return out
 
+    # 诊断：把 map 状态打出来，能直接看到我们要找的名字到底在不在 map key 里。
+    sample_keys = list(tmap.keys())[:10]
+    raw_term_ids = _slot_values(out, "terminal_id")
+    raw_term_names = _slot_values(out, "terminal_name")
+    probe_targets = sorted(set(raw_term_ids + raw_term_names))
+    probe_results = {
+        target: {
+            "as_key": tmap.get(target),
+            "endswith_terminal_stripped": tmap.get(target[:-2]) if target.endswith("终端") else None,
+            "endswith_group_stripped": tmap.get(target[:-2]) if target.endswith("分组") else None,
+        }
+        for target in probe_targets if target
+    }
+    LOGGER.info(
+        "overlay_terminal_names map_state | size=%d | sample_keys=%s | probe=%s",
+        len(tmap), sample_keys, probe_results,
+    )
+
     # 2. 在原文里精确匹配已知终端/分组名（最长优先，避免 "123" 被 "1" 抢先）。
     candidates = sorted(
         (str(k).strip() for k in tmap.keys() if str(k).strip()),

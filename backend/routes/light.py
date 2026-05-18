@@ -1212,6 +1212,27 @@ def create_router() -> APIRouter:
             "raw": response.get("raw"),
         }
 
+    @router.get("/_debug/terminal-map")
+    def debug_terminal_map(q: str = ""):
+        """诊断端点：dump 后端 _remote_terminal_map() 的内容，便于核对名字 → ID 关系。
+        ?q=foo 过滤包含 foo 的条目（在 key 或 value 任一里命中即返回）。"""
+        from backend import api_public
+        try:
+            tmap = api_public._remote_terminal_map() if api_public._remote_enabled() else {}
+        except Exception as exc:
+            return {"error": repr(exc), "size": 0, "items": []}
+        items = [{"name": k, "id": v} for k, v in tmap.items()]
+        if q:
+            needle = q.strip().lower()
+            items = [it for it in items if needle in it["name"].lower() or needle in str(it["id"]).lower()]
+        return {
+            "remote_enabled": api_public._remote_enabled(),
+            "size_total": len(tmap),
+            "size_filtered": len(items),
+            "items": items[:500],
+            "note": "?q=<keyword> 过滤；items 截断到前 500 条",
+        }
+
     @router.post("/schedules/{program_id}/tasks")
     def add_task(program_id: str, payload: dict[str, Any] = Body(default_factory=dict)):
         return action_request("POST", "/action/addtask", params={"id": program_id}, form=payload, body_mode="urlencoded")
