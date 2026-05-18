@@ -470,6 +470,40 @@
                                   />
                                 </el-select>
                                 <el-select
+                                  v-else-if="seg.slotType === 'terminalGroup'"
+                                  :value="getTerminalGroupArray(item, seg.key)"
+                                  multiple
+                                  collapse-tags
+                                  filterable
+                                  size="small"
+                                  :loading="isSlotLoading(item, seg)"
+                                  :placeholder="getSlotPlaceholder(item, seg)"
+                                  @input="setTerminalGroupArray(item, seg.key, $event)"
+                                >
+                                  <el-option-group
+                                    v-if="terminalGroupGroupOptions.length"
+                                    label="终端分组"
+                                  >
+                                    <el-option
+                                      v-for="opt in terminalGroupGroupOptions"
+                                      :key="opt.value"
+                                      :label="opt.label"
+                                      :value="opt.value"
+                                    />
+                                  </el-option-group>
+                                  <el-option-group
+                                    v-if="terminalGroupTerminalOptions.length"
+                                    label="单独终端"
+                                  >
+                                    <el-option
+                                      v-for="opt in terminalGroupTerminalOptions"
+                                      :key="opt.value"
+                                      :label="opt.label"
+                                      :value="opt.value"
+                                    />
+                                  </el-option-group>
+                                </el-select>
+                                <el-select
                                   v-else-if="seg.slotType === 'zoneMixed'"
                                   :value="getZoneMixedArray(item, seg.key)"
                                   multiple
@@ -860,11 +894,13 @@ export default {
             {
               id: 'temp-play-media',
               title: '临时播放媒体',
-              template: '给[区域]播放[媒体]，音量[音量]',
+              // 终端 = 分组+单独终端，区域 = 硬件分区+功放/外控，两者都可选填（至少填一个用户自己把握）。
+              template: '给[终端][区域]播放[媒体]，音量[音量]',
               examples: ['给操场播放国歌，音量80', '在 1 号分区播放眼保健操，音量60', '所有分区播放上课铃，音量100'],
-              required: ['区域', '媒体'],
+              required: ['媒体'],
               slotMap: {
-                区域: { type: 'zoneMixed', display: '区域' },
+                终端: { type: 'terminalGroup', display: '终端' },
+                区域: { type: 'zonePower', display: '区域' },
                 媒体: { type: 'playMedia', display: '媒体' },
                 音量: { type: 'text', display: '音量(0-100, 留空为80)' }
               }
@@ -1712,7 +1748,7 @@ export default {
           this.ensureSlotOptions('zone', { force: isTemp })
           return
         }
-        const force = (isTemp && (seg.slotType === 'playMedia' || seg.slotType === 'zone'))
+        const force = (isTemp && (seg.slotType === 'playMedia' || seg.slotType === 'zone' || seg.slotType === 'terminalGroup'))
           || seg.slotType === 'currentTask'
         this.ensureSlotOptions(seg.slotType, { force })
       }
@@ -1742,6 +1778,58 @@ export default {
       if (amp) parts.push('功放电源')
       if (ext) parts.push('外控电源')
       return parts.join('、')
+    },
+    // ───── terminalGroup: 终端分组 + 单独终端 多选 ─────
+    // value 内部表示用 g:<name> / t:<name> 前缀区分两类来源；
+    // 输出文本是裸名称 join '、'，让后端 NLU 走现有 terminal_name → _remote_terminal_map 路径。
+    getTerminalGroupArray(item, key) {
+      return this.parseTerminalGroup(this.getSlotValue(item, key))
+    },
+    setTerminalGroupArray(item, key, arr) {
+      this.setSlotValue(item, key, this.formatTerminalGroup(Array.isArray(arr) ? arr : []))
+    },
+    formatTerminalGroup(values) {
+      const groups = []
+      const terms = []
+      values.forEach((v) => {
+        if (typeof v !== 'string') return
+        if (v.startsWith('g:')) {
+          const name = v.slice(2).trim()
+          if (name) groups.push(name)
+        } else if (v.startsWith('t:')) {
+          const name = v.slice(2).trim()
+          if (name) terms.push(name)
+        }
+      })
+      // 分组在前 + 单独终端在后，便于后端 NLU 命名实体识别（分组名通常带"组"/"区"后缀，先匹配更稳）
+      return [...groups, ...terms].join('、')
+    },
+    parseTerminalGroup(str) {
+      const text = String(str || '').trim()
+      if (!text) return []
+      const raw = this.slotOptions.terminalGroupRaw || { groups: [], terminals: [] }
+      // 把分组名 + 终端名合并成一张表，最长优先匹配，避免短名嵌套到长名里
+      const candidates = []
+      ;(raw.groups || []).forEach((opt) => {
+        const name = String(opt?.label || '').trim()
+        if (name) candidates.push({ name, kind: 'g' })
+      })
+      ;(raw.terminals || []).forEach((opt) => {
+        const name = String(opt?.label || '').trim()
+        if (name) candidates.push({ name, kind: 't' })
+      })
+      candidates.sort((a, b) => b.name.length - a.name.length)
+      let remaining = text
+      const set = new Set()
+      candidates.forEach(({ name, kind }) => {
+        const escaped = name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+        const re = new RegExp(escaped, 'g')
+        if (re.test(remaining)) {
+          set.add(`${kind}:${name}`)
+          remaining = remaining.replace(new RegExp(escaped, 'g'), ' ')
+        }
+      })
+      return Array.from(set)
     },
     // ───── zoneMixed: 终端分组 + 硬件分区 + 功放/外控 三合一多选 ─────
     // 注：分组选项的 value 用 g:<name> 前缀，避免与硬件分区 value (z1..z6/amp/ext) 冲突。
@@ -1930,6 +2018,11 @@ export default {
           this.slotOptions.target = []
           return
         }
+        if (type === 'terminalGroup') {
+          // terminalGroupRaw 不是数组，需特判重置成空的双段结构
+          this.slotOptions.terminalGroupRaw = { groups: [], terminals: [] }
+          return
+        }
         if (Object.prototype.hasOwnProperty.call(this.slotOptions, type)) {
           this.slotOptions[type] = []
         }
@@ -1945,7 +2038,7 @@ export default {
     refreshManualSlotOptions(options = {}) {
       const types = Array.isArray(options.types) && options.types.length
         ? options.types
-        : ['terminal', 'zone', 'schedule', 'media', 'playMedia', 'broadcastTask']
+        : ['terminal', 'zone', 'schedule', 'media', 'playMedia', 'broadcastTask', 'terminalGroup']
       types.forEach((type) => this.ensureSlotOptions(type, { force: Boolean(options.force) }))
     },
     buildSlotRequestParams(type, force = false) {
@@ -2047,6 +2140,28 @@ export default {
             this.slotLoading.currentTask = false
           })
       }
+      if (type === 'terminalGroup') {
+        // 拉终端分组 + 单独物理终端。后端 /playable-targets 已经做了去重 + 前缀(1_/2_)。
+        // 前端只用 label（人类可读名），value 会在 computed 里再加 g:/t: 前缀做 UI 内部区分。
+        this.slotLoading.terminalGroup = true
+        api.get(`${base}/api/light/playable-targets`, { params })
+          .then(({ data }) => {
+            const groups = Array.isArray(data?.groups) ? data.groups : []
+            const terminals = Array.isArray(data?.terminals) ? data.terminals : []
+            const pickLabel = (opt) => String(opt?.label || opt?.value || '').trim()
+            this.slotOptions.terminalGroupRaw = {
+              groups: groups
+                .map((opt) => ({ label: pickLabel(opt), value: pickLabel(opt) }))
+                .filter((opt) => opt.label),
+              terminals: terminals
+                .map((opt) => ({ label: pickLabel(opt), value: pickLabel(opt) }))
+                .filter((opt) => opt.label)
+            }
+          })
+          .finally(() => {
+            this.slotLoading.terminalGroup = false
+          })
+      }
       if (type === 'broadcastTask') {
         this.slotLoading.broadcastTask = true
         api.get(`${base}/data/broadcast_schedules/broadcasts`, { params })
@@ -2132,12 +2247,19 @@ export default {
     },
     fillFromTemplate(item) {
       const segments = this.parseTemplate(item)
+      const manualItem = this.resolveManualItem(item)
+      const requiredKeys = Array.isArray(manualItem.required) ? manualItem.required : []
       const text = segments.map((seg) => {
         if (seg.type === 'text') return seg.text
         const value = this.getSlotValue(item, seg.key)
-        return value || seg.display
+        if (value) return value
+        // 可选槽位为空就别塞 seg.display（"区域"/"音量" 这种占位词会污染送给 NLU 的句子）。
+        if (!requiredKeys.includes(seg.key)) return ''
+        return seg.display
       }).join('')
-      this.fillCommand(text)
+      // 兜底清理：可选槽空着时遗留的 "，音量" 之类末尾散文字
+      const cleaned = text.replace(/[，,]\s*音量\s*$/u, '').trim()
+      this.fillCommand(cleaned)
     },
     formatRequired(item) {
       const manualItem = this.resolveManualItem(item)
