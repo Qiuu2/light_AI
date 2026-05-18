@@ -1802,8 +1802,17 @@ export default {
           if (name) terms.push(name)
         }
       })
-      // 分组在前 + 单独终端在后，便于后端 NLU 命名实体识别（分组名通常带"组"/"区"后缀，先匹配更稳）
-      return [...groups, ...terms].join('、')
+      // 每个名字后面带上类型锚点("X分组" / "X终端")，给 NLU 一个清晰的命名实体边界。
+      // 后端 resolver 查 map 时会剥掉后缀重试，不会破坏匹配。
+      // 名字本身已经以同类后缀结尾的（如远端返回的就叫"操场分组"）就不重复加。
+      const withSuffix = (name, suffix, sniffEnd) => (
+        sniffEnd.test(name) ? name : `${name}${suffix}`
+      )
+      const parts = [
+        ...groups.map((g) => withSuffix(g, '分组', /[组区]$/)),
+        ...terms.map((t) => withSuffix(t, '终端', /终端$/))
+      ]
+      return parts.join('、')
     },
     parseTerminalGroup(str) {
       const text = String(str || '').trim()
@@ -1822,12 +1831,21 @@ export default {
       candidates.sort((a, b) => b.name.length - a.name.length)
       let remaining = text
       const set = new Set()
+      const escape = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
       candidates.forEach(({ name, kind }) => {
-        const escaped = name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
-        const re = new RegExp(escaped, 'g')
-        if (re.test(remaining)) {
-          set.add(`${kind}:${name}`)
-          remaining = remaining.replace(new RegExp(escaped, 'g'), ' ')
+        // 先尝试匹配带锚点的变体（"X分组" / "X终端"），命中后再 fallback 到裸名。
+        // 防止用户原文里"操场分组"被裸名"操场"先吃掉、把锚点剩在 remaining 里污染后续。
+        const suffix = kind === 'g' ? '分组' : '终端'
+        const variants = name.endsWith(suffix[1] || suffix)
+          ? [name]
+          : [`${name}${suffix}`, name]
+        for (const variant of variants) {
+          const re = new RegExp(escape(variant), 'g')
+          if (re.test(remaining)) {
+            set.add(`${kind}:${name}`)
+            remaining = remaining.replace(new RegExp(escape(variant), 'g'), ' ')
+            break
+          }
         }
       })
       return Array.from(set)

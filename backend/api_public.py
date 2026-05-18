@@ -16594,6 +16594,45 @@ def _verify_zone_membership(zone_ids: List[str], terminal_ids: List[str], *, sho
     return True
 
 
+_TERMINAL_NAME_ANCHOR_SUFFIXES = ("终端", "分组", "组")
+
+
+def _lookup_terminal_with_variants(terminal_map: dict, name: str) -> Optional[str]:
+    """查 terminal_map 时尝试多种变体：
+    1. 原名 / compact 形式
+    2. 剥掉 "终端"/"分组"/"组" 这类前端 / NLU 加上去的锚点后缀再查
+
+    前端格式化时给每个名字加了"X 终端"/"X 分组"锚点便于 NLU 识别命名实体边界，
+    后端这里需要把锚点剥掉才能查到原始 map key。
+    """
+    if not name:
+        return None
+    raw = str(name)
+    candidate = terminal_map.get(raw)
+    if candidate is not None:
+        return candidate
+    compact = _compact_text(raw)
+    if compact:
+        candidate = terminal_map.get(compact)
+        if candidate is not None:
+            return candidate
+    for suffix in _TERMINAL_NAME_ANCHOR_SUFFIXES:
+        if not raw.endswith(suffix):
+            continue
+        stripped = raw[: -len(suffix)].strip()
+        if not stripped or stripped == raw:
+            continue
+        candidate = terminal_map.get(stripped)
+        if candidate is not None:
+            return candidate
+        stripped_compact = _compact_text(stripped)
+        if stripped_compact and stripped_compact != compact:
+            candidate = terminal_map.get(stripped_compact)
+            if candidate is not None:
+                return candidate
+    return None
+
+
 def _resolve_terminal_ids_for_play_media(slots: dict, *, expand_zones: bool = True) -> Tuple[List[str], Dict[str, List[str]]]:
     unresolved: Dict[str, List[str]] = {"zone_name": [], "terminal_name": [], "terminal_id": []}
     resolved_ids: List[str] = []
@@ -16618,11 +16657,7 @@ def _resolve_terminal_ids_for_play_media(slots: dict, *, expand_zones: bool = Tr
             # 先查 map，再决定要不要把它当 ID。原本 isdigit 短路会把
             # 名字叫 "123" 的终端当成 ID=123 直接发给远端，结果远端找不到这个 ID，
             # 设备静默 success 但没声音。
-            candidate = terminal_map.get(terminal_name)
-            if candidate is None:
-                compact = _compact_text(terminal_name)
-                if compact:
-                    candidate = terminal_map.get(compact)
+            candidate = _lookup_terminal_with_variants(terminal_map, terminal_name)
             if candidate is not None:
                 resolved_ids.append(str(candidate))
                 continue
